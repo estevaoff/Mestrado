@@ -1,12 +1,63 @@
 \chapter{Introdução}
 
-Segundo a norma de formata{\c c}\~ao de teses e disserta{\c c}\~oes do
-Instituto Alberto Luiz Coimbra de P\'os-gradua{\c c}\~ao e Pesquisa de
-Engenharia (COPPE), toda abreviatura deve ser definida antes de
-utilizada.\abbrev{COPPE}{Instituto Alberto Luiz Coimbra de P\'os-gradua{\c
-c}\~ao e Pesquisa de Engenharia}
+% Segundo a norma de formata{\c c}\~ao de teses e disserta{\c c}\~oes do
+% Instituto Alberto Luiz Coimbra de P\'os-gradua{\c c}\~ao e Pesquisa de
+% Engenharia (COPPE), toda abreviatura deve ser definida antes de
+% utilizada.\abbrev{COPPE}{Instituto Alberto Luiz Coimbra de P\'os-gradua{\c
+% c}\~ao e Pesquisa de Engenharia}
+% 
+% Do mesmo modo, \'e imprescind\'ivel definir os s\'imbolos, tal como o
+% conjunto dos n\'umeros reais $\mathbb{R}$ e o conjunto vazio $\emptyset$.
+% \symbl{$\mathbb{R}$}{Conjunto dos n\'umeros reais}
+% \symbl{$\emptyset$}{Conjunto vazio}
 
-Do mesmo modo, \'e imprescind\'ivel definir os s\'imbolos, tal como o
-conjunto dos n\'umeros reais $\mathbb{R}$ e o conjunto vazio $\emptyset$.
-\symbl{$\mathbb{R}$}{Conjunto dos n\'umeros reais}
-\symbl{$\emptyset$}{Conjunto vazio}
+% -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
+\section{Motivação}
+
+
+% -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
+\section{Objetivos}
+
+A ação dinâmica do robô ao realizar determinada tarefa irá originar, por reação,
+deslocamentos dinâmicos em sua base. Estes deslocamentos causarão algum impacto
+na tarefa a ser realizada como mudanças de orientação, velocidade e
+posicionamento da ferramenta acoplada ao manipulador. Estes efeitos não são
+considerados nos métodos de controle convencionais das juntas do manipulador,
+porque não podem ser previstos sem que haja alguma instrumentação periférica,
+capaz de medir e enviar as informações ao controlador.
+
+Este trabalho tem como objetivo oferecer um método para calcular e quantificar
+os deslocamentos teóricos da base, e assim calcular os erros de posicionamento,
+velocidade e orientação no seu efetuador. Isto é feito a partir da
+quebra do paradigma da base como uma estrutura idealmente rígida -- ou seja, de
+rigidez tão grande que pudessem ser desconsiderados quaisquer efeitos da ação do
+manipulador -- e considerando-a como um corpo elástico, com flexibilidade e
+amortecimento.
+
+Quantificando-se o comportamento dinâmico do sistema base e robô, pode-se então
+avaliar os desvios causados na trajetória. Se o resultado demonstrar erros fora
+de uma margem de tolerância admitida, o método pode ser utlizado iterativamente,
+alterando-se parâmetros da base.
+Após mudanças estratégicas destes parâmetros -- como materiais, configuração
+geométrica, apoios, contravetamentos, massa, etc. -- obtém-se novos resultados.
+O objetivo deste processo é, em um ambiente de simulação, verificar a nova base,
+e a partir dos resultados fazer as modificações até atingir a tolerância que
+satisfaz a qualidade da tarefa.
+
+Além do método iterativo, tem-se por objetivo discutir estratégias de
+instrumentação e controle, de forma a aperfeiçoar o método original, para levar
+em consideração as perturbações causadas pela base e corrigir as diferenças de
+posicionamento, velocidade e orientação das juntas do manipulador.
+
+O método proposto tem como preocupação oferecer uma metodologia que permite ao
+usuário utilizar as ferramentas que estão à sua disposição pessoal ou da
+instituição (laboratório, empresa, universidade, etc.), não limitando ao uso de
+qualquer \textit{software} específico. Apesar de terem sido utlilizados
+programas de alto nível como Maple, Autodesk Simulation e SolidWorks, ficará
+claro que diversos \textit{softwares} de Álgebra Computacional Simbólica (CAS),
+Análise de Elementos Finitos (FEA) e Desenho Assistido por Computador (CAD),
+respectivamente, poderiam ter sido utilizados.
+
+
+% -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
+\section{Ferramentas utilizadas}

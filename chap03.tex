@@ -100,7 +100,7 @@ que transforma os dois últimos elos em apenas um corpo.
 Como resultado, tem-se um sistema de 5 gdl.
 
 
-\subsection{Cinemática Direta}
+\subsection{Cinemática Direta}\label{sec::dkin}
 
 Como foi discutido na seção~\ref{sec::cinematica}, o procedimento mais utilizado
 para a modelagem cinemática de manipuladores robóticos é o método dos parâmetros
@@ -115,8 +115,8 @@ Um maior controle sobre a escolha dos referenciais e dos parâmetros da geometri
 pode reduzir significativamente o custo computacional do modelo.
 Neste sentido, o Sophia-Maple é uma ferramenta mais flexível, que permite, ao
 usuário, total liberdade sobre a escolha dos referenciais, sem nenhum aumento de
-complexidade. Uma escolha estratégica da posição e orientação dos sistemas de
-coordenadas pode resultar em equações cinemáticas e transformações de
+complexidade de modelagem. Uma escolha estratégica da posição e orientação dos
+sistemas de coordenadas pode resultar em equações cinemáticas e transformações de
 referenciais mais simplificadas. Neste trabalho serão utilizadads as rotinas do
 Sophia para modelagem da cinemática direta do manipulador robótico.
 
@@ -124,7 +124,7 @@ Sophia para modelagem da cinemática direta do manipulador robótico.
 
 A primeira etapa para obter-se as equações cinemáticas será definir o sistema de
 coordenadas fixo em cada elo do robô. A Figura~\ref{fig::scs} é um modelo CAD do
-manipulador e apresenta a posição de cada SC, na configuração inicial.
+manipulador e apresenta a posição de cada SC, na sua configuração inicial.
 
 \begin{figure}[h]
     \centering
@@ -153,7 +153,7 @@ inversa, como será visto na seção~\ref{sec::ikin_mh12}.
 
 Logo, pode-se escrever as relações entre estes referenciais em termos das
 coordenadas generalizadas do sistema, para obter as transformações entre cada
-SC. No Sophia-Maple isto é feito com o uso da função \textit{chainSimpRot}, da
+SC. No Sophia-Maple isto é feito com o uso da função \texttt{chainSimpRot}, da
 seguinte forma:
 
 \medskip \noindent {\tt > chainSimpRot( [Z,S,1,q1], [S,L,3,q2], [L,U,3,q3],
@@ -171,7 +171,7 @@ superior U seria:
 %
 $$ R_{Z}^{U} = R_{Z}^{S} R_{S}^{L} R_{L}^{U} $$
 %
-A função \textit{Rmx} do Sophia-Maple retorna a matriz de rotação entre quaisquer
+A função \texttt{Rmx} do Sophia-Maple retorna a matriz de rotação entre quaisquer
 sistemas de coordenadas. No Sophia-Maple, escreve-se:
 
 \medskip \noindent {\tt > Rmx(Z,U)} \medskip 
@@ -197,15 +197,15 @@ s3}&-{ \it c2}\,{\it s3}-{\it s2}\,{\it c3}&0\\ \noalign{\medskip}{\it c1}\,{
 A segunda etapa é definir os vetores posição dos centros de massa de cada corpo.
 Para isso, define-se auxiliarmente os vetores posição entre cada SC, desde o
 referencial inercial Z até o efetuador em T. Será utilizada a notação de Lesser,
-por meio dos \textit{Evectors}, como descrito na seção~\ref{sec::sophia-kane}
+por meio dos \texttt{Evectors}, como descrito na seção~\ref{sec::sophia-kane}
 para representar esses vetores.
 
 Logo, de maneira geral, pode-se escrever a posição de qualquer ponto pela
 seguinte relação:
 %
 \begin{align}
-	^{Z}\mathbf{p}^{k} = ^{Z}\mathbf{p}^{k-1} + ^{k-1}\mathbf{p}^{k} \\
-	^{Z}\mathbf{pcm}^{k} = ^{Z}\mathbf{pcm}^{k-1} + ^{k}\mathbf{pcm}
+	^{Z}\mathbf{p}^{k} &= ~^{Z}\mathbf{p}^{k-1} + ~^{k-1}\mathbf{p}^{k} \\
+	^{Z}\mathbf{pcm}^{k} &= ~^{Z}\mathbf{pcm}^{k-1} + ~^{k}\mathbf{pcm}^k
 	\label{eq::pcm}
 \end{align}
 %
@@ -241,8 +241,8 @@ equação~\ref{eq::pcm} em Z:
 \end{equation}
 %
 O Sophia-Maple possui um poderoso conjunto de rotinas para diferenciação dos
-\textit{Evectors} com relação ao referencial inercial, por meio da função
-\textit{cdft}, que reconhece automaticamente o referencial em que cada vetor
+\texttt{Evectors} com relação ao referencial inercial, por meio da função
+\texttt{cdft}, que reconhece automaticamente o referencial em que cada vetor
 está descrito e realiza o cálculo diferencial vetorial. Logo, pode-se escrever o
 seguinte comando para definir as velocidades de acordo com a
 equação~\ref{eq::veloc}:
@@ -271,11 +271,11 @@ Onde $S$ é o tensor velocidade angular associado a $\omega$.
 -\omega_{y}(t)	& \omega_{x}(t)		& 0
 \end{pmatrix} \\
 % eq2
-& \omega = [\omega_{x}, \omega_{y}, \omega_{z}]^{T}
+& \boldsymbol{\omega} = [\omega_{x}, \omega_{y}, \omega_{z}]^{T}
 \end{align}
 %
 No Sophia-Maple o tensor $S$ pode ser calculado através da função
-\&\textit{VtoD}. Por exemplo, o tensor entre os referenciais SC-L e SC-S seria:
+\&\texttt{VtoD}. Por exemplo, o tensor entre os referenciais SC-L e SC-S seria:
 %
 $$
 S_{L}^{Z} = \left( \begin {array}{ccc} 0&-{\it q2t}&-\sin \left( {\it q2}
@@ -285,12 +285,12 @@ q2} \right) {\it q1t}\\ \noalign{\medskip}\sin \left( {\it q2}
 \end {array} \right)
 $$
 %
-Porém, pode-se ainda fazer o uso da função \textit{aV} que
+Porém, pode-se ainda fazer o uso da função \texttt{aV} que
 calcula diretamente o vetor velocidade angular $^{A}\omega^{B}$ entre dois
 referenciais. O que retornaria o seguinte vetor:
 %
 $$
-^{Z}\omega^{L} = [-{\it q1t},\sin \left( {\it q1} \right) {\it q2t},-\cos
+^{Z}\boldsymbol{\omega}^{L} = [-{\it q1t},\sin \left( {\it q1} \right) {\it q2t},-\cos
 \left( {\it q1} \right) {\it q2t}]
 $$
 %
@@ -302,7 +302,7 @@ ao referencial Z. São definidos da seguinte forma:
 end do:} \medskip 
 
 Podemos finalmente escrever o vetor Velocidades Generalizadas, que nada mais é
-que um \textit{Kvector} que fornece a lista de \textit{Evectors} referente às
+que um \texttt{Kvector} que fornece a lista de \texttt{Evectors} referente às
 velocidades lineares e angulares calculadas. Logo, o vetor velocidades
 generalizadas tem a seguinte forma:
 %
@@ -310,10 +310,10 @@ generalizadas tem a seguinte forma:
 	v_{k} = [ v_{1},\ldots, v_{n}, \omega_{1},\ldots, \omega_{n}, 2n ]
 \end{equation}
 %
-Onde cada termo do \textit{Kvector} é um \textit{Evector} da velocidade
+Onde cada termo do \texttt{Kvector} é um \texttt{Evector} da velocidade
 generalizada.
-Por fim, o último termo representa a quantidade de \textit{Evectors} que formam o
-\textit{Kvector}.
+Por fim, o último termo representa a quantidade de \texttt{Evectors} que formam o
+\texttt{Kvector}.
 
 \subsubsection{Hiperplano tangente}
 
@@ -337,10 +337,10 @@ generalizada.
 	\dot{q_{i}} \frac{\partial r}{\partial q_{i}} = \tau_{i} \label{eq::tau}
 \end{gather}
 %
-A função \textit{KMtangents} do Sophia-Maple obtém os termos que formam os
-vetores tangentes em \textit{Kvectors} para cada coordenada generalizada. O
+A função \texttt{KMtangents} do Sophia-Maple obtém os termos que formam os
+vetores tangentes em \texttt{Kvectors} para cada coordenada generalizada. O
 conjunto que forma o hiperplano tangente introduz uma estrutura do Sophia, dos
-super \textit{Kvectors}, ou \textit{SKVector}. Esta estrutura facilitará a
+super \texttt{Kvectors}, ou \texttt{SKVector}. Esta estrutura facilitará a
 projeção das equações dinâmicas no hiperplano tangente. Logo, para o manipulador
 escreve-se:
 
@@ -366,22 +366,24 @@ Do manual do MOTOMAN MH12\todo{incluir ref: manual mh12}, tem-se que a massa
 total do robô é de 130~kg. Também é disponibilizado, diretamente pelo
 fabricante, um modelo CAD com ótimo detalhamento de cada corpo individualmente.
 
-O programa SolidWorks foi utilizado para obter informações importantes para a
-estimativa dos parâmetros de inércia. Nele é possível analisar cada elo em
-separado e obter o seu volume. Com isso, pode-se obter uma massa específica
+O programa SolidWorks foi utilizado para obter informações importantes do modelo
+CAD, para a estimativa dos parâmetros de inércia. Nele é possível analisar cada
+elo em separado e obter o seu volume. Com isso, pode-se obter uma massa específica
 média do robô, de acordo com a equação~\ref{eq::rho}.
 %
-\begin{equation}
-	\rho_{m} = M_{total}\sum_{corpo[1]}^{corpo[n]} V_{i} \label{eq::rho}
-\end{equation}
+\begin{align}
+	\rho_{m} = M_{total}\sum_{corpo[i]}^{corpo[n]} V_{i} \label{eq::rho} & &, i =
+	Z,S,L,U,R,B,T
+\end{align}
 %
 Logo, pode-se estimar a massa de cada corpo, calculada pelo produto da massa
 específica média $\rho_{m}$ e o volume, de acordo com a
 equação~\ref{eq::massai}.
 %
-\begin{equation}
-	m_{i} = \rho_{m} \cdot V_{i} \label{eq::massai}
-\end{equation}
+\begin{align}
+	m_{i} = \rho_{m} \cdot V_{i} \label{eq::massai} & &, i =
+	Z,S,L,U,R,B,T
+\end{align}
 %
 A massa da ferramenta acoplada ao efetuador foi obtida precisamente, pelo
 projeto CAD do suporte, no SolidWorks, e informação do fabricante do dispositivo
@@ -418,6 +420,9 @@ massa e momento de inércia podem ser somadas e condensadas em uma única
 descrição. A partir deste ponto, estes 3 últimos corpos serão tratadaos como um
 único corpo e será utilizada a denominação do corpo B para representar esse
 conjunto, com seu sistema de referência fixado em SC-B.
+
+As variáveis de massa de cada corpo são definidas no Sophia-Maple como grandezas
+escalares, sem uso de qualquer função especial.
 
 O programa SolidWorks também foi utilizado para obter as posições do centro de
 massa e momentos de inércia de cada elo.
@@ -474,10 +479,10 @@ InR &=&  \left( \begin {array}{ccc}  0,173&-
 \end{align*}
 %
 No Sophia-Maple estes tensores são construidos com a função
-\textit{EinertiaDyad}, que aproveita o fato dos tensores de inércia serem
-simétricos e recebe 6 argumentos para os termos da matriz e um para o sistema de
-coordenadas de referência em que foi obtido o tensor. Define-se portanto cada
-tensor da seguinte forma:
+\texttt{EinertiaDyad}, que aproveita o fato dos tensores de inércia serem
+simétricos e recebe 6 argumentos para os termos da matriz e um para especificar
+o sistema de coordenadas de referência em que foi obtido o tensor. Define-se
+portanto cada tensor da seguinte forma:
 
 \medskip \noindent {\tt > for i from corpo[1] to corpo[6] do \\
 \indent In||(corpo[i]):= EinertiaDyad( \\
@@ -486,10 +491,425 @@ tensor da seguinte forma:
 \indent In||(corpo[i])||13, In||(corpo[i])||23, sc[i]) \\
 end do:}
 
+\subsubsection{Quantidade de Movimento e Quantidade de Movimento Angular}
 
+Para o cálculo das forças de inércia, calcula-se a Quantidade de Movimento $G$ e
+a Quantidade de Movimento Angular $H$, para cada corpo, de acordo com as
+equações~\ref{eq::qntmov} e \ref{eq::qntmovang}.
+%
+\begin{align}
+%eq1
+	\mathbf{G}_{k} &= m_{k} \cdot \mathbf{v}_{k} \label{eq::qntmov} \\
+%eq2	
+	\mathbf{H}_{k} &= In_{k} \cdot \boldsymbol\omega^{k} \label{eq::qntmovang}
+\end{align}
+%
+
+\subsubsection{Forças de Inércia}
+
+As forças de inércia são a derivada temporal das quantidades de movimento, com
+respeito ao referencial inercial Z, conforme descrito pelas
+equações~\ref{eq::finG} e \ref{eq::finH}.
+%
+\begin{align}
+%eq1
+	\dot{\mathbf{G}}_{k} &= \frac{^{Z}\mathrm{d}}{\mathrm{d} t} (m_{k} \cdot
+	\mathbf{v}_{k}) \label{eq::finG} \\
+%eq2	
+	\dot{\mathbf{H}}_{k} &= \frac{^{Z}\mathrm{d}}{\mathrm{d} t} (In_{k} \cdot
+	\mathbf{\boldsymbol\omega^{k}}_{k}) \label{eq::finH}	
+\end{align}
+%
+No Sophia-Maple, obtém-se primeiro os vetores quantidade de movimento e, em
+seguida, constrói-se o \texttt{Kvector} das quantidades de movimento com a
+função \texttt{KM} armazendado na variável \texttt{KMG}. Um função especial para
+diferenciação de \texttt{Kvectors}, \texttt{Kfdt} é aplicada em \texttt{KMG} para
+calcular os vetores das forças de inércia.
+
+Vale notar que o Sophia-Maple adiciona um sufixo t aos termos que foram
+derivados com respeito ao tempo.
+Logo, as coordenadas generalizadas, q1,\ldots,qn, quando derivadas no tempo
+resultam em q1t,\ldots,qnt. Este formato auxilirá a substituição destes termos
+para solução das \textit{kinematic differential equations} (kde), conforme visto
+na seção~\ref{sec::sophia-kane}.
+
+O algoritmo para definir as Forças de Inércia do sistema no Sophia-Maple é o
+seguinte:
+
+\medskip \noindent {\tt > for i from 1 to 6 do \\
+\indent G||corpo[i]:= m||corpo[i] \&** v||corpo[i] \\
+end do: \# Define as Quantidades de Movimento}
+
+\medskip \noindent {\tt > for i from 1 to 6 do \\
+\indent H||corpo[i]:= In||corpo[i] \&** w||corpo[i] \\
+end do: \# Define as Quantidades de Movimento Angular}
+
+\medskip \noindent {\tt > KMG:= subs(kde, KM[G||corpo, H||corpo]): \\
+\# Define o Kvector das Quantidades de Movimento generalizadas}
+
+\medskip \noindent {\tt > FIN:= subs(kde, Z Kfdt KMG): \\
+\# Define o Kvector das Forças de Inércia}
+
+
+\subsubsection{Forças Externas}
+
+Uma das vantagens do método de Kane é não ser necessário avaliar as forças
+internas, ou de restrição entre os corpos dos sistema. O motivo é que, ao se
+projetarem as equações de equilíbrio dinâmico no hiperplano tangente, essas
+forças desaparecem.
+
+Logo, apenas as forças externas precisam ser modeladas para obter as equações de
+movimento. No modelo do braço robótico, estas forças são o peso, os torques das
+juntas e os torques de controle PID, em cada elo.
+
+A força peso atua aplicada ao centro de massa de cada corpo \textit{k} e é calculada
+pela equação~\ref{eq::peso}:
+%
+\begin{equation}
+	Peso_{k} = m_{k} \cdot \mathbf{g} \label{eq::peso}
+\end{equation}
+%
+Onde $\mathbf{g}$ refere-se ao vetor da aceleração da gravidade, que atua sempre
+no sentido de $-X$ no referencial inercial Z. É definido como:
+%
+\begin{equation}
+	\mathbf{g} = [-9,81,~0,~0]^{Z}
+\end{equation}
+%
+Os momentos externos são formados pelos torques dos atuadores em cada junta e
+também os torques de controle PID. Neste momento é válido acrescentar uma
+explicação rápida sobre a modelagem do controlador PID.
+
+\subsubsection{Parâmetros de controle PID}
+
+Para que o robô realize uma tarefa, é necessário seguir uma trajetória
+previamente planejada. Uma trajetória pode ser simplesmente um conjunto de
+posições de referência de cada junta, que varia no tempo, como foi abordado na
+seção~\ref{sec::ikin_traj}. A variação das posição se dá pelo acionamento dos
+torques em cada junta, que deve ser controlado para seguir a trajetória
+planejada. 
+
+Os fabricantes de robôs comerciais infelizmente não fornecem detalhes sobre o
+método nem os parâmetros de controle utilizados.
+Com o propósito de simular o controle do manipulador decidiu-se pela
+simplicidade do método de controle PID.
+
+Os parâmetros de controle PID são formados pelas variáveis proporcional,
+integral e derivativa, ou $Kp$, $Td$ e $Ti$ respectivamente. Esses parâmetros
+foram sintonizados para cada junta individualmente, fazendo-se simulações de
+resposta para uma função degrau de referência. Os resultados mostraram que este
+método é suficiente para seguir a trajetória e manter os erros dentro de uma
+margem de tolerância aceitável. Alguns dos resultados são demonstrados no
+Apêndice X\todo{Incluir apêndice para resultados PID}.
+
+Como resultado da análise, encontrou-se os melhores resultados
+para o conjunto de parâmetros apresentados na Tabela~\ref{tab::pid}:
+%
+\begin{table}[h]
+\centering
+\caption{Parâmetros de controle PID em cada junta}
+\label{tab::pid}
+\begin{tabular}{@{}clll@{}}
+\toprule
+\textbf{Junta} & \textbf{Kp [Nm]} & \textbf{Ti [Nm]} & \textbf{Td [Nm]} \\ \midrule 
+S              & 400         & 80000       & 3000        \\
+L              & 2000        & 500000      & 15000       \\
+U              & 1200        & 400000      & 12000       \\
+R              & 100         & 100000      & 1000        \\
+B              & 250         & 100000      & 1000        \\ \bottomrule
+\end{tabular}
+\end{table}
+%
+Logo, define-se as equações dos torques de controle para cada junta, em função
+da diferença entre os parâmetros instantâneos e os de referência em cada junta.
+O subíndice $k$ representa a lista de juntas, localizada na origem de cada
+sistema de coordenadas de mesmo nome, variando em \{S,L,U,R,B\} e o
+subíndice $i$ o número da coordenada generalizada associada.
+%
+\begin{equation}
+	PID_{k} = Kp(q_i-q_i{ref}) + Ti\int_{t1}^{t2} (q_i-q_i{ref})dt +
+	Td(u_i-u_i{ref}) \label{eq::pid}
+\end{equation}
+%
+No Sophia-Maple declara-se os torques de controle representados na
+equação~\ref{eq::pid} da seguinte forma:
+
+\medskip \noindent {\tt > for k from 1 to 5 do \\
+		 \indent PID\_||{corpo[k]}:= Kp*(q||k - q||k||ref) + Ti*int(q||k - q||k||ref,
+		 t) + Td*(u||k - u||k||ref) \\
+		 end do:}
+
+\subsubsection{Momentos Externos}
+
+Para obter os momentos externos que atuam em cada corpo, o primeiro passo é
+definir os torques que atuam em cada junta. Para eliminar os momentos causados
+pelas forças \texttt{Peso}, avaliou-se os torques das juntas com respeito ao
+centro de massa de cada corpo. As equações~\ref{eq::tjuntasi} a
+\ref{eq::tjuntasf} descrevem os torques externos e de controle que atuam em cada
+junta.
+\begin{align}
+	\mathbf{TjZS} &= (TZS - PID_{S})\cdot[1,~0,~0]^Z \label{eq::tjuntasi} \\
+	\mathbf{TjSL} &= (TSL - PID_{L})\cdot[0,~0,~1]^S \\
+	\mathbf{TjLU} &= (TLU - PID_{U})\cdot[0,~0,~1]^L \\
+	\mathbf{TjUR} &= (TUR - PID_{R})\cdot[0,~1,~0]^L \\
+	\mathbf{TjRB} &= (TRB - PID_{B})\cdot[0,~0,~1]^B \label{eq::tjuntasf}
+\end{align}
+%
+As equações~\ref{eq::mexi} a \ref{eq::mexf} calculam o somatório dos momentos
+externos em cada corpo. Nota-se que o torque aplicado em qualquer junta causa
+um par de torques de ação e reação nos elos adjacentes. As variáveis $Mex_k$ são
+grandezas vetoriais que representam o momentos externos resultante em cada
+corpo.
+%
+\begin{align}
+	\mathbf{Mex_{Z}} &= - \mathbf{TjZS } \label{eq::mexi}\\
+	\mathbf{Mex_{S}} &= \mathbf{TjZS} - \mathbf{TjSL }\\
+	\mathbf{Mex_{L}} &= \mathbf{TjLU }- \mathbf{TjSL }\\
+	\mathbf{Mex_{U}} &= \mathbf{TjUR }- \mathbf{TjLU }\\
+	\mathbf{Mex_{R}} &= \mathbf{TjRB }- \mathbf{TjUR }\\
+	\mathbf{Mex_{B}} &= - \mathbf{TjRB} \label{eq::mexf}
+	\end{align}
+%
+A Figura~\ref{fig::sisfex} ilustra, em vista explodida, o equilíbrio das forças e
+momentos externos em cada elo do manipulador.
+%
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.6\textwidth}
+        \includegraphics[width=\textwidth]{figs/forcas_ext}
+        \caption{Forças externas em cada elo}
+        \label{fig::fex}
+    \end{subfigure}
+    \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
+    % etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.6\textwidth}
+        \includegraphics[width=\textwidth]{figs/mom_ext}
+        \caption{Momentos externos em cada elo}
+        \label{fig::mex}
+    \end{subfigure}
+    \caption{Sistema de forças externas}\label{fig::sisfex}
+\end{figure}
+%
+
+Nota-se novamente que, pelo método de Kane, não é preciso introduzir as forças
+internas, de restrição ou de contato entre os corpos, porque estas não
+contribuem para as equações de movimento e desaparecem quando o sistema de
+equações de equilíbrio dinâmico são projetads no hiperplano tangente, $\tau$.
+
+No Sophia-Maple os vetores dos momentos externos resultantes são armazenadas em
+\texttt{Evectors}. A sequência de equações~\ref{eq::tjuntasi} a \ref{eq::mexf}
+torna-se:
+
+\medskip \noindent {\tt > \# Torques nas juntas} \\
+		 \noindent {\tt > TjZS:= Evector(TZS - PID\_S,~0,~0,~S) } \\
+		 \noindent {\tt > TjSL:= Evector(0,~0,~TSL - PID\_L,~L) } \\
+		 \noindent {\tt > TjLU:= Evector(0,~0,~TLU - PID\_U,~U) } \\
+		 \noindent {\tt > TjUR:= Evector(0,~TUR - PID\_R,~0,~R) } \\
+		 \noindent {\tt > TjRB:= Evector(0,~0,~TUR - PID\_B,~B) }
+
+\medskip \noindent {\tt > \# Momentos externos em cada elo} \\
+		 \noindent {\tt > for k from 1 to 5 do \\
+		 \indent Mex||k:= Tj||{k-1}||{k}  - Tj||{k}||{k+1} \\
+		 end do:} \\
+		 \noindent {\tt > MexB:= - TjRB:} \medskip
+
+		 
+As forças e momentos externos podem ser agrupadas em um único vetor para
+auxiliar a projeção destas em $\tau$. Novamente, faz-se uso da função
+\texttt{KM}, o que retorna um \texttt{Kvector} contendo todas as forças e
+momentos, descritos em cada sistema de referência.
+
+\medskip \noindent {\tt > FEX:= KM[Fex||corpo,~Mex||corpo]:}
+
+		 
+\subsubsection{Forças de Inércia e Externas Generalizadas}
+
+Estas são as forças externas e de inércia FEX e FIN, quando projetadas no
+hiperplano tangente, $\tau$. Para a projeção, faz-se uso da função
+\texttt{\&kane}, do Sophia-Maple, o que retorna as equações implícitas
+generalizadas de cada corpo:
+
+\medskip \noindent {\tt > FEXg:= tau \&kane FEX:} \\
+		 \noindent {\tt > FINg:= tau \&kane FIN:}
+		 
+\subsubsection{Equações de Movimento}
+
+Finalmente, as equações de movimento são formadas pelo equilíbrio dinâmico entre
+as forças externas e externas generalizadas obtidas da projeção em $\tau$, de
+acordo com a equação~\ref{eq::eqdin}:
+%
+\begin{equation}
+	(FINg - FEXg)_{k} = 0 \label{eq::eqdin}
+\end{equation}
+%
+O subíndice \textit{k} representa a lista de corpos \{Z,S,L,U,R,B\}. Como o
+corpo Z está fixo no referencial inercial SC-Z, sua equação de movimento
+torna-se a solução trivial $0=0$ e portanto, não fará parte do sistema. Obtém-se
+então um conjunto de 5 equações de movimento, associadas aos 5 gdl do robô.
+
+No Sophia-Maple atribui-se o conjunto de equações~\ref{eq::eqdin} à
+variável \texttt{kane}, formando uma lista das equações de movimento. Portanto:
+
+\medskip \noindent {\tt > kane:= FINg - FEXg = 0} \medskip
+
+As equações denominadas \textit{kinematic differential equations}, ou
+\texttt{kde}, completam o sistema de equações diferenciais que descrevem o
+movimento do robô.
+Para os 5 graus de liberdade do manipulador, tem-se 5 kde. As
+equações~\ref{eq::kde5i} a \ref{eq::kde5f} descrevem o kde:
+%
+\begin{align}
+	u_{1}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{1}(t) \label{eq::kde5i} \\
+	u_{2}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{2}(t) \\
+	u_{3}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{3}(t) \\
+	u_{4}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{4}(t) \\
+	u_{5}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{5}(t) \label{eq::kde5f}	
+\end{align}
+%
+Somando-se esse sistema às equações de movimento e atribuindo à variável
+\texttt{eq\_mov}, no Sophia-Maple tem-se:
+
+\medskip \noindent {\tt > eq\_mov:= kane union kde:} \medskip
+
+Logo, tem-se um sistema de 10 equações diferenciais ordinárias, não-lineares
+(equações~\ref{eq::eqdin} a \ref{eq::kde5f}), cujas incógnitas são as
+coordenadas generalizadas $q_{1}(t),\ldots, q_{5}(t)$ e as velocidades angulares
+$u_{1}(t),\ldots, u_{5}(t)$.
+
+Vale ressaltar que, para o sistema de apenas 5 equações de movimento simbólicas
+associadas aos 5 graus de liberdade, as expressões são extensas demais para
+serem representadas neste texto, o que ocuparia diversas páginas e obviamente
+não traria nenhum valor à discussão deste tópico. Por isso, limita-se a
+representação do sistema à equação~\ref{eq::eqdin}.
+
+A função \texttt{cost} do Maple retorna o número de operações algébricas e de
+funções de uma determinada equação ou sistema de equações fornecendo um
+parâmetro para o usuário avaliar o tamanho das expressões e o custo
+computacional do modelo.
+Para se ter uma ideia, o custo do sistema de equações de movimento, representado
+na forma puramente simbólica em \ref{eq::eqdin}, tem  a seguinte estrutura:
+\begin{equation*}
+	18171\,{\it additions}+59804\,{\it multiplications}+39998\,{\it 
+functions}
+\end{equation*}
+%
+Porém, até então não foram substituidos os parâmetros numéricos do robô, nas
+variáveis simbólicas . Este procedimento simplifica o sistema, porque muitos
+termos são zerados. Além disso, é possível fazer uso da função \texttt{simplify}
+do Maple, que é um poderoso conjunto de rotinas para simplificação algébrica de
+expressões. Fazendo uso desta função e da substituição dos parâmetros numéricos
+nas equações de movimento, obtemos o novo custo algébrico das equações:
+%
+\begin{equation*}
+	5676\,{\it additions}+6992\,{\it multiplications}+1835\,{\it functions}
+\end{equation*}
+%
+Nota-se a grande vantagem de realizar este procedimento, porque ao reduzir-se
+drasticamente o número de termos e funções, reduz-se também o custo
+computacional e por consequência o tempo para o cálculo da solução.
+
+\subsubsection{Problema de Valor Inicial -- PVI}
+
+Para resolver o sistema diferencial é necessário fornecer as condições de
+contorno do problema. Como as equações estão no domínio do tempo, são fornecidas
+as condições iniciais das variáveis de estado $q_{1}(0),\ldots, q_{5}(0)$ e
+$u_{1}(t),\ldots, u_{5}(0)$.
+
+Será adotado neste modelo que qualquer trajetória será iniciada a partir da
+configuração incial do robô, ou seja:
+%
+\begin{equation}
+	q_{1}(0) = \ldots = q_{5}(0) = u_{1}(0) = \ldots = u_{5}(0) = 0
+	\label{eq::condini}
+\end{equation}
+%
+O sistema completo será portanto formado pelas 10 equações de movimento
+diferenciais e não lineares (\ref{eq::eqdin} a \ref{eq::kde5f}), com as 10
+equações de valor incial definidas em~\ref{eq::condini}.
+
+Para definir esse sistema no Sophia-Maple, primeiro cria-se a lista com as
+equações de valor inicial e então adiciona-as ao sistema, utilizando a função
+\texttt{union}:
+
+\medskip \noindent {\tt > cond\_ini:= \{seq(q||i(0) = 0, i=1..5), seq(u||i(0) =
+0, i=1..5)\}} \\ 
+		 \noindent {\tt > sistema:= eq\_mov union condini:} \medskip
+
+A solução deste sistema depende ainda da definição dos seguintes parâmetros:
+%
+\begin{itemize}
+  \item{Torques nas juntas: TZS, TSL, TLU, TUR, TRB}
+  \item{Coordenadas de referência dos ângulos de juntas: 
+  		\\ $q_{1}ref, q_{2}ref, q_{3}ref, q_{4}ref, q_{5}ref$}
+  \item{Velocidades angulares de referências das juntas: 
+  		\\ $u_{1}ref, u_{2}ref, u_{3}ref, u_{4}ref, u_{5}ref$}
+\end{itemize}
+%
+A trajetória efetuada pelo manipulador é então consequência da solução do
+sistema, para um conjunto de parâmetros fornecidos. Para realizar uma trajetória
+desejada, deve-se fornecer os parâmetros de referência e torques das juntas ao
+longo do tempo que resultam naquela trajetória.
+
+Se tal trajetória é descrita pela posição e orientação da ferramenta acoplada ao
+último elo do manipulador, os parâmetros das juntas, tais que a ferramenta
+segue aquela trajetória, devem ser determinados pelo cálculo da Cinemática
+Inversa.
 
 
 \subsection{Cinemática Inversa}\label{sec::ikin_mh12}
+
+Como o manipulador MOTOMAN MH12 é do tipo antropomórfico com pulso esférico, a
+modelagem da sua Cinemática Inversa se resume em encontrar os parâmetros das
+juntas que satisfazem ao problema desacoplado, detalhado na
+seção~\ref{sec::ikin_traj}, ou seja, as funções $q_{1}, q_{2}, q_{3}$ que
+satisfazem a posição e $q_{4}, q_{5}, q_{6}$ que satisfazem a orientação da
+ferramenta.
+
+A posição final da ferramenta pode ser portanto expressa como função da posição
+de sua extremidade e orientação em termos das coordenadas generalizadas, de
+acordo com a equação~\ref{eq::posf}.
+%
+\begin{equation}
+	\mathbf{x}_{f} = \begin{bmatrix}
+		\mathbf{p}_{f} \\ \boldsymbol{\phi}_{f}
+	\end{bmatrix}
+	\label{eq::posf}	
+\end{equation}
+%
+\noindent onde: 
+%
+\begin{align}
+\mathbf{p}_{f}^Z &= [x_f,y_f,z_f]^Z \\
+\boldsymbol{\phi}_{f}^Z &= [\theta_1,\theta_2,\theta_3]^Z
+\end{align}
+%
+
+\subsubsection{Cálculo da posição do pulso}
+
+A primeira tarefa será calcular a posição da ferramenta. Pode-se expressá-la
+convenientemente pela posição da origem do pulso, porque esta só depende das
+coordenadas $q_1, q_2$ e $q_3$.
+
+A posição da ponta da ferramenta, $p_{f}$, é então a posição da origem do pulso,
+$p_{w}$ em SC-R, somada ao vetor das dimensões da ferramenta, no referencial
+SC-B. Explicitando $p_{w}$ tem-se portanto:
+%
+\begin{equation}
+	\mathbf{p}_{w} = \mathbf{p}_{f}^Z - [d_{x}, d_{y}, d_{z}]^B \label{eq::posw}
+\end{equation}
+%
+Pelo desenvolvimento da cinemática direta, na seção~\ref{sec::dkin}, pode-se
+expressar a posição de qualquer ponto da cadeia cinemática em qualquer
+referencial. Como o pulso tem origem no sistema de coordenadas SC-R, então:
+%
+\begin{equation}
+	\mathbf{p}_{w} =~^Z{\mathbf{p}}^R \label{eq::pwpr}
+\end{equation}
+%
+Substituindo $p_{w}$ pelo vetor na forma $[pW_{x}, pW_{y}, pW_{y}]$ e abrindo a
+equação~\ref{eq::pwpr}, tem se o seguinte sistema de equações:
+
 
 \subsection{Tarefa e trajetória}
 

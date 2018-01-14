@@ -859,8 +859,8 @@ Inversa.
 
 \subsection{Cinemática Inversa}\label{sec::ikin_mh12}
 
-Como o manipulador MOTOMAN MH12 é do tipo antropomórfico com pulso esférico, a
-modelagem da sua Cinemática Inversa se resume em encontrar os parâmetros das
+Como o manipulador MOTOMAN MH12 é do tipo antropomórfico 6R com pulso esférico,
+a modelagem da cinemática inversa se resume em encontrar os parâmetros das
 juntas que satisfazem ao problema desacoplado, detalhado na
 seção~\ref{sec::ikin_traj}, ou seja, as funções $q_{1}, q_{2}, q_{3}$ que
 satisfazem a posição e $q_{4}, q_{5}, q_{6}$ que satisfazem a orientação da
@@ -872,7 +872,7 @@ acordo com a equação~\ref{eq::posf}.
 %
 \begin{equation}
 	\mathbf{x}_{f} = \begin{bmatrix}
-		\mathbf{p}_{f} \\ \boldsymbol{\phi}_{f}
+		\mathbf{p}_{f} \\ \boldsymbol{\Phi}_{f}
 	\end{bmatrix}
 	\label{eq::posf}	
 \end{equation}
@@ -881,15 +881,19 @@ acordo com a equação~\ref{eq::posf}.
 %
 \begin{align}
 \mathbf{p}_{f}^Z &= [x_f,y_f,z_f]^Z \\
-\boldsymbol{\phi}_{f}^Z &= [\theta_1,\theta_2,\theta_3]^Z
+\boldsymbol{\Phi}_{f}^Z &= [\phi,\theta,\psi]^Z
 \end{align}
 %
 
+\todo[inline]{Incluir figura representando a posição e orientação final da
+ferramenta}
+
 \subsubsection{Cálculo da posição do pulso}
 
-A primeira tarefa será calcular a posição da ferramenta. Pode-se expressá-la
-convenientemente pela posição da origem do pulso, porque esta só depende das
-coordenadas $q_1, q_2$ e $q_3$.
+A primeira tarefa será calcular a posição da ferramenta em termos das
+coordenadas generalizadas.
+Como visto na seção~\ref{sec::ikin_traj}, pode-se expressá-la convenientemente
+pela posição da origem do pulso, porque esta só depende das coordenadas $q_1, q_2$ e $q_3$.
 
 A posição da ponta da ferramenta, $p_{f}$, é então a posição da origem do pulso,
 $p_{w}$ em SC-R, somada ao vetor das dimensões da ferramenta, no referencial
@@ -908,8 +912,41 @@ referencial. Como o pulso tem origem no sistema de coordenadas SC-R, então:
 \end{equation}
 %
 Substituindo $p_{w}$ pelo vetor na forma $[pW_{x}, pW_{y}, pW_{y}]$ e abrindo a
-equação~\ref{eq::pwpr}, tem se o seguinte sistema de equações:
+equação~\ref{eq::pwpr}, tem-se o seguinte sistema de equações:
+%
+%eq1
+\begin{multline}
+	{\it pWx} = {\it pURx}\,\cos \left( {\it q2}+{\it q3} \right) +{\it pURy
+	}\,\sin \left( {\it q2}+{\it q3} \right) \\ -\cos \left( {\it q2}
+	 \right) {\it pLUx}-{\it pSLx}-{\it pZSx} \label{eq::pwx}
+\end{multline}
+%eq2
+\begin{multline}
+	{\it pWy} = \cos \left( {\it q1} \right) \sin \left( {\it q2}+{\it q3}
+ 	\right) {\it pURx} \\ -\cos \left( {\it q1} \right) \cos \left( {\it q2}+
+	{\it q3} \right) {\it pURy}-\cos \left( {\it q1} \right) \sin \left( {
+	\it q2} \right) {\it pLUx}-\cos \left( {\it q1} \right) {\it pSLy}
+	\label{eq::pwy}
+\end{multline}
+%eq3
+\begin{multline}
+	{\it pWz} = \sin \left( {\it q1} \right) \sin \left( {\it q2}+{\it q3}
+ 	\right) {\it pURx} \\ -\sin \left( {\it q1} \right) \cos \left( {\it q2}+
+	{\it q3} \right) {\it pURy}-\sin \left( {\it q1} \right) \sin \left( {
+	\it q2} \right) {\it pLUx}-\sin \left( {\it q1} \right) {\it pSLy}
+	\label{eq::pwz}
+\end{multline}
+%
+Os termos como, por exemplo, $pUR_x$ representam as componentes do vetor entre
+SC-U e SC-R descritos em U. Esta regra vale para todos os termos semelhantes.
+Note-se que os parâmetros do robô são tratados simbolicamente, e desta forma
+mantém-se a generalidade do método para a modelagem de qualquer robô
+de 6 graus de liberdade com pulso esférico.
 
+Das expressões~\ref{eq::pwx} a \ref{eq::pwz} obtém-se portanto um sistema
+não-linear, de 3 equações e 3 incógnitas $q_1, q_2, q_3$. 
+
+Resolver este sistema em uma solução de forma fechada, requer 
 
 \subsection{Tarefa e trajetória}
 

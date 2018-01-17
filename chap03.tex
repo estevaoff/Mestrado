@@ -227,7 +227,7 @@ E para os centros de massa:
 \indent pcm||k:= p||{k} \&++ Evector(pcm||{k}||x, pcm||{k}||y, pcm||{k}||z, k)
 \\ end do:} \medskip 
 
-\todo[inline]{Incluir figura com vetores posição e centros de massa}
+\todo[inline]{Incluir figura com vetores posição e do robô esquemático do Maple}
 
 \subsubsection{Velocidades}
 
@@ -236,7 +236,7 @@ do vetor posição com respeito ao referencial inercial. Logo, a derivada da
 equação~\ref{eq::pcm} em Z:
 %
 \begin{equation}
-	\mathbf{V}^{k} = \frac{^{Z}\mathrm{d} }{\mathrm{d} t}
+	\mathbf{v}^{k} = \frac{^{Z}\mathrm{d} }{\mathrm{d} t}
 	\mathbf{pcm}^{k} \label{eq::veloc}
 \end{equation}
 %
@@ -603,7 +603,8 @@ margem de tolerância aceitável. Alguns dos resultados são demonstrados no
 Apêndice X\todo{Incluir apêndice para resultados PID}.
 
 Como resultado da análise, encontrou-se os melhores resultados
-para o conjunto de parâmetros apresentados na Tabela~\ref{tab::pid}:
+para o conjunto de parâmetros apresentados na\todo{atualizar parâmetros PID}
+Tabela~\ref{tab::pid}:
 %
 \begin{table}[h]
 \centering
@@ -620,6 +621,7 @@ B              & 250         & 100000      & 1000        \\ \bottomrule
 \end{tabular}
 \end{table}
 %
+
 Logo, define-se as equações dos torques de controle para cada junta, em função
 da diferença entre os parâmetros instantâneos e os de referência em cada junta.
 O subíndice $k$ representa a lista de juntas, localizada na origem de cada
@@ -897,58 +899,257 @@ pela posição da origem do pulso, porque esta só depende das coordenadas $q_1,
 
 A posição da ponta da ferramenta, $p_{f}$, é então a posição da origem do pulso,
 $p_{w}$ em SC-R, somada ao vetor das dimensões da ferramenta, no referencial
-SC-B. Explicitando $p_{w}$ tem-se portanto:
-%
+SC-B:
 \begin{equation}
-	\mathbf{p}_{w} = \mathbf{p}_{f}^Z - [d_{x}, d_{y}, d_{z}]^B \label{eq::posw}
+	\mathbf{p}_{f}^Z = \mathbf{p}_{w} + [d_{x}, d_{y}, d_{z}]^B \label{eq::posf}
 \end{equation}
 %
 Pelo desenvolvimento da cinemática direta, na seção~\ref{sec::dkin}, pode-se
-expressar a posição de qualquer ponto da cadeia cinemática em qualquer
+expressar a posição de qualquer ponto da cadeia cinemática em um dado
 referencial. Como o pulso tem origem no sistema de coordenadas SC-R, então:
 %
-\begin{equation}
-	\mathbf{p}_{w} =~^Z{\mathbf{p}}^R \label{eq::pwpr}
+\begin{equation} \label{eq::pwpr}
+	\mathbf{p}_{w} =~^Z{\mathbf{p}}^R 
 \end{equation}
 %
-Substituindo $p_{w}$ pelo vetor na forma $[pW_{x}, pW_{y}, pW_{y}]$ e abrindo a
-equação~\ref{eq::pwpr}, tem-se o seguinte sistema de equações:
+Recorrendo às equações~\ref{eq::ikinq1} a \ref{eq::ikinq6}, desenvolvidas na
+seção~\ref{sec::ikin_traj}, pelo método geométrico para a solução da cinemática
+inversa deste tipo de manipulador, tem-se:
 %
+\begin{align*}
+	q1 &= \atantwo (z_w,y_w) - \atantwo (d, \pm \sqrt{y_w^2 + z_w^2 - d^2}) \\
+	q2 &= \atantwo (r,s) - \atantwo (\pm  \sqrt{1-E^2}, E) \\
+	q3 &= \atantwo (\pm \sqrt{1-D^2}, D) - \frac{\pi}{2} + \atantwo (h, a3)
+\end{align*}
+%
+Onde:
+%
+\begin{align*}
+	D &= \frac{r^2 + s^2 -a2^2 - a3^2}{2 \cdot a2 \cdot a3} \\
+	E &= - \frac{a3^2 - a2^2 - r^2 - s^2}{2 \cdot a2 \cdot \sqrt{r^2 + s^2}}
+\end{align*}
+%
+Uma análise das expressões acima permite relacionar os termos geométricos
+do robô genérico com os parâmetros fornecidos do MOTOMAN MH12. Substiui-se
+portanto estes termos de acordo com as relações:
+%
+\begin{align}
+	r &= \sqrt{x_w^2 + y_w^2 - d^2} - pSLy \\
+	s &= x_w - (pZSx + pSLx) \\
+	d &= 0 \\
+	h &= pURx \\
+	a2 &= pLUx \\
+	a3n &= pURy \\
+	a3 &= \sqrt{h^2 + a3n^2}
+\end{align}
+%
+E obtém-se:
+%
+\begin{align}
+	q1 &= \atantwo (z_w,y_w) \label{eq::q1ik} \\
+	q2 &= \atantwo ( \sqrt {y_w^2 + z_w^2}- pSLy, x_w - pZSx - pSLx ) \nonumber \\
+	   &- \atantwo ( \pm \sqrt {-E^2+1}, E ) \\
+	q3 &= \atantwo ( \pm \sqrt {-{{\it D}}^{2}+1},{\it D} ) -\pi /2 +
+\atantwo ( {\it pURx},{\it pURy} ) \label{eq::q3ik}
+\end{align}
+%
+Onde:
+%
+\begin{align}
+	D &= \textstyle \frac{1}{2}\,{\frac {-{{\it pLUx}}^{2}-{{\it pURx}}^{2}-{{\it
+	pURy}}^{2}+ \left( \sqrt {{{\it y_w}}^{2}+{{\it z_w}}^{2}}-{\it pSLy} \right) ^{2
+		}+ \left( {\it x_w}-{\it pZSx}-{\it pSLx} \right) ^{2}}{{\it pLUx}\,
+		\sqrt {{{\it pURx}}^{2}+{{\it pURy}}^{2}}}} \\
+	E &= \textstyle {-\frac{1}{2}\,{\frac {-{{\it pLUx}}^{2}+{{\it pURx}}^{2}+{{\it
+		pURy}}^{2}- \left( \sqrt {{{\it y_w}}^{2}+{{\it z_w}}^{2}}-{\it pSLy} \right)
+		^{2 }- \left( {\it x_w}-{\it pZSx}-{\it pSLx} \right) ^{2}}{{\it pLUx}\,
+		\left[ \left( \sqrt {{{\it y_w}}^{2}+{{\it z_w}}^{2}}-{\it pSLy}
+ 		\right) ^{2}+ \left( {\it x_w}-{\it pZSx}-{\it pSLx} \right) ^{2}
+ 		\right]^{1/2}}}}
+\end{align}
+%
+Determina-se portanto, pelo método geométrico, as coordenadas $q_1, q_2$ e
+$q_3$ em função da posição do pulso e dos parâmetros geométricos do robô. Note que $x_w,
+y_w, z_w$ são as coordenadas da posição do pulso, no referencial inercial e que
+para calcular a posição da ferramenta, pela equação~\ref{eq::pwpr} precisa-se
+ainda definir sua orientação.
+
+Note-se também que existem 4 soluções para cada posição do pulso. Se
+considerar-se os limites dos ângulos das juntas do robô, pode-se limitar o
+número de soluções. Para exemplificar, a Figura~\ref{fig::multsol} demonstra
+duas soluções para a posição $\mathbf{p}_{w} = [0,7,~ 0,8,~ 0]^Z$:
+em~\ref{fig::elbowup} com o cotovelo para cima e em~\ref{fig::elbowdown} com o
+cotovelo para baixo.
+
+\missingfigure[figheight=80mm]{Elbow up/down}
+
+
+\subsubsection{Cálculo da orientação da ferramenta}
+
+Nesta etapa, deseja-se calcular a orientação da ferramenta, em relação ao
+referencial inercial. Para isso são utilizados os ângulos $\phi,\theta,\psi$
+para reresentar os ângulos de Euler das 3 rotações que orientam o referencial do
+pulso na direção desejada.
+
+Recorrendo novamente ao desenvolvimento da cinemática inversa geral para este
+tipo de manipulador, da seção~\ref{sec::ikin_traj}, obteve-se da
+equação~\ref{eq::rut} a relação:
+%
+\begin{equation*}
+	R_{U}^{T} = (R_{Z}^{U})^T R_{yzy}
+\end{equation*}
+%
+Onde $R_{zyz}$ representa a matriz rotação pelos ângulos de Euler
+$\phi,\theta,\psi$, em torno dos eixos $Y,Z,Y$ respectivamente.
+
+As matrizes de rotação $(R_{Z}^{U})^T$ e $R_{U}^{T}$ são calculadas para os
+valores de $q_1, q_2$ e $q_3$ das equações~\ref{eq::q1ik} a \ref{eq::q3ik}.
+Assim, a equação~\ref{eq::rutik} fornece um sistema de 9 equações e 6
+incógnitas, se consideradas as funções senos e cossenos de $q_4, q_5$ e $q_6$ a serem
+determinadas.
+%
+\begin{multline} \label{eq::rut}
 %eq1
-\begin{multline}
-	{\it pWx} = {\it pURx}\,\cos \left( {\it q2}+{\it q3} \right) +{\it pURy
-	}\,\sin \left( {\it q2}+{\it q3} \right) \\ -\cos \left( {\it q2}
-	 \right) {\it pLUx}-{\it pSLx}-{\it pZSx} \label{eq::pwx}
-\end{multline}
+	 \left[ \begin {array}{ccc} {\it c4}\,{\it c5}\,{\it c6}-{\it s4}\,{
+\it s6}&-{\it c4}\,{\it s5}&{\it c4}\,{\it c5}\,{\it s6}+{\it c6}\,{
+\it s4}\\ \noalign{\medskip}{\it s5}\,{\it c6}&{\it c5}&{\it s5}\,{
+\it s6}\\ \noalign{\medskip}-{\it c5}\,{\it c6}\,{\it s4}-{\it c4}\,{
+\it s6}&{\it s4}\,{\it s5}&-{\it c5}\,{\it s4}\,{\it s6}+{\it c4}\,{
+\it c6}\end {array} \right] = \\
 %eq2
-\begin{multline}
-	{\it pWy} = \cos \left( {\it q1} \right) \sin \left( {\it q2}+{\it q3}
- 	\right) {\it pURx} \\ -\cos \left( {\it q1} \right) \cos \left( {\it q2}+
-	{\it q3} \right) {\it pURy}-\cos \left( {\it q1} \right) \sin \left( {
-	\it q2} \right) {\it pLUx}-\cos \left( {\it q1} \right) {\it pSLy}
-	\label{eq::pwy}
-\end{multline}
+	 \left[ \begin {array}{ccc} {\it c2}\,{\it c3}-{\it s2}\,{\it s3}&-{
+\it c2}\,{\it s3}-{\it s2}\,{\it c3}&0\\ \noalign{\medskip}{\it c1}\,{
+\it c2}\,{\it s3}+{\it c1}\,{\it s2}\,{\it c3}&{\it c1}\,{\it c2}\,{
+\it c3}-{\it c1}\,{\it s2}\,{\it s3}&-{\it s1}\\ \noalign{\medskip}{
+\it s1}\,{\it c2}\,{\it s3}+{\it s1}\,{\it s2}\,{\it c3}&{\it s1}\,{
+\it c2}\,{\it c3}-{\it s1}\,{\it s2}\,{\it s3}&{\it c1}\end {array}
+ \right]^T \cdot \\
 %eq3
-\begin{multline}
-	{\it pWz} = \sin \left( {\it q1} \right) \sin \left( {\it q2}+{\it q3}
- 	\right) {\it pURx} \\ -\sin \left( {\it q1} \right) \cos \left( {\it q2}+
-	{\it q3} \right) {\it pURy}-\sin \left( {\it q1} \right) \sin \left( {
-	\it q2} \right) {\it pLUx}-\sin \left( {\it q1} \right) {\it pSLy}
-	\label{eq::pwz}
+	\cdot \left[ \begin {array}{ccc} c\phi \,c\theta \,c\psi -s\phi \,s\psi &-c
+\phi \,s\theta &c\phi \,c\theta \,s\psi +s\phi \,c\psi 
+\\ \noalign{\medskip}s\theta \,c\psi &c\theta &s\theta \,s\psi 
+\\ \noalign{\medskip}-s\phi \,c\theta \,c\psi -c\phi \,s\psi &s\phi \,
+s\theta &-s\phi \,c\theta \,s\psi +c\phi \,c\psi \end {array} \right] 
 \end{multline}
 %
-Os termos como, por exemplo, $pUR_x$ representam as componentes do vetor entre
-SC-U e SC-R descritos em U. Esta regra vale para todos os termos semelhantes.
-Note-se que os parâmetros do robô são tratados simbolicamente, e desta forma
-mantém-se a generalidade do método para a modelagem de qualquer robô
-de 6 graus de liberdade com pulso esférico.
 
-Das expressões~\ref{eq::pwx} a \ref{eq::pwz} obtém-se portanto um sistema
-não-linear, de 3 equações e 3 incógnitas $q_1, q_2, q_3$. 
+Analisando o lado esquerdo da equação~\ref{eq::rut} pode-se determinar
+facilmente a solução para $\cos(q5)$, porque este será diretamente o resultado
+alocado no termo $[2,2]$ da matriz 3x3 resultante do lado direito da equação, ou
+seja:
+%
+\begin{multline}
+\cos(q5) = {\it c2}\,{\it c3}\,s\phi \,{\it s1}\,s\theta -s\phi \,{\it s1}\,{\it 
+		s2}\,{\it s3}\,s\theta +c\phi \,{\it c2}\,{\it s3}\,s\theta +
+		\\ +c\phi \,{\it c3}\,{\it s2}\,s\theta +{\it c1}\,{\it c2}\,{\it c3}\,c\theta -{
+		\it c1}\,{\it s2}\,{\it s3}\,c\theta 
+\end{multline}
+%
+E seu seno é calculado por:
+%
+\begin{equation}
+	\sin(q5) = \sqrt{1-\cos(q5)^2}
+\end{equation}
+%
+Logo, utilizando a relação trigonométrica, $\sin(q5)/\cos(q5) = \tan(q5)$,
+e invertendo a função tangente, determina-se:
+%
+\begin{equation}
+	q5 = \atantwo(\sqrt{1-\cos(q5)^2}, \cos(q5))
+\end{equation}
+%
 
-Resolver este sistema em uma solução de forma fechada, requer 
+Para determinar $q4$ analisa-se novamente a matriz $R_{U}^{T}$. Se dividir o
+termo $[3,2]$,  multiplicado por $(-1)$, pelo termo $[1,2]$, dos lados esquerdo
+e direito da equação~\ref{eq::rut}, obtém-se uma expressão para $\tan(q4)$.
+Invertendo a função tangente para obter $q4$:
+\begin{multline} 
+q4 = \atantwo( {{\it c1}\,s\phi \,s\theta -{\it s1}\,c\theta} , ~
+ \left[  \left( s\phi \,{\it s1}\,{\it s3}-c\phi \,{\it c3} \right) {
+\it c2}+{\it s2}\, \left( {\it c3}\,s\phi \,{\it s1}+c\phi \,{\it s3}
+ \right)  \right] s\theta +
+ \\ +{\it c1}\,c\theta \, \left( {\it c2}\,{\it 
+s3}+{\it s2}\,{\it c3} \right) 
+ )
+\end{multline}
+%
+Similarmente à solução de $q4$, mas desta vez fazendo a divisão dos termos
+$[2,3]$ por $[2,1]$, dos lados esquerdo e direito da equação~\ref{eq::rut},
+encontra-se $q6$:
+%
+\begin{equation} \label{eq::q6ik}
+	q6 = \atantwo ( {s6} , {c6} )
+\end{equation}
+%
+Onde:
+%
+\begin{multline*}
+	s6 = -{\it c2}\,{\it c3}\,s\phi \,s\psi \,{\it s1}\,c\theta +s\phi \,s\psi 
+		\,{\it s1}\,{\it s2}\,{\it s3}\,c\theta +c\phi \,c\psi \,{\it c2}\,{
+		\it c3}\,{\it s1}-c\phi \,c\psi \,{\it s1}\,{\it s2}\,{\it s3} +
+		\\ -c\phi \,{\it c2}\,s\psi \,{\it s3}\,c\theta -c\phi \,{\it c3}\,s\psi \,{\it 
+		s2}\,c\theta +{\it c1}\,{\it c2}\,{\it c3}\,s\psi \,s\theta -{\it c1}
+		\,s\psi \,{\it s2}\,{\it s3}\,s\theta +
+		\\ -c\psi \,{\it c2}\,s\phi \,{\it s3}-c\psi \,{\it c3}\,s\phi \,{\it s2}
+\end{multline*}
+\vspace{-15mm}
+\begin{multline*}
+	c6 = -c\psi \,{\it c2}\,{\it c3}\,s\phi \,{\it s1}\,c\theta +c\psi \,s\phi 
+		\,{\it s1}\,{\it s2}\,{\it s3}\,c\theta -c\phi \,c\psi \,{\it c2}\,{
+		\it s3}\,c\theta -c\phi \,c\psi \,{\it c3}\,{\it s2}\,c\theta 
+		\\ -c\phi \,{\it c2}\,{\it c3}\,s\psi \,{\it s1}+c\phi \,s\psi \,{\it s1}\,{\it 
+		s2}\,{\it s3}+c\psi \,{\it c1}\,{\it c2}\,{\it c3}\,s\theta -c\psi \,{
+		\it c1}\,{\it s2}\,{\it s3}\,s\theta +
+		\\ +{\it c2}\,s\phi \,s\psi \,{\it s3}+{\it c3}\,s\phi \,s\psi \,{\it s2}
+\end{multline*}
+%
+Com o cálculo dos ângulos $q4, q5$ e $q6$ é possível determinar totalmente a
+posição da ponta da ferramenta, pela equação~\ref{eq::posf}.
+Como este ponto está alinhado ao eixo do efetuador, faz-se $dx = dy = 0$.
+Reescrevendo a equação no referencial inercial, as componentes do vetor
+$\mathbf{p}_{f}^{Z}$ são:
+%
+\begin{multline}
+	x_f =  \left[  \left( -{\it c4}\,{\it s5}\,{\it pBTy}+{\it pURx} \right) {
+		\it c3}+ \left( -{\it c5}\,{\it pBTy}-{\it pURy} \right) {\it s3}+{
+		\it pLUx} \right] {\it c2} +
+		\\ -{\it s2}\, \left( {\it c5}\,{\it pBTy}+{
+		\it pURy} \right) {\it c3}+{\it s3}\, \left( {\it c4}\,{\it s5}\,{\it 
+		pBTy}-{\it pURx} \right) {\it s2}+
+		\\ +{\it pZSx}+{\it pSLx}
+\end{multline}
+\vspace{-15mm}
+\begin{multline}
+	y_f =  \{ \left[  \left( -{\it c4}\,{\it s5}\,{\it pBTy}+{\it pURx}
+ 		\right) {\it c3}+ \left( -{\it c5}\,{\it pBTy}-{\it pURy} \right) {
+		\it s3}+{\it pLUx} \right] {\it s2}+ 
+		\\ + \left[  \left( {\it c5}\,{\it 
+		pBTy}+{\it pURy} \right) {\it c3}-{\it s3}\, \left( {\it c4}\,{\it s5}
+		\,{\it pBTy}-{\it pURx} \right)  \right] {\it c2}+{\it pSLy} \} {
+		\it c1} +
+		\\ -{\it s5}\,{\it s1}\,{\it s4}\,{\it pBTy}
+\end{multline}
+\vspace{-15mm}
+\begin{multline}
+	z_f =  \{  \left[ \left( -{\it c4}\,{\it s5}\,{\it pBTy}+{\it pURx}
+ 		\right) {\it c3}+ \left( -{\it c5}\,{\it pBTy}-{\it pURy} \right) {
+		\it s3}+{\it pLUx} \right] {\it s2}+ 
+		\\ + \left[ \left( {\it c5}\,{\it 
+		pBTy}+{\it pURy} \right) {\it c3}-{\it s3}\, \left( {\it c4}\,{\it s5}
+		\,{\it pBTy}-{\it pURx} \right)  \right] {\it c2}+{\it pSLy} \} {
+		\it s1} +
+		\\ +{\it c1}\,{\it s4}\,{\it s5}\,{\it pBTy}
+\end{multline}
+
+\todo[inline]{Pensar em mudar estas eqs de lugar}
+
+Tem-se portanto, pelo conjunto de equações~\ref{eq::q3ik} a \ref{eq::q6ik}, a
+solução cinemática inversa do manipulador MOTOMAN MH12.
+
 
 \subsection{Tarefa e trajetória}
+
+
 
 \subsection{Modelo teórico MBS -- Robô}
 

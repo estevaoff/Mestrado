@@ -976,12 +976,16 @@ ainda definir sua orientação.
 
 Note-se também que existem 4 soluções para cada posição do pulso. Se
 considerar-se os limites dos ângulos das juntas do robô, pode-se limitar o
-número de soluções. Para exemplificar, a Figura~\ref{fig::multsol} demonstra
-duas soluções para a posição $\mathbf{p}_{w} = [0,7,~ 0,8,~ 0]^Z$:
-em~\ref{fig::elbowup} com o cotovelo para cima e em~\ref{fig::elbowdown} com o
-cotovelo para baixo.
+número de soluções. Para exemplificar, a Figura~\ref{fig::elbowupdown} demonstra
+duas soluções para a posição $\mathbf{p}_{w} = [0,7,~ 0,8,~ 0]^Z$: cotovelo para
+cima em linha cheia e cotovelo para baixo em linha pontilhada.
 
-\missingfigure[figheight=80mm]{Elbow up/down}
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.75\textwidth]{figs/elbowupdown}
+ 	\caption{Exemplo de duas soluções possíveis para o mesmo ponto}
+ 	\label{fig::elbowupdown}
+\end{figure}
 
 
 \subsubsection{Cálculo da orientação da ferramenta}
@@ -1105,7 +1109,8 @@ Onde:
 %
 Com o cálculo dos ângulos $q4, q5$ e $q6$ é possível determinar totalmente a
 posição da ponta da ferramenta, pela equação~\ref{eq::posf}.
-Como este ponto está alinhado ao eixo do efetuador, faz-se $dx = dy = 0$.
+Como este ponto está alinhado ao eixo do efetuador, faz-se $dx = dz = 0$ e $dy
+= pBTy$.
 Reescrevendo a equação no referencial inercial, as componentes do vetor
 $\mathbf{p}_{f}^{Z}$ são:
 %
@@ -1149,9 +1154,233 @@ solução cinemática inversa do manipulador MOTOMAN MH12.
 
 \subsection{Tarefa e trajetória}
 
+A trajetória que o manipulador, ou mais especificamente a ferramenta acoplada,
+deverá seguir para cumprir determinada tarefa, é uma etapa extremamente
+importante para o método proposto. Os parâmetros como posição, velocidade e
+orientação ao longo de um dado caminho são impostos ao robô através do
+planejamento da trajetória. 
+
+O planejamento é feito aliando-se o caminho desejado aos requisitos necessários
+ligados a uma deter
+
+A importância de incluir corretamente os parâmetros da trajetória se
+deve ao fato de que são estes parâmetros que serão verificados ao se comparar
+os resultados do robô no modelo de base rígida aos resultados do modelo do robô
+sobre uma base flexível. 
+
+Se a tarefa é, por exemplo, o processo de revestimento por HVOF de uma
+superfície , o robô deve seguir uma trajetória ao longo daquela superfície, de
+forma a cobrí-la totalmente com o material aspersado. Como visto na
+seção~\ref{sec::ikin_traj} uma maneira simples de cobrir uma superfície é pelo
+movimento de ``zigue-zague'', ilustrado na Figura~\ref{fig::zigzag}.
+
+\missingfigure{Figura esquemática da trajetória}.
+
+O sistema de revestimento por HVOF que motiva este trabalho, realiza a tarefa
+sobre uma superfície suavemente curva, que representa o perfil hidráulico, da pá
+da turbina. Como um dos requisitos do processo é manter a distância fixa entre a
+pistola de revestimento e a pá, a trajetória não está restrita a apenas um
+plano.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.75\textwidth]{figs/coat_blade}
+ 	\caption{Revestimento da face curva de uma pá. \\Fonte: \ldots}
+ 	\label{fig::trajec_600x30}
+ 	\todo[inline]{Incluir fonte da figura do Renan}
+\end{figure}
+
+As trajetórias para representar este processo serão simplificadas neste
+trabalho, pela consideração de que as superfícies são planas e que pode-se
+representar a trajetória totalmente naquele plano.
+
+A trajetória será modelada pelo conjunto de funções das posições de referência
+para cada coordenada generalizada. Como o planejamento é feito pela função da
+posição da ferramenta no tempo, são utilizadas as soluções da cinemática
+inversa, desenvolvidadas na seção~\ref{sec::ikin_mh12}.
+
+É claro que dependendo da posição e orientação da superfície a ser coberta pelo
+robô, este assumirá diferentes configurações, que causam excitações diferentes
+em sua base. Na seção~\ref{sec::casos}, diversos casos de trajetória e bases
+serão analisados, com o objetivo de verificar os efeitos também da trajetória
+nos erros devido a dinâmica do sistema robô-base. 
+
+Para facilitar a compreensão desta seção, considere o seguinte exemplo de
+tarefa para cálculo da trajetória:
+\newline
+\begin{tcolorbox}
+[colframe=black!75!white, colback=white, title = Trajetória -Exemplo] 
+  \textbf{Tarefa:} Revestimento por HVOF \\
+  \textbf{Área:} $(600 \times 300)~mm^2$ \\
+  \textbf{Ponto inicial:} $\mathbf{p}_f = [0,700,~1,238,~-0,600]^Z$ \\
+  \textbf{Orientação:} $\boldsymbol{\Phi}_{f} = [0,~0,~0]^Z$ \\
+  \textbf{Passo:} $10~mm$ \\
+  \textbf{Número de paralelos:} 50 \\
+  \textbf{Velocidade da ferramenta:} $40~m/min$
+\end{tcolorbox}
+%
+A orientação do plano da superfície a ser revestida, de acordo com o exemplo,
+está alinhado ao sistema de coordenadas inercial, logo paralelo ao plano xy. A
+Figura~\ref{fig::trajec_600x500x10} apresenta os 50 paralelos da trajetória ao
+longo desta região.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.70\textwidth]{figs/trajec_600x500x10}
+ 	\caption{Exemplo da trajetória de revestimento de uma região}
+ 	\label{fig::trajec_600x500x10}
+\end{figure}
+
+A Figura~\ref{fig::trajec3D_600x500x10} apresenta essa tarefa no ambiente 3D
+de simulação, com o robô no início da trajetória.
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.50\textwidth]{figs/trajec3D_600x500x10}
+ 	\caption{Trajetória no ambiente 3D}
+ 	\label{fig::trajec3D_600x500x10}
+\end{figure}
+
+\subsubsection{Caminho ponto-a-ponto e função da trajetória}
+
+O objetivo é determinar a função da trajetória em que robô realiza a tarefa de
+revestimento. Primeiramente, define-se o conjunto ponto-a-ponto que forma o
+caminho. A função temporal que liga os pontos do caminho é a trajetória.
+
+Os pontos serão definidos nos vértices em que há mudança de direção da
+ferramenta, ou seja, no início e fim de cada paralelo. Cada ponto será descrito
+pela sua posição no ambiente em função do tempo. Logo:
+%
+\begin{equation} \label{eq::posi}
+	\mathbf{p}_i = [~ px_{i}(t),~ py_{i}(t),~ pz_{i}(t)~]^Z
+\end{equation}
+%
+Deseja-se que a velocidade da ferramenta entre os pontos seja controlada pelo
+PID. Então, é preciso que a derivada da função trajetória entre os pontos seja a
+velocidade desejada. Logo, a função da trajetória entre dois pontos de um mesmo
+paralelo pode ser escrita como:
+%
+\begin{equation} \label{eq::pi}
+\begin{split}
+	p_i & = p_{i-1} + v \cdot \Delta t \\
+		& = p_{i-1} + v \cdot (t-t_{i-1})
+\end{split}
+\end{equation}
+%
+Onde $v$ é a velocidade da ferramenta do ponto $p_{i-1}$ a $p_{i}$ e
+$\Delta t$ é a variação de tempo entre o instante $t$ e o valor do tempo no
+início da trajetória naquele paralelo $t_{i-1}$. A velocidade considerada neste
+exemplo é de $40~m/min$.
+
+Pode-se então calcular o intervalo de tempo entre cada ponto do caminho por:
+%
+\begin{equation} \label{eq::dt}
+	\Delta t = \frac{p_i - p_{i-1}}{v}
+\end{equation}
+%
+Portanto, o tempo associado a cada ponto do caminho é determinado por:
+%
+\begin{equation} \label{eq::ti}
+	t_i = t_{i-1} + \Delta t
+\end{equation}
+%
+Com as equações~\ref{eq::pi} e \ref{eq::ti}, define-se a função da trajetória
+para cada paralelo.
+%
+\begin{table}[h]
+\centering
+\caption{Resumo dos pontos e funções trajetória do exemplo}
+\label{tab::func_paralelos}
+\begin{tabular}{|c|l|l|l|l||c|c|c|}
+\hline
+i & $px_i$ & $py_i$ & $pz_i$ & $t_i$  & $px_i(t)$    & $py_i(t)$ &
+$pz_i(t)$
+\\ \hline \hline
+1       & 0,70  & 0,8   & -0,6  & 1,000 & 0,7         & 0,8      & -0,6         \\ \hline
+2       & 0,70  & 0,8   & 0     & 1,900 & 0,7         & 0,8      & -1,27+0,67t  \\ \hline
+3       & 0,71  & 0,8   & 0     & 1,915 & -0,57+0,67t & 0,8      & 0            \\ \hline
+4       & 0,71  & 0,8   & -0,6  & 2,815 & 0           & 0,8      & 1,27-0,67t   \\ \hline
+5       & 0,72  & 0,8   & -0,6  & 2,830 & -1.167+.67t & 0,8      & -0,6         \\ \hline
+6       & 0,72  & 0,8   & 0     & 3,730 & 0,72        & 0,8      & -2,487+0,67t \\ \hline
+7       & 0,73  & 0,8   & 0     & 3,745 & -1,77+0,67t & 0,8      & 0            \\ \hline
+8       & 0,73  & 0,8   & -0,6  & 4,645 & 0,73        & 0,8      & 2,497-0,67t  \\ \hline
+\end{tabular}
+\end{table}
+%
+
+A Tabela~\ref{tab::func_paralelos} apresenta os termos do vetor posição da
+equação~\ref{eq::posi} e as funções trajetória para os primeiros 4 paralelos do
+exemplo. A Figura~\ref{fig::pontos_exemplo} ilustra os pontos indicados na
+tabela no gráfico da trajetória.
+
+\begin{figure}
+	\centering 
+ 	\includegraphics[width=0.90\textwidth]{figs/pontos_exemplo}
+ 	\caption{Os pontos do caminho dos 8 primeiros paralelos}
+ 	\label{fig::pontos_exemplo}
+\end{figure}
+
+\subsubsection{\textit{Piecewise function} e cinemática inversa}
+
+As funções $px_i(t), py_i(t)$ e $pz_i(t)$, podem ser tratadas como uma única
+função, através do uso do comando \texttt{piecewise}, no Maple. Os argumentos
+deste comando são simplesmente as funções contidas em cada intervalo de tempo,
+resultando em uma função única, dividida por partes, sem necessidade de serem
+contínuas. A vantagem é que essas funções podem ser derivadas, sendo reconhecido
+que na discontiuidade a função é indefinida.
+Outra vantagem é que pode ser utilizada diretamente para calcular, por meio da
+cinemática inversa, as funções das coordenadas generalizadas que descrevem o
+conjunto de posições, para todo o intervalo de tempo.
+
+No Maple, a função \textit{piecewise} resultante tem a seguinte forma:
+%
+\begin{equation}
+p_{piecewise} = 
+\begin{cases}
+p0 & t<t1 \\
+p1 & t<t2 \\
+p2 & t<t3 \\
+p3 & t<t4 \\
+p4 & otherwise
+\end{cases}
+\end{equation}
+%
+
+Pelas equações~\ref{eq::q3ik} a \ref{eq::q6ik} foram definidas as coordenadas
+generalizadas $q1$ a $q6$ em funcão da posição da ferramenta, $\mathbf{p}_f^Z$.
+Logo, basta substituir a função \textit{piecewise} de cada termo de
+$\mathbf{p}_f^Z$ em $q1$ a $q6$ para obter o resultado da cinemática inversa por
+partes, ou intervalos de tempo.
+
+Esta nova função será utilizada como parâmetro de entrada no modelo dinâmico,
+para as coordenadas de referência $q_1ref$ a $q_5ref$. Isso faz com que o
+controle PID forneça os torques para atingir estas coordenadas ao
+longo do tempo e assim perseguir a trajetória determinada. A
+Figura~\ref{fig::res_exemplo} apresenta o gráfico do resultado da cinemética
+inversa utilizando as função \textit{piecewise} para a posição e velocidade da
+ferramenta durante os primeiros 8 paralelos da tarefa. 
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.40\textwidth}
+        \includegraphics[width=\textwidth]{figs/qxt_exemplo}
+        \caption{Resultado dos ângulos de referência}
+        \label{fig::qxt_exemplo}
+    \end{subfigure}
+    \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
+    % etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figs/uxt_exemplo}
+        \caption{Resultado das velocidades de referência}
+        \label{fig::uxt_exemplo}
+    \end{subfigure}
+    \caption{Resultados do exemplo de trajetória}\label{fig::res_exemplo}
+\end{figure}
 
 
 \subsection{Modelo teórico MBS -- Robô}
+
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
@@ -1189,7 +1418,7 @@ solução cinemática inversa do manipulador MOTOMAN MH12.
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
-\section{Estudos de casos para avaliação do método}
+\section{Estudos de casos para avaliação do método}\label{sec::casos}
 
 \subsection{Trajetórias do efetuador}
 

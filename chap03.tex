@@ -1537,7 +1537,7 @@ $Me$, função do resultado de $q1(t),\ldots,q5(t)$, calcula-se:
 	R = Me(q(t))~Mi(\phi,\theta,\psi)^{-1}
 \end{equation}
 %
-Aplicando $R$ à equação~\ref{eq::angdesvio}, calcula o ângulo de desvio entre
+Aplicando $R$ à equação~\ref{eq::angdesvio}, calcula-se o ângulo de desvio entre
 as duas matrizes.
 %
 \begin{equation} \label{eq::angdesvio}
@@ -1556,10 +1556,10 @@ $t=2~s$ são:
  Mi =  \left[ \begin {array}{ccc}  1~& 0~& 0~\\ \noalign{\medskip} 0~&
  1~& 0~\\ \noalign{\medskip} 0~& 0~& 1~\end {array} \right] \\
  % eq3
-R = \left[ \begin {array}{ccc}  1.0&- 0.00000058746&- 0.0021389
+R =  \left[ \begin {array}{ccc}  1.0&- 0.00000058757&- 0.0021389
 \\ \noalign{\medskip}- 0.000079441& 0.99930&- 0.037415
 \\ \noalign{\medskip} 0.0021374& 0.037415& 0.99930\end {array}
- \right] 
+ \right]
 \end{gather*}
 %
 Aplicando $R$ na equação~\ref{eq::angdesvio}, obtém-se o erro de orientação
@@ -1608,7 +1608,70 @@ propostos na seção~\ref{sec::casos}.
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Modelo da base}
 
+A base é definida, neste trabalho, como qualquer estrutura, à qual o manipulador
+robótico é fixado, que forneça flexibilidade, em forma de graus de liberdade,
+passivos das forças dinâmicas exercidas pelo movimento do robô. A flexibilidade
+da estrutura causará desvios do movimento esperado e controlado do robô e cabe
+ao método proposto tentar quantificar esses desvios e verificar se os requisitos
+do processo serão satisfeitos. Para isso, é desenvolvido um modelo teórico da
+base, para ser adicionado ao modelo do robô, formando um sistema MBS acoplado.
+
+Nesta seção é demonstrado como uma estrutura construída com geometria,
+materiais, restrições e infinitos graus de liberdade que seriam muito complexos
+para serem descritos analiticamente em um modelo MBS, pode ser simplificado como
+um sistema de massa-mola-amortecedor de 6 graus de liberdade.
+Considera-se um conjunto de sistemas de coordenadas localizado no ponto teórico
+onde é fixado o robô, na estrutura. A esse sistema, correspondem 3 movimentos de
+translação $x,y,z$ e 3 movimentos de rotação $\theta_x, \theta_y, \theta_z$, que
+formam as coordenadas generalizadas do modelo MBS.
+
+Portanto, para realizar a simplificação é necessário obter uma matriz de rigidez
+e uma matriz de amortecimento, associadas aos 6 gdl do corpo sobre a base. A
+matriz de rigidez é obtida numericamente pela Análise por Elementos Finitos e a
+matriz de amortecimento pelo resultado experimental do ensaio de
+vibrações seguido do tratamento dos resultados, detalhado na
+seção~\ref{sec::experimento}.
+
+Por fim é demonstrado como são desenvolvidas as equações que regem o
+movimento do corpo acoplado a esse sistema massa-mola-amortecedor.
+Foi utilizada a mesma metodologia do modelo do robô para desenvolvimento das
+equações de movimento: pelo método de Kane e com uso das rotinas do programa
+Sophia-Maple.
+
 \subsection{Geometria e CAD}
+
+A primeira etapa para modelagem da base é representar sua geometria em um modelo
+CAD. Este modelo será utilizado para as simulações pela Análise por Elementos
+Finitos, a fim de se obter a sua matriz de rigidez.
+
+Para ilustrar o método, será aproveitada a base projetada e construída para
+testes do robô, em laboratório, previstos no projeto EMMA. Consiste em uma
+estrutura metálica, formada por perfis extrudados de alumínio estrutural. Sobre
+a estrutura um par de trilhos paralelos permitem o movimento longitudinal da
+placa onde é fixado o robô. A Figura~\ref{fig::estrut_modelo_fisico} apresenta
+uma fotografia da base de testes.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/estrut_modelo_fisico}
+ 	\caption{Base de testes do robô}
+ 	\label{fig::estrut_modelo_fisico}
+\end{figure}
+
+O projeto desta base foi desenvolvido no programa SolidWorks, onde de forma
+bastante detalhada, são incluídos os desenhos das peças a serem fabricadas,
+peças comerciais, acessórios de união e fixadores mecânicos que compõe a
+montagem CAD da estrutura. Este modelo detalhado é apresentado na
+Figura~\ref{fig::estrutCAD}, com os principais componentes indicados, inclusive
+o robô.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.75\textwidth]{figs/estrutCAD}
+ 	\caption{Modelo CAD detalhado da base e robô}
+ 	\label{fig::estrutCAD}
+\end{figure}
+
 
 \subsection{Matriz de Rigidez}
 
@@ -1620,7 +1683,7 @@ propostos na seção~\ref{sec::casos}.
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
-\section{Ensaio Experimental}
+\section{Ensaio Experimental} \label{sec::experimento}
 
 \subsection{Bancada experimental}
 

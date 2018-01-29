@@ -1583,12 +1583,12 @@ Novamente, nesta tarefa do exemplo, não se está interessado no erro antes do
 manipulador iniciar a trajetória dos paralelos do revestimento, ou seja, entre a
 posição inicial e o ponto p1.
 Analisando, portanto, o gráfico a partir de $1~s$ percebe-se um erro periódico,
-devido às variações de direção, com amplitude máxima de aproximadamente
+maior devido às variações de direção, com amplitude máxima de aproximadamente
 $0,038~rad$, ou $2,18^{\circ}$.
 
 Apesar de não ser possível, apenas por este resultado escalar, afirmar a direção
-do ângulo, pode-se comparar este gráfico com o do erro de posicionamento, na
-Figura~\ref{fig::erros_exemplo}. É possível inferir que este erro está mais
+onde o erro é maior, pode-se comparar com o gráfico do erro de posicionamento,
+na Figura~\ref{fig::erros_exemplo}. É possível inferir que este erro está mais
 relacionado com o atraso do posicionamento na direção $z$ e portanto, grande
 parte do desvio de orientação está na direção vertical, $x$ de SC-Z.
 
@@ -1627,8 +1627,8 @@ formam as coordenadas generalizadas do modelo MBS.
 
 Portanto, para realizar a simplificação é necessário obter uma matriz de rigidez
 e uma matriz de amortecimento, associadas aos 6 gdl do corpo sobre a base. A
-matriz de rigidez é obtida numericamente pela Análise por Elementos Finitos e a
-matriz de amortecimento pelo resultado experimental do ensaio de
+matriz de rigidez é obtida numericamente pela Análise por Elementos Finitos
+(AEF) e a matriz de amortecimento pelo resultado experimental do ensaio de
 vibrações seguido do tratamento dos resultados, detalhado na
 seção~\ref{sec::experimento}.
 
@@ -1653,17 +1653,16 @@ uma fotografia da base de testes.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.95\textwidth]{figs/estrut_modelo_fisico}
+ 	\includegraphics[width=0.70\textwidth]{figs/estrut_modelo_fisico}
  	\caption{Base de testes do robô}
  	\label{fig::estrut_modelo_fisico}
 \end{figure}
 
 O projeto desta base foi desenvolvido no programa SolidWorks, onde de forma
-bastante detalhada, são incluídos os desenhos das peças a serem fabricadas,
-peças comerciais, acessórios de união e fixadores mecânicos que compõe a
-montagem CAD da estrutura. Este modelo detalhado é apresentado na
-Figura~\ref{fig::estrutCAD}, com os principais componentes indicados, inclusive
-o robô.
+bastante detalhada, são incluídos os desenhos das peças customizadas, peças
+comerciais, acessórios de união e fixadores mecânicos que compõe a montagem CAD
+da estrutura. Este modelo é apresentado na Figura~\ref{fig::estrutCAD}, com os
+principais componentes indicados, inclusive o robô.
 
 \begin{figure}[h]
 	\centering 
@@ -1672,14 +1671,331 @@ o robô.
  	\label{fig::estrutCAD}
 \end{figure}
 
+Este modelo CAD, muito completo, poderia ser diretamente utilizado nas
+simulações para obtenção da matriz de rigidez desta estrutura. No entanto, o
+alto nível de detalhamento dos componentes, além da definição dos contatos e
+restrições entre as peças, geraria um modelo de malha muito densa, não linear e
+grande custo computacional. E o resultado teria muito informações irrelevantes
+para esta análise, como por exemplo, tensões em elementos de fixação ou
+deformação do rolamento do trilho.
 
-\subsection{Matriz de Rigidez}
+Logo, o objetivo da simplificação é obter apenas os resultados que importam
+na análise, e ignorar outros efeitos que não alteram significativamente
+estes resultados. 
 
-\subsection{Matriz de Amortecimento}
+Para o modelo da base de testes, foram utilizados elementos unidimensionais, de
+viga, para formar a estrutura e os trilhos. A união entre esses componentes foi
+feita por elementos rígidos, representando os parafusos de fixação do trilho na
+estrutura. A placa de fixação do robô foi representada também por elementos
+unidimensionais rígidos, assumindo-se que sua rigidez é muito superior a rigidez
+da estrutura, e o ponto de fixação do robô está localizado no centro desta
+placa.
+Os rolamentos do trilho foram substituídos por uma conexão rígida entre a placa
+e os trilhos. Assim, a flexibilidade desta estrutura, no modelo simplificado
+depende apenas das deformações dos elementos de viga que representam o trilho e
+a estrutura. A Figura~\ref{fig::estrutFEA} apresenta o modelo simplificado para
+a AEF, desenvolvida no programa Autodesk Simulation Mechanical.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.75\textwidth]{figs/estrutFEA}
+ 	\caption{Modelo da base para AEF}
+ 	\label{fig::estrutFEA}
+\end{figure}
 
 \subsection{Análise por Elementos Finitos}
 
+Foi demonstrado na seção~\ref{sec::rigidez} um método analítico e sistemático
+para obter a matriz de rigidez de uma estrutura em qualquer ponto de
+interesse. Para estruturas simples, com poucos graus de liberdade e poucos
+elementos, o método analítico se mostra bastante prático. Já para estruturas
+mais complexas, com muitos elementos, conexões, restrições, graus de liberdade
+e não linearidades, resolver pelo método analítico pode ser impraticável ou
+desgastante.
+
+Como deseja-se a rigidez da estrutura para apenas um ponto de interesse -- o
+ponto onde virtualmente está fixado o robô -- propõe-se uma forma de, utilizando
+os conceitos do método apresentado e simulações por AEF, extrair a matriz de
+rigidez para este ponto. As simulações realizadas são do tipo lineares e
+estáticas. A seguir são detalhadas as etapas para definir o modelo para AEF.
+
+\subsubsection{Partes, elementos e propriedades}
+
+O modelo é divido em estrutura, trilho, interfaces e placa, como foi ilustrado
+na Figura~\ref{fig::estrutFEA} Para cada parte são definidos o tipo de elemento,
+suas propriedades e material.
+
+A estrutura é formada por perfis de alumínio estrutural. Esta é modelada como
+elementos unidimensionais de viga. Isso significa que suas propriedades são
+uniformes ao longo de apenas uma dimensão em todo o elemento, bastando fornecer
+apenas suas propriedades de seção transversal. A
+Figura~\ref{fig::sectrans_bosch} mostra o corte de seção de um elemento da
+estrutura e suas propriedades. O material associado à estrutura é o Alumínio
+EN-AW-6060. e as propriedades são incluidas no modelo, de acordo com a
+Tabela~\ref{tab::prop_mat}.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.85\textwidth]{figs/sectrans_bosch}
+ 	\caption{Seção transversal do elemento da estrutura}
+ 	\label{fig::sectrans_bosch}
+\end{figure}
+
+\begin{table}
+\centering
+\caption{Propriedades mecânicas dos materiais do modelo AEF}
+\label{tab::prop_mat}
+\begin{tabular}{@{}llcc@{}}
+\toprule
+\textbf{Propriedade}   &             & \textbf{EN-AW 6060} & \textbf{AISI 316} \\ \midrule
+Densidade              & {[}g/cc{]}  & 2,70                & 7,90             \\
+Módulo de Elasticidade & {[}GPa{]}   & 69,5                & 200               \\
+Coeficiente de Poisson & {[}1{]}     & 0,34                & 0,29    			\\
+Tensão de escoamento   & {[}MPa{]}   & 150                 & 240               \\
+Resistência à tração   & {[}MPa{]}   & 150                 & 580               \\ \bottomrule
+\end{tabular}
+\end{table}
+
+O trilho também é modelado como elemento de viga. Sua seção transversal e
+propriedades estão na Figura~\ref{fig::sectran_trilho}. Seu material é o aço
+carbono inoxidável AISI 316 e suas propriedades mecânicas estão na
+Tabela~\ref{tab::prop_mat}.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.85\textwidth]{figs/sectran_trilho}
+ 	\caption{Seção transversal do elemento do trilho}
+ 	\label{fig::sectran_trilho}
+\end{figure}
+
+As partes interface e placa de fixação do robô são modelados como elementos
+unidimensionais rígidos, ou seja, transmitem apenas forças e momentos, mas não
+se deformam. Ao todo são 40 peças de interface representando os 20 parafusos de
+fixação de cada trilho. Já a placa de fixação é formada por um quadro de
+elementos ligando os dois trilhos e uma ``pirâmide'' convergindo para o ponto de
+fixação do robô. Como este ponto representa a conexão entre a estrutura e o
+robô, aplica-se os esforços na estrutura diretamente por ali. Os elementos
+rígidos transmitem estes esforços ao trilho e à estrtura e obtém-se os resultado
+de forças de reação ou deslocamentos resultantes.
+
+
+\subsubsection{Restrições e conexões}
+
+Esta base é originalmente fixa no piso por meio de parafusos chumbadores. Cada
+perna da estrurura posssui 3 parafusos. No modelo AEF, esta restrição será
+modelada como fixa, ou seja, não permite-se nenhuma translação ou rotação, e
+é aplicada à extremidade inferior de cada perna.
+
+Os elementos de cada parte são conectados por uniões ``soldadas'', ou seja, não
+permitem nenhum grau de liberdade na extremidade do elemento onde há a conexão.
+
+
+\subsubsection{Casos de Carregamento}
+
+Para obter a matriz de rigidez, deve-se realizar ao todo 6 casos de carregamento
+e restrições. Cada caso obtém 6 dos 36 termos, que correspondem a uma linha
+da matriz 6x6. Os carregamentos e restrições são todos aplicados ao ponto de
+fixação do robô.
+
+A cada caso será aplicado um deslocamento prescrito unitário em uma direção. Às
+outras direções é aplicada restrição à translação e à rotação. Logo, um
+deslocamento unitário na direção $x$ ($ux = 1~mm$), por exemplo, provoca uma
+força ou momento de reação em todas as direções. A força de reação
+correspondente à direção x produz o termo de rigidez $k_{11}$, à direção y, $k_{12}$,
+à direção z, $k_{13}$, e assim por diante.
+
+A Tabela~\ref{tab::casoscarreg} resume os casos e restrições
+simulados.
+
+\begin{table}[h]
+\centering
+\caption{Resumo dos casos de carregamento e restrições}
+\label{tab::casoscarreg}
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+\textbf{Caso} & \textbf{ux} & \textbf{uy} & \textbf{uz} & \textbf{rx} & \textbf{ry} & \textbf{rz} \\ \midrule
+\textbf{1}    & $0,1~mm$           & fixo        & fixo        & fixo        &
+fixo & fixo        \\
+\textbf{2}    & fixo        & $0,1~mm$            & fixo        & fixo        &
+fixo        & fixo        \\
+\textbf{3}    & fixo        & fixo        & $0,1~mm$            & fixo        &
+fixo        & fixo        \\
+\textbf{4}    & fixo        & fixo        & fixo        & $0,001~rad$           
+& fixo        & fixo        \\
+\textbf{5}    & fixo        & fixo        & fixo        & fixo        &
+$0,001~rad$            & fixo        \\
+\textbf{6}    & fixo        & fixo        & fixo        & fixo        & fixo    
+& $0,001~rad$            \\ \bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Malha}
+
+Os elementos do trilho e da estrutura foram subdivididos para gerar a malha. A
+malha controla a qualidade do modelo e precisão do resultado.
+Quanto menor o elemento, ou mais discretizada a malha, menor são os erros
+numéricos da solução. O processo de refinamento da malha, consiste em realizar
+simulações iterativamente, com malha cada vez mais discretizada. A comparação
+dos resultados a cada iteração permite julgar uma convergência da solução. Logo,
+é realizado este procedimento,, até que a diferença do resultado seja
+insignificante.
+
+O resultado deste processo de refinamento gerou a seguinte malha:
+%
+$$ 49~parts,~ 620~nodes,~ 670~elements $$
+%
+
+\subsubsection{Resultados por AEF}
+
+Os resultados obtidos pela análise estática são a distribuição de tensões,
+deslocamentos, forças e momentos de reação em cada nó do modelo. Um exemplo do
+resultado de tensões e deslocamentos é apresentado na Figura~\ref{fig::res_FEA},
+para o caso de carregamento 6.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{figs/res_FEA_tensoes}
+        \caption{Resultado AEF das tensões máximas resultantes}
+        \label{fig::res_FEA_tensoes}
+    \end{subfigure}
+    \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
+    % etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{figs/res_FEA_desloc}
+        \caption{Resultado AEF dos deslocamentos resultantes}
+        \label{fig::res_FEA_desloc}
+    \end{subfigure}
+    \caption{Resultado da simulação AEF para o caso 6}
+    \label{fig::res_FEA}
+\end{figure}
+
+O resultado das forças e momentos de reação no ponto de fixação do robô é
+apresentado na Tabela~\ref{tab::res_FEA_forcas}. 
+
+\begin{table}[h!]
+\centering
+\caption{Resultado das forças e momentos de reação para o caso 6}
+\label{tab::res_FEA_forcas}
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+\textbf{Caso} & \textbf{Fx [N]} & \textbf{Fy [N]} & \textbf{Fz [N]} &
+\textbf{Mx [Nm]} & \textbf{My [Nm]} & \textbf{Mz [Nm]} \\ \midrule \textbf{6}   
+& -3,00E-6 & 2,50E+3    & 1,67E-7    & 1,12E-6    & -7,16E-7   & -9,76E+3   \\ \bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{Matriz de Rigidez}
+
+Deseja-se que a base seja simplificada como um sistema massa-mola-amortecedor de
+6 gdl e introduzida no modelo MBS como uma matriz 6x6, que promove deslocamentos
+ao robô, em função do carregamento resultante dos seus movimentos.
+
+A matriz de rigidez possui 36 termos, chamados de coeficientes de influência.
+A nomenclatura e posição de cada termo na matriz, está relacionado à direção da
+força ou momento aplicado. Assim, o termo $k_{32}$ por exemplo refere-se a
+rigidez na direção $y$, devido a uma força na direção $z$.
+
+A matriz de rigidez tem a seguinte forma:
+\begin{equation}
+K = \begin{pmatrix} 
+    k_{11} & \dots 	& k_{16} \\
+    \vdots & \ddots & \\
+    k_{61} &        & k_{66} 
+    \end{pmatrix}
+\end{equation}
+%
+Com o resultado das análises por AEF de cada caso, pode-se então calcular termo
+a termo da matriz de rigidez da base. Como os deslocamentos prescritos são
+arbitrários, faz-se o seguinte cálculo para converter a força de reação no
+coeficiente de influência da matriz de rigidez:
+%
+\begin{align} \label{eq::kij}
+	k_{ij} = \frac{F_j}{u_{i}} \qquad &  i,j = 1,\ldots,6
+\end{align}
+%
+Onde $u_i$ representa o valor do deslocamento prescrito e $F_j$ o valor da força
+ou momento de reação em cada caso de carregamento. A equação~\ref{eq::kij}
+normaliza, portanto, o coeficiente de influência para um valor unitário de
+deslocamento.
+
+Note-se que, por definição, a matriz de rigidez é sempre positiva
+definida\todo{Incluir referência para esta citação}, ou seja, simétrica e com
+todos os autovalores positivos.
+Isso faz com que não seja necessário calcular todos os 36 coeficientes de influências, mas apenas 21. 
+
+Utilizando os resultados das simulações AEF e a equação~\ref{eq::kij}, a matriz
+de rigidez para a base de testes é:
+%
+\begin{equation*}
+	K =
+\begin{pmatrix}
+941490000 &	0 &	0 &	0 &	0 &	0 \\
+0 &	130542000 &	0 &	0 &	0 &	-24981000 \\
+0 &	0 &	262146000 &	0 &	5756560 &	0 \\
+0 &	0 &	0 &	57018800 &	0 &	0 \\
+0 &	0 &	5756560 &	0 &	119555000 &	0 \\
+0 &	-24981000 &	0 &	0 &	0 &	97590600
+\end{pmatrix}
+\end{equation*}
+%
+A unidade dos valores da matriz estão convertidos para $[N/m]$. Os termos que
+aparecem zerados não são exatamente zero, mas valores menores que 1 e, por
+simplificação, foram considerados nulos.
+
+
+\subsection{Matriz de Amortecimento}
+
+O amortecimento será modelado como proporcional, ou de Rayleigh, como foi
+explicado na seção~\ref{sec::amortecimento}. A matriz de amortecimento é
+definida, pela equação~\ref{eq::amort_prop}, repetida a seguir:
+%
+\begin{equation*}
+	C = \alpha M + \beta K
+\end{equation*}
+%
+Logo, para definir totalmente a matriz de amortecimento da base, basta fornecer
+os dois parâmetros, $\alpha$ e $\beta$.
+
+Na seção~\ref{sec::param_mod} apresentou-se um método para, a partir dos dados
+experimentais de amortecimento modal, obter os parâmetros $\alpha$ e $\beta$ que
+melhor se ajustam ao modelo. Na seção~\ref{sec::experimento} é detalhado o
+procedimento para se obter os valores experimentais de amortecimento e, a partir
+do resultado, são calculados os parâmetros para obter a matriz de amortecimento.
+
+
+
 \subsection{Modelo teórico MBS -- Base}
+
+Equivalentemente ao realizado para o robô, a base será modelada como um
+sistema dinâmico, cujas equações de movimento são desenvolvidas pelo método de
+Kane.
+
+O Sophia-Maple é novamente utilizado desde a construção do modelo cinemático até
+a determinação das equações de movimento, exatamente como foi realizado o modelo
+do robô.
+
+Primeiro, define-se as coordenadas generalizadas do sistema. As variáveis $q1,
+q2$ e $q3$ representam as 3 translações do ponto de fixação do robÔ, em $x,y$ e
+$z$, respectivamente, em relação ao sistema de coordenadas inercial, SC-R. As 3
+rotações serão representadas pelas variáveis $q4, q5$ e $q6$ e serão descritos
+nos sistemas de coordenadas SC-R1, SC-R2, SC-R3, respectivamente.
+A coordenada $q4$ representa um ângulo de rotacão do sistema de referência SC-R1
+em relação ao sistema SC-R; $q4$ o ângulo entre SC-R2 e SC-R1; e $q5$ o ângulo
+entre SC-R3 e SC-R2, formando uma cadeia cinemática de ângulos relativos.
+
+Neste modelo é considerado apenas um corpo, descrito em SC-R e localizado por
+\texttt{pM}, função de $q1,q2$ e $q3$. No Sophia-Maple é definido como um
+\texttt{Evector}, da seguinte forma:
+
+\medskip \noindent {\tt > pR = Evector(0, 0, 0, R)} \\
+				   {\tt > pM = pR \&++ Evector(q1, q2, q3, R)}
+\medskip
+
+
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-

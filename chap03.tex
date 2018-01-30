@@ -5,13 +5,78 @@
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Visão geral}
 
-O método proposto divide-se nas seguintes etapas:
+O método proposto pode ser dividido em 5 etapas:
+%
+\begin{enumerate}
+  \item Modelo dinâmico do Robô;
+  \item Modelo dinâmico da Base;
+  \item Modelo dinâmico acoplado da Base com Robô;
+  \item Ensaio Experimental para obtenção de parâmetros modais da Base;
+  \item Tratamento dos resultados e cálculo dos erros teóricos.
+\end{enumerate}
 
-\missingfigure[figheight=100mm]{Diagrama do método}
+Os modelos dinâmicos -- robô, base e acoplado -- são realizados com auxílio do
+\textit{software} de álgebra computacional Maple, utilizando as rotinas do
+Sophia. Estas ferramentas oferecem uma forma prática e sistemática de modelar um
+sistema multicorpos de qualquer número de graus de liberdade e se chegar às
+equações de movimento, pelo método de Kane. 
+
+O MBS do robô é apresentado na seção~\ref{sec::modelorobo} que representa o
+modelo do manipulador sobre uma base ideal, ou perfeitamente rígida, já que sua
+origem não possui nenhum grau de liberdade. Nesta seção é demonstrada a
+utilização do Sophia-Maple traduzindo o modelo teórico para sintaxe utilizada
+pelo programa, com o objetivo também de exemplificar a modelagem sistemática de
+um sistema MBS. Nas seções seguintes entretanto, não é
+demonstrada a sintaxe do Sophia-Maple, no intuito de não tornar o texto
+repetitivo. Os códigos completos do Sophia-Maple estão disponíveis no
+Anexo\todo{Incluir ref do anexo - Sophia-Maple}.
+
+Com o MSB do robô realiza-se, portanto, as simulações dinâmicas das trajetórias
+``ideais'', ou seja, que seriam obtidas numa base perfeitamente rígida. Este
+resultado permitirá a comparação das posições, velocidades e orientações ideais
+com as obtidas pelo modelo acoplado.
+
+A base é modelada na seção~\ref{sec::base}, onde é apresentado o método para
+obter sua matriz de rigidez por meio de Análise por Elementos Finitos (AEF's),
+utilizando o \textit{software} Autodesk Simulation.
+Também é apresentado o modelo de Amortecimento de Rayleigh, também chamado de
+Amortecimento Proporcional, que estima-se a matriz de amortecimento da base por
+meio de apenas dois parâmetros, $\alpha$ e $\beta$, proporcionais às matrizes de
+inércia e de rigidez, respectivamente.
+
+Para calcular $\alpha$ e $\beta$ é realizado ensaio de vibrações em um modelo
+físico da base. Na seção~\ref{sec::experimento} é demonstrado como obter, dos
+dados experimentais, os parâmetros modais de uma estrutura, tais como
+frequências naturais, modos de vibração e amortecimento. O experimento é feito
+pela instrumentação da estrutura com acelerômetros e excitação com martelo
+instrumentado. Os dados são tratados para obter as Funções de Resposta em
+Frequência (FRF's) e então estimar seus parâmetros modais. Os valores de
+$\alpha$ e $\beta$ são então calculados e utilizados no modelo da base para
+fornecer a matriz de amortecimento da estrutura.
+
+Na seção~\ref{sec::acoplado} o MBS acoplado robô e base é apresentado. Neste
+caso, considera-se os 6 graus de liberdade da base (3 tranlações e 3 rotações) e
+os 5 graus de liberdade associados às juntas do manipulador, formando um sistema
+de 11 gdl. É simulada a mesma trajetória fornecida no modelo rígido, com o
+objetivo de comparar os resultados de posição, velocidade e orientação da
+ferramenta quando o robô opera sobre uma base rígida em relação a mesma operação
+do robô sobre base flexível. São então verificados os efeitos da elasticidade da
+base sobre os parâmetros controlados do processo sendo executado.
+
+A Figura~\ref{fig::visgeral} ilustra uma visão geral do método proposto
+facilitando a visualização das relações entre os modelos. 
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/visgeral}
+ 	\caption{Diagrama da visão geral do método}
+ 	\label{fig::visgeral}
+\end{figure}
+
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
-\section{Modelo do robô}
+\section{Modelo do robô} \label{sec::modelorobo}
 
 Nesta seção, são detalhados os procedimentos para representar o manipulador
 robótico como um conjunto MBS e utilizá-lo para simular as trajetórias
@@ -88,15 +153,15 @@ pontos alcançáveis pelo manipulador, dentro dos limites de cada junta.
 \end{figure}
 
 Conforme discutido na seção~\ref{sec::manind}, este tipo de braço robótico
-permite desacoplar o sistema em 2 problemas: posicionamento e orientação. Logo,
-para simplificar o modelo e o cálculo da cinemática inversa, serão consideradas
+permite desacoplar o sistema em 2 sub-problemas: posicionamento e orientação.
+Logo, para simplificar o modelo e o cálculo da cinemática inversa, serão consideradas
 as 3 primeiras juntas para posicionamento e 3 últimas (pulso esférico) para
 orientação da ferramenta.
 
 A última junta, no efetuador, tem a finalidade de orientar a ferramenta em torno
 do seu eixo axial. Como o processo de revestimento por HVOF independe desta
-orientação, esta junta não será incluída, mantendo este acoplamento rígido, o
-que transforma os dois últimos elos em apenas um corpo.
+orientação, esta junta \emph{não será incluída}, mantendo este acoplamento
+rígido, o que transforma os dois últimos elos em apenas um corpo.
 Como resultado, tem-se um sistema de 5 gdl.
 
 
@@ -235,9 +300,9 @@ As velocidades dos centros de massa de cada corpo são calculadas como a derivad
 do vetor posição com respeito ao referencial inercial. Logo, a derivada da
 equação~\ref{eq::pcm} em Z:
 %
-\begin{equation}
+\begin{equation} \label{eq::veloc}
 	\mathbf{v}^{k} = \frac{^{Z}\mathrm{d} }{\mathrm{d} t}
-	\mathbf{pcm}^{k} \label{eq::veloc}
+	\mathbf{pcm}^{k} 
 \end{equation}
 %
 O Sophia-Maple possui um poderoso conjunto de rotinas para diferenciação dos
@@ -257,7 +322,7 @@ corpo em relação ao referencial inercial. Conforme apresentado na
 seção~\ref{sec::cinematica} pode-se escrever a velocidade angular de uma matriz
 rotação $R(t)$ como:
 %
-\begin{equation}
+\begin{equation} \label{eq::velang}
 	\frac{\mathrm{d} R}{\mathrm{d} t} = S \cdot R(t)
 \end{equation}
 %
@@ -307,7 +372,8 @@ velocidades lineares e angulares calculadas. Logo, o vetor velocidades
 generalizadas tem a seguinte forma:
 %
 \begin{equation}
-	v_{k} = [ v_{1},\ldots, v_{n}, \omega_{1},\ldots, \omega_{n}, 2n ]
+	\mathbf{v}_{g} = [ \mathbf{v}^{S},\ldots, \mathbf{v}^{T}, \boldsymbol{\omega}^{S},\ldots,
+	\boldsymbol{\omega}^{T}, 12]
 \end{equation}
 %
 Onde cada termo do \texttt{Kvector} é um \texttt{Evector} da velocidade
@@ -360,33 +426,33 @@ Os parâmetros de inércia são a massa e o momento de inércia de cada corpo do
 sistema. É importante notar que não é possível obter um modelo dinâmico preciso
 apenas com as informações contidas nos manuais e fichas técnicas do manipulador
 robótico. Infelizmente os parâmetros de inércia individuais de cada corpo não
-são fornecidos pelos fabricantes e, portanto, serão estimados. 
+são fornecidos pelos fabricantes e, portanto, serão estimados pelo método a
+seguir.
 
 Do manual do MOTOMAN MH12\todo{incluir ref: manual mh12}, tem-se que a massa
 total do robô é de 130~kg. Também é disponibilizado, diretamente pelo
 fabricante, um modelo CAD com ótimo detalhamento de cada corpo individualmente.
 
-O programa SolidWorks foi utilizado para obter informações importantes do modelo
-CAD, para a estimativa dos parâmetros de inércia. Nele é possível analisar cada
-elo em separado e obter o seu volume. Com isso, pode-se obter uma massa específica
-média do robô, de acordo com a equação~\ref{eq::rho}.
-%
+O programa SolidWorks foi utilizado para obter informações importantes para a
+estimativa dos parâmetros de inércia. Nele é possível obter o volume de cada elo
+em separado. Com isso, pode-se calcular uma massa específica média do robô, de
+acordo com a equação~\ref{eq::rho}.
 \begin{align}
-	\rho_{m} = M_{total}\sum_{corpo[i]}^{corpo[n]} V_{i} \label{eq::rho} & &, i =
-	Z,S,L,U,R,B,T
+	\rho_{m} = M_{total}\sum_{corpo[i]}^{corpo[n]} V_{i} \label{eq::rho} \qquad & ,
+	i = Z,S,L,U,R,B,T
 \end{align}
 %
-Logo, pode-se estimar a massa de cada corpo, calculada pelo produto da massa
+Em seguida, estima-se a massa de cada corpo, calculada pelo produto da massa
 específica média $\rho_{m}$ e o volume, de acordo com a
 equação~\ref{eq::massai}.
 %
 \begin{align}
-	m_{i} = \rho_{m} \cdot V_{i} \label{eq::massai} & &, i =
+	m_{i} = \rho_{m} \cdot V_{i} \label{eq::massai} \qquad &, i =
 	Z,S,L,U,R,B,T
 \end{align}
 %
-A massa da ferramenta acoplada ao efetuador foi obtida precisamente, pelo
-projeto CAD do suporte, no SolidWorks, e informação do fabricante do dispositivo
+A massa da ferramenta acoplada ao efetuador foi obtida de forma precisa,
+pelo projeto CAD do suporte, e informação do fabricante do dispositivo
 HVOF.
 A Tabela~\ref{tab::massa_mh12} apresenta os resultados da massa estimada em cada
 corpo:
@@ -417,23 +483,28 @@ Para este modelo dinâmico, não será utilizada a última junta do robô, como 
 explicado na seção~\ref{sec::descricao_mh12}, de forma que pode-se considerar os
 corpos ``B, T e Ferramenta'' como um único corpo. Assim, as propriedades de
 massa e momento de inércia podem ser somadas e condensadas em uma única
-descrição. A partir deste ponto, estes 3 últimos corpos serão tratadaos como um
-único corpo e será utilizada a denominação do corpo B para representar esse
-conjunto, com seu sistema de referência fixado em SC-B.
+descrição. 
 
-As variáveis de massa de cada corpo são definidas no Sophia-Maple como grandezas
-escalares, sem uso de qualquer função especial.
+A partir daqui, estes 3 últimos corpos serão tratadaos como um único corpo e
+será utilizada a denominação do corpo B para representar esse conjunto.
 
-O programa SolidWorks também foi utilizado para obter as posições do centro de
-massa e momentos de inércia de cada elo.
-Foi considerado que a massa calculada é distribuida homogeneamente no volume.
-Isto resulta na posição estimada, fornecida pelo programa. A
+Do CAD do MH12 também é possível extrair as as posições do centro de massa e
+momentos de inércia de cada elo.
+Como se considerou que a massa de cada elo é distribuida homogeneamente no seu
+volume, isto resulta numa posição estimada do centro de massa. A
 Tabela~\ref{tab::resumo_cm} resume os valores encontrados para a posição do
 centro de massa com respeito ao referencial de cada elo e a
 Figura~\ref{fig::pcm_mh12} ilustra no modelo CAD a posição aproximada.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.7\textwidth]{figs/pcm_mh12}
+ 	\caption{Posição aproximada dos centros de massa}
+ 	\label{fig::pcm_mh12}
+\end{figure}
+
 %
-\begin{table}[h]
-\centering
+\begin{table}[h] \centering
 \caption{Posição do centro de massa}
 \label{tab::resumo_cm}
 \begin{tabular}{@{}cccc@{}}
@@ -449,16 +520,10 @@ B              & -0,011     & 0,146      & 0,000      \\ \bottomrule
 \end{table}
 %
 
-\begin{figure}[h]
-	\centering 
- 	\includegraphics[width=0.7\textwidth]{figs/pcm_mh12}
- 	\caption{Posição aproximada dos centros de massa}
- 	\label{fig::pcm_mh12}
-\end{figure}
-
-Agora podem ser obtidos os momentos de inércia de cada elo obtidos no
-centro de massa e alinhados ao sistema de coordenadas daquele elo. O programa
-fornece esses valores, que são apresentados a seguir.
+O modelo CAD também calcula os momentos de inércia de cada elo obtidos no
+centro de massa e alinhados ao sistema de coordenadas de referência daquele elo.
+O resultado do cálculo dos momentos de inércia de cada elo são apresentados a
+seguir.
 %
 \begin{align*}
 InZ &=& \left( \begin {array}{ccc}  0,811& 0,293& 0,091\\ \noalign{\medskip}
@@ -566,7 +631,7 @@ A força peso atua aplicada ao centro de massa de cada corpo \textit{k} e é cal
 pela equação~\ref{eq::peso}:
 %
 \begin{equation}
-	Peso_{k} = m_{k} \cdot \mathbf{g} \label{eq::peso}
+	\mathbf{Peso}_{k} = m_{k} \cdot \mathbf{g} \label{eq::peso}
 \end{equation}
 %
 Onde $\mathbf{g}$ refere-se ao vetor da aceleração da gravidade, que atua sempre
@@ -770,7 +835,7 @@ equações~\ref{eq::kde5i} a \ref{eq::kde5f} descrevem o kde:
 \end{align}
 %
 Somando-se esse sistema às equações de movimento e atribuindo à variável
-\texttt{eq\_mov}, no Sophia-Maple tem-se:
+\texttt{eq\_mov}, no Sophia-Maple:
 
 \medskip \noindent {\tt > eq\_mov:= kane union kde:} \medskip
 
@@ -1205,7 +1270,7 @@ em sua base. Na seção~\ref{sec::casos}, diversos casos de trajetória e bases
 serão analisados, com o objetivo de verificar os efeitos também da trajetória
 nos erros devido a dinâmica do sistema robô-base. 
 
-Para facilitar a compreensão desta seção, considere o seguinte exemplo de
+Para exemplificar os conceitos abordados nesta seção, considere-se a seguinte
 tarefa para cálculo da trajetória:
 \newline
 \begin{tcolorbox}
@@ -1219,7 +1284,7 @@ tarefa para cálculo da trajetória:
   \textbf{Velocidade da ferramenta:} $40~m/min$
 \end{tcolorbox}
 %
-A orientação do plano da superfície a ser revestida, de acordo com o exemplo,
+De acordo com o exemplo, a orientação do plano da superfície,
 está alinhado ao sistema de coordenadas inercial e paralelo ao plano xz. A
 Figura~\ref{fig::trajec_600x500x10} apresenta os 50 paralelos da trajetória ao
 longo desta região.
@@ -1606,7 +1671,7 @@ propostos na seção~\ref{sec::casos}.
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
-\section{Modelo da base}
+\section{Modelo da base} \label{sec::base}
 
 A base é definida, neste trabalho, como qualquer estrutura, à qual o manipulador
 robótico é fixado, que forneça flexibilidade, em forma de graus de liberdade,
@@ -1976,24 +2041,234 @@ Kane.
 
 O Sophia-Maple é novamente utilizado desde a construção do modelo cinemático até
 a determinação das equações de movimento, exatamente como foi realizado o modelo
-do robô.
+do robô. Como já foram apresentados os comandos e sintaxe do programa na
+seção~\ref{sec::dkin}, não será repetido nesta seção, ciente de que os comandos
+são equivalentes. No Anexo~\todo{Incluir código anexo} é fornecido o código
+completo do modelo.
 
-Primeiro, define-se as coordenadas generalizadas do sistema. As variáveis $q1,
-q2$ e $q3$ representam as 3 translações do ponto de fixação do robÔ, em $x,y$ e
-$z$, respectivamente, em relação ao sistema de coordenadas inercial, SC-R. As 3
-rotações serão representadas pelas variáveis $q4, q5$ e $q6$ e serão descritos
-nos sistemas de coordenadas SC-R1, SC-R2, SC-R3, respectivamente.
+Para se chegar às equações de movimento, primeiramente, define-se os sistemas de
+coordenadas e as coordenadas generalizadas do sistema.
+As variáveis $q1, q2$ e $q3$ representam as 3 translações do ponto de fixação do
+manipulador, em $x,y$ e $z$, respectivamente, em relação ao sistema de
+coordenadas inercial, SC-R. As 3 rotações serão representadas pelas variáveis
+$q4, q5$ e $q6$ e serão descritos nos sistemas de coordenadas SC-R1, SC-R2,
+SC-R3, respectivamente.
 A coordenada $q4$ representa um ângulo de rotacão do sistema de referência SC-R1
-em relação ao sistema SC-R; $q4$ o ângulo entre SC-R2 e SC-R1; e $q5$ o ângulo
-entre SC-R3 e SC-R2, formando uma cadeia cinemática de ângulos relativos.
+em relação ao sistema SC-R; $q5$ o ângulo entre SC-R2 e SC-R1; e $q6$ o ângulo
+entre SC-R3 e SC-R2, formando uma cadeia cinemática de ângulos relativos. A
+Figura~\ref{fig::schem_scbase} ilustra o sistema inercial SC-R e o sistema SC-R3
+acoplado ao corpo sobre a base.
 
-Neste modelo é considerado apenas um corpo, descrito em SC-R e localizado por
-\texttt{pM}, função de $q1,q2$ e $q3$. No Sophia-Maple é definido como um
-\texttt{Evector}, da seguinte forma:
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.5\textwidth]{figs/schem_scbase}
+ 	\caption{Desenho esquemático dos sistemas de referência da base e inercial}
+ 	\label{fig::schem_scbase}
+\end{figure}
 
-\medskip \noindent {\tt > pR = Evector(0, 0, 0, R)} \\
-				   {\tt > pM = pR \&++ Evector(q1, q2, q3, R)}
-\medskip
+Neste modelo é considerado apenas um corpo, descrito em SC-R e localizado pelo
+vetor \texttt{pM}, função de $q1,q2$ e $q3$.
+%
+\begin{equation}
+	\mathbf{p}^M = [q1,~q2,~q3]^R
+\end{equation}
+%
+Logo, se não há deslocamento da base ($q1=q2=q3=0$) então estará coincidente com
+o ponto zero, do referencial inercial.
+
+Seguindo o cálculo da cinemática, obtém-se os vetores velocidades e acelerações
+angulares, exatamente como realizado na seção~\ref{sec::dkin}, mas desta vez
+apenas para o corpo $M$.
+Portanto, a equação~\ref{eq::velocM} calcula a velocidade do corpo, pela
+derivada temporal do vetor posição em relação a SC-R. E a equação,
+\ref{eq::velangM} calcula o vetor velocidade angular de $M$, no referencial SC-R
+em relação ao referencial SC-R3, que considera as 3 rotações $q4, q5$ e $q6$ da
+base.
+%
+\begin{gather} 
+%eq1	
+	^{R}\mathbf{v}^{M} = [u1,~u2,~u3]^R \label{eq::velocM} \\
+%eq2
+	\boldsymbol{\omega}^{M} = ^{R}\boldsymbol{\omega}^{R3} = [{\it s5}\,{\it
+	u6}+{\it u4},-{\it c5}\,{\it s4}\,{\it u6}+{\it c4}\,{ \it u5},{\it c5}\,{\it c4}\,{\it u6}+{\it s4}\,{\it u5}]^{R}
+\label{eq::velangM}
+\end{gather}
+%
+
+Em seguida é composto o vetor das Velocidades Generalizadas e calculado o
+Hiperplano Tangente.
+%
+\begin{gather}
+	\mathbf{v}_{gen} = [ \mathbf{v}^{M},~ \boldsymbol{\omega}^{M},~ 2] \\
+	\boldsymbol{\tau} = [\boldsymbol{\tau}_1,~ \boldsymbol{\tau}_2,~ 2]
+\end{gather}
+%
+
+O cálculo das equações dinâmicas se divide em definir o vetor das Forças
+Externas generalizadas e o vetor das Forças de Inércia generalizadas, para, em
+seguida, projetá-los no hiperplano tangente e obter as equações de movimento.
+
+As forças externas são formadas pela força peso, do corpo $M$ e
+pelas forças conservativas e não conservativas da base, provenientes da rigidez
+e do amortecimento, respectivamente. Portanto:
+%
+\begin{equation}
+	\mathbf{Peso}_M = m_M \cdot \mathbf{g}
+\end{equation}
+%
+Onde, desta vez o vetor gravidade está descrito no referncial SC-R. 
+%
+\begin{equation}
+	\mathbf{g} = [-9,81,~0,~0]^{R}
+\end{equation}
+%
+O termo $m_M$ representa o valor da massa ``suspensa'' pela base. Neste tópico
+de apresentação do modelo desacoplado da base, o valor desta massa será a massa
+total do robô, $130~kg$.
+
+As forças conservativas são calculadas pela matriz de rigidez da base. Esta
+matriz, multiplicada pelo vetor das coordenadas generalizadas, fornece um
+conjunto de 6 equações, que retornam a força elástica em função dos
+deslocamentos do corpo.
+%
+\begin{equation}
+%eq1
+	\mathbf{Fk} = \mathbf{K} \cdot \mathbf{q}
+\end{equation}
+\begin{equation}
+%eq2
+	\mathbf{Fk} = \begin{pmatrix} 
+    k_{11} & \dots 	& k_{16} \\
+    \vdots & \ddots & \\
+    k_{61} &        & k_{66} 
+    \end{pmatrix} \cdot 
+    \begin{pmatrix} 
+    q1 \\ 
+    \vdots \\ 
+    q6 
+    \end{pmatrix}
+\end{equation}
+
+
+Logo, a equação~\ref{eq::fki} calcula a força elástica $Fk$ na direção $i$
+associada a cada coordenada generalizada $qi$:
+%
+\begin{equation} \label{eq::fki}
+	Fk_i = \sum_{j=1}^{6} [K]_{i,j} \cdot q_j
+\end{equation}
+%
+Onde $[K]_{i,j}$ é o elemento $i,j$ da matriz de rigidez $K$. Note-se que os
+termos a partir da 4ª linha da matriz, na verdade calculam os momentos,
+associados às rotações $q4, q5$ e $q6$ da base.
+Porém, não será feita essa distinção, sendo considerados tanto as forças quanto
+momentos, como forças generalizadas.
+
+Equivalentemente, obtém-se as expressões para as forças não conservativas, mas
+desta vez, multiplica-se a matriz de amortecimento $C$ pelo vetor $u$ das
+velocidades. Logo:
+%
+\begin{equation} \label{eq::fci}
+	Fc_i = \sum_{j=1}^{6} [C]_{i,j} \cdot u_j
+\end{equation}
+%
+
+Então, pelo equilíbrio, as forças que agem sobre o corpo suspenso pela base são:
+%
+\begin{equation} \label{eq::fexm}
+	\mathbf{Fex}_M = \mathbf{Peso}_M - \mathbf{Fk} - \mathbf{Fc}
+\end{equation}
+%
+As forças externas genearlizadas são a projeção do vetor das forças externas da
+equação~\ref{eq::fexm} no hiperplano tangente $\tau$.
+%
+\begin{equation}
+	\mathbf{FEXg} = \mathbf{Fex}_M \cdot \boldsymbol{\tau}
+\end{equation}
+%
+
+As forças de inércia são calculadas pelas equações~\ref{eq::finG} e
+\ref{eq::finH}, para o corpo $M$. Aplicando ao modelo da base, obtém-se as
+forças de inércia generalizadas, pela projeção do vetor forças de inércia no
+hiperplano tangente $\tau$.
+%
+\begin{gather}
+	\mathbf{Fin}_M = [\dot{\mathbf{G}}_{M},~ \dot{\mathbf{H}}_{M}] \\
+	\mathbf{FINg} = \mathbf{Fin}_M \cdot \boldsymbol{\tau}
+\end{gather}
+%
+Finalmente, a equação de movimento do corpo $M$ é obtida pelo equilíbrio das
+forças externas e de inércia generalizadas. Portanto, tem-se 6 equações de
+movimento, associadas aos 6 gdl do sistema:
+%
+\begin{equation}
+	FEXg - FINg = 0
+\end{equation}
+%
+O sistema \textit{kinematic differential equation} (kde) fornece mais 6
+equações, relacionando $q$ e $u$. As condições iniciais $q1(0),\ldots,q6(0)$ e
+$u1(0),\ldots,u6(0)$ completam o problema.
+
+Assim como no modelo do robô, o problema consiste em solucionar um sistema de
+equações diferenciais ordinárias, não-lineares, cujas incógnitas são as
+coordenadas generalzadas $q1(t),\ldots,q6(t)$ e as velocidades
+$u1(t),\ldots,u6(t)$. A solução portanto será numérica, assim como no modelo do
+robô.
+
+Para demonstrar o modelo, considere-se os seguintes parâmetros de rigidez,
+amortecimento e condição incial do sistema:
+%
+\begin{itemize}
+  \item{\textbf{Rigidez:} igual a da base de testes}
+  \item{\textbf{Amortecimento:} $\alpha = 0;~ \beta = 10^{-5}$}
+  \item{\textbf{Condição inicial:} $q1(0) = q2(0) = q3(0) = 0,1~mm$, $q4(0) =
+  0,001~rad$, $q5(0) = q6(0) = 0$}
+\end{itemize}
+%
+
+
+\subsubsection{Resultados do exemplo}
+
+A Figura~\ref{fig::res_qbase_exemplo} apresenta o resultado dos deslocamentos da
+base, dada a condição incial fora da sua configuração de equilíbrio.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{figs/q123_base_exemplo}
+        \caption{Resultado MBS da base: translações q1, q2, q3}
+        \label{fig::q123_base_exemplo}
+    \end{subfigure}
+    \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
+    % etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{figs/q456_base_exemplo}
+        \caption{Resultado MBS da base: rotações q4, q5, q6}
+        \label{fig::q456_base_exemplo}
+    \end{subfigure}
+    \caption{Resultados dos primeiros 500~ms do deslocamento da base}
+    \label{fig::res_qbase_exemplo}
+\end{figure}
+
+Note-se que, antes do tempo final da simulação, o sistema parece estar em
+equilíbrio. O resultado de cada coordenada generalizada em $t=0,5~s$ é:
+%
+\begin{align*}
+	q1(0,5) &= -0,20839\cdot 10^{-5}~m \\
+	q2(0,5) &= 4,8952\cdot 10^{-8}~m \\
+	q3(0,5) &= 8,4009 \cdot 10^{-12}~m \\
+	q4(0,5) &= -1,6031\cdot 10^{-10}~rad \\
+	q5(0,5)	&= -1,6260\cdot 10^{-11}~rad \\
+	q6(0,5) &= 1,7857\cdot 10^{-8}~rad
+\end{align*}
+%
+Verifica-se por este resultado que, no equilíbrio, os deslocamentos são
+desprezíveis para o robô, tal que os valores máximos são da ordem de
+$10^{-2}~mm$ em $q1$ e $10^{-11}~rad$ em $q5$.
+
+
+
+
 
 
 
@@ -2001,9 +2276,11 @@ Neste modelo é considerado apenas um corpo, descrito em SC-R e localizado por
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Ensaio Experimental} \label{sec::experimento}
 
+\lipsum[1-1]
+
 \subsection{Bancada experimental}
 
-\subsection{Programas de aquisição dos dados experimentais}
+\subsection{Aquisição dos dados experimentais}
 
 \subsection{Tratamento dos dados}
 
@@ -2011,7 +2288,7 @@ Neste modelo é considerado apenas um corpo, descrito em SC-R e localizado por
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
-\section{Modelo acoplado robô e base}
+\section{Modelo acoplado robô e base} \label{sec::acoplado}
 
 \subsection{Base rígida}
 

@@ -260,16 +260,16 @@ s3}&-{ \it c2}\,{\it s3}-{\it s2}\,{\it c3}&0\\ \noalign{\medskip}{\it c1}\,{
 \subsubsection{Vetores posição e centros de massa}
 
 A segunda etapa é definir os vetores posição dos centros de massa de cada corpo.
-Para isso, define-se auxiliarmente os vetores posição entre cada SC, desde o
-referencial inercial Z até o efetuador em T. Será utilizada a notação de Lesser,
-por meio dos \texttt{Evectors}, como descrito na seção~\ref{sec::sophia-kane}
-para representar esses vetores.
+Para isso, define-se auxiliarmente os vetores posição entre cada sistema de
+coordenada, desde o referencial inercial SC-Z até o efetuador em SC-T, de
+acordo com a equação~\ref{eq::posjnutas}.
 
 Logo, de maneira geral, pode-se escrever a posição de qualquer ponto pela
 seguinte relação:
 %
 \begin{align}
-	^{Z}\mathbf{p}^{k} &= ~^{Z}\mathbf{p}^{k-1} + ~^{k-1}\mathbf{p}^{k} \\
+	^{Z}\mathbf{p}^{k} &= ~^{Z}\mathbf{p}^{k-1} + ~^{k-1}\mathbf{p}^{k}
+	\label{eq::posjnutas} \\
 	^{Z}\mathbf{pcm}^{k} &= ~^{Z}\mathbf{pcm}^{k-1} + ~^{k}\mathbf{pcm}^k
 	\label{eq::pcm}
 \end{align}
@@ -278,7 +278,8 @@ Onde $^{Z}\mathbf{p}^{k}$ é o vetor posição do referencial $k$ em relação a
 referencial inercial $Z$ e analogamente $^{Z}\mathbf{pcm}^{k}$ é o vetor
 posição do centro de massa do corpo $k$, tal que $k$ varia em \{S,L,U,B,T\},
 sistemas de coordenadas do robô.
-No Sophia-Maple escreve-se:
+No Sophia-Maple é utilizada a notação de Lesser, por meio dos \texttt{Evectors},
+para representar esses vetores, como descrito na seção~\ref{sec::sophia-kane}.
 
 \medskip \noindent {\tt > pZ:= Evector(0,0,0,Z)} \\
 \noindent {\tt > for k from corpo[1] to corpo[6] do \\
@@ -292,7 +293,36 @@ E para os centros de massa:
 \indent pcm||k:= p||{k} \&++ Evector(pcm||{k}||x, pcm||{k}||y, pcm||{k}||z, k)
 \\ end do:} \medskip 
 
-\todo[inline]{Incluir figura com vetores posição e do robô esquemático do Maple}
+A Figura~\ref{fig::amb3D} apresenta o ambiente de simulação 3D, que é utilizado
+para facilitar a visualização do posicionamento e movimento das juntas e elos do
+robô. Defidos os pontos de origem de cada referencial, representa-se os elos do
+manipulador por uma linha colorida entre os SC's. A ferramenta acoplada é
+representada por uma linha que se estende desde a origem do pulso até sua
+extremidade.
+
+Neste ambiente 3D é possível fornecer qualquer configuração de juntas e
+obter-se um resultado visual de posicionamento e orientação dos elos. A
+Figura~\ref{fig::amb3D_posA} ilustra o resultado para a configuração inicial do
+do robô, $q1 = \ldots = q6 = 0$; e a Figura~\ref{fig::amb3D_posB} para a
+configuração $q1 = \ldots = q6 = {-}^{\pi}/_2$.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{figs/amb3D_posA}
+        \caption{Configuração inicial}
+        \label{fig::amb3D_posA}
+    \end{subfigure}
+    \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
+    % etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{figs/amb3D_posB}
+        \caption{Configuração $q1 = \ldots = q6 = {-}^{\pi}/_2$}
+        \label{fig::amb3D_posB}
+    \end{subfigure}
+    \caption{Ambiente 3D de visualização do robô}\label{fig::amb3D}
+\end{figure}
 
 \subsubsection{Velocidades}
 
@@ -1237,7 +1267,8 @@ Se a tarefa é, por exemplo, o processo de revestimento por HVOF de uma
 superfície , o robô deve seguir uma trajetória ao longo daquela superfície, de
 forma a cobrí-la totalmente com o material aspersado. Como visto na
 seção~\ref{sec::ikin_traj} uma maneira simples de cobrir uma superfície é pelo
-movimento de ``zigue-zague'', ilustrado na Figura~\ref{fig::zigzag}.
+movimento de ``zigue-zague''\todo{Rever / reescrever esse parágrafo}, ilustrado
+na Figura~\ref{fig::zigzag}.
 
 \missingfigure{Figura esquemática da trajetória}.
 
@@ -2067,7 +2098,7 @@ acoplado ao corpo sobre a base.
 \end{figure}
 
 Neste modelo é considerado apenas um corpo, descrito em SC-R e localizado pelo
-vetor \texttt{pM}, função de $q1,q2$ e $q3$.
+vetor $\mathbf{p}^M$, função de $q1,q2$ e $q3$.
 %
 \begin{equation}
 	\mathbf{p}^M = [q1,~q2,~q3]^R
@@ -2276,9 +2307,127 @@ $10^{-2}~mm$ em $q1$ e $10^{-11}~rad$ em $q5$.
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Ensaio Experimental} \label{sec::experimento}
 
-\lipsum[1-1]
+O amortecimento da estrutura que serve de base para o manipulador tem um papel
+importante na dinâmica do sistema. Como foi demonstrado, o modelo MBS
+acoplado robô-base requer como entrada os parâmetros de inércia, rigidez e amortecimento
+da base. Os dados de inércia são facilmente obtidos pelo modelo CAD e a matriz
+de inércia pela Análise por Elementos Finitos. Entretanto, estas
+ferramentas não são capazes de fornecer informações sobre o amortecimento.
+Modelar o amortecimento é um problema constante na engenharia de sistemas
+mecânicos e continua um desafio.
 
-\subsection{Bancada experimental}
+O sistema robô-base não possui nenhum elemento com a finalidade específica de
+controle ou absorção de vibrações. O que ocorre é o citado amortecimento
+estrutural (seção~\ref{sec::amortecimento}), formado principalmente pelo
+amortecimento do material \todo{Inlcuir referência no texto} e por atrito,
+devido a folgas nos elementos de conexão, parafusos por exemplo.
+
+Apesar de existir métodos para estimar o amortecimento material e de atrito
+analiticamente, estes são adequados para estruturas muito simples e uniformes,
+como vigas, placas ou corpos de prova. A estrutura que forma a base do robô é
+relativamente muito complexa, possuindo diferentes materiais, conexões e formas,
+o que torna impossível modelar analiticamente o amortecimento.
+
+Logo, recorre-se ao método experimental para obter o amortecimento da base.
+A vantagem é que por este método, obtém-se os parâmetros do comportamento total
+da estrutura, não importando as infinitas interações internas dos materiais e de
+atrito impossíveis de se medir ou quantificar individualmente.
+Mais especificamente, o que importa é o comportamento do ponto de interação
+robô-base.
+
+Os parâmetros modais da base, associados aos  modos e frequências naturais de
+vibração são obtidos por meio de um ensaio de vibrações.
+A estrutura utilizada para o experimento é a denominada estrutura de testes,
+Figura~\ref{fig::estrut_modelo_fisico}, sendo instrumentada com acelerômetros a
+fim de se obter as acelerações associadas a cada um dos 6 graus de liberdade da
+base, no ponto de interação com o robô. Um martelo instrumentado é utilizado
+para excitar a base e obter as Funções de Resposta em Frequência (FRF's) de cada
+grau de liberdade. Estes dados são utilizados para estimar os parâmetros modais:
+modos de vibração, frequências naturais e amortecimentos.
+
+Os resultados experimentais são então utilizados para calcular os parâmetros
+$\alpha$ e $\beta$ da matriz de amortecimento proporcional.
+
+
+\subsection{Bancada experimental e Instrumentação}
+
+A base de testes é utilizada para os propósitos do ensaio e instrumentada com
+acelerômetros. Deseja-se obter as acelerações de um ponto virtual, localizado no
+centro da placa de fixação do robô. Este ponto representa a conexão teórica
+entre a base e o manipulador, que restringe qualquer translação ou rotação
+relativa entre eles.
+Definindo-se um referencial fixo a este ponto, qualquer deslocamento e rotação
+deste referencial transfere o mesmo movimento para o manipulador.
+
+Levando isto em consideração, é preciso que as medidas coletadas do experimento
+reflitam os deslocamentos deste ponto. Para isso, foram utilizados no total 7
+acelerômetros uni-axiais, posicionados estrategicamente na placa de fixação do
+robô. 
+
+Os acelerômetros utilizados são modelo\ldots\todo{Incluir parágrafo descrição
+dos acelerômetros}
+
+A Figura~\ref{fig::acelerometos-base} apresenta a distribuição dos
+acelerômetros na estrutura, onde são representados pelos pequenos cilindros
+indicados, cuja direção de medição é a mesma do seu eixo, e o sentido positivo
+sempre para fora da placa.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/acelerometos-base}
+ 	\caption{Dsitribuição dos acelerômetros na base}
+ 	\label{fig::acelerometos-base}
+\end{figure}
+
+Assim como foi assumido no modelo para AEF da base, a placa de fixação do robô é
+muito rígida em relação à estrutura de perfis de alumínio. Ou seja, as
+deformações desta peça serão despezíveis e portanto a distância entre quaisquer
+dois pontos sobre a placa permanecerá fixa no referencial local.
+Isto permite a distribuição dos acelerômetros em qualquer ponto da placa
+assumindo as acelerações são consideradas devido a movimento de corpo rígido e
+não deformações elásticas da peça. 
+
+Isto implica, que pode-se calcular a aceleração, em cada uma das 6 direções do
+ponto virtual, a partir de relações aritméticas simples entre os sensores $a1$ a
+$a7$. As acelerações lineares são indicadas pela variável $a$ e as
+rotacionais por $\alpha$ seguidas de subíndice indicando sua orientação. Logo:
+%
+\begin{align}
+	a_x &= \frac{a2+a3}{2} \\
+	a_y &= \frac{a4+a5}{2} \\
+	a_z &= - \frac{a6+a7}{2} \\
+	\alpha_x &= \frac{a5-a4}{r1} \\
+	\alpha_y &= \frac{a2-a1}{r1} \\
+	\alpha_z &= \frac{a1-a3}{r2}
+\end{align}
+%
+Onde $r1$ é a distância entre os acelerômetros $a1$ e $a2$, na direção $z$; e
+$r2$ a distância entre os acelerômetros $a6$ e $a7$, direção $y$.
+
+Note-se que é que as acelerações lineares são calculadas pela média entre dois
+acelerômetros na mesma direção.
+Já as acelerações angulares pela diferença entre os dois acelerômetros na mesma
+direção, dividida pela distância, $r1$ ou $r2$ entre eles. Considere-se agora
+que cada equação crie um sensor virtual, localizado no centro entre o par
+calculado. Se a placa é rígida, pode-se considerar então que tais acelerações
+são as mesmas correspondentes às do ponto central da placa. 
+
+Tem-se portanto um vetor das acelerações generalizadas do referencial local da
+placa, em que cada termo representa uma direção dos 6 gdl da base.
+%
+\begin{equation}
+	\mathbf{a} = \left[ a_x, a_y, a_z, \alpha_x, \alpha_y, \alpha_z \right]
+\end{equation}
+%
+
+
+
+Para aquisição dos dados experimentais são utilizadas duas placas NI-9234, da
+fabricante National Instruments. Cada placa possui
+
+
+
+
 
 \subsection{Aquisição dos dados experimentais}
 

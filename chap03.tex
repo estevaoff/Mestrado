@@ -10,9 +10,9 @@ O método proposto pode ser dividido em 5 etapas:
 \begin{enumerate}
   \item Modelo dinâmico do Robô;
   \item Modelo dinâmico da Base;
+  \item Ensaio Experimental da Base;
   \item Modelo dinâmico acoplado da Base com Robô;
-  \item Ensaio Experimental para obtenção de parâmetros modais da Base;
-  \item Tratamento dos resultados e cálculo dos erros teóricos.
+  \item Tratamento dos resultados.
 \end{enumerate}
 
 Os modelos dinâmicos -- robô, base e acoplado -- são realizados com auxílio do
@@ -63,8 +63,8 @@ ferramenta quando o robô opera sobre uma base rígida em relação a mesma oper
 do robô sobre base flexível. São então verificados os efeitos da elasticidade da
 base sobre os parâmetros controlados do processo sendo executado.
 
-A Figura~\ref{fig::visgeral} ilustra uma visão geral do método proposto
-facilitando a visualização das relações entre os modelos. 
+Resumindo o que foi dito, a Figura~\ref{fig::visgeral} ilustra uma visão geral
+do método proposto facilitando a visualização das relações entre os modelos.
 
 \begin{figure}[h]
 	\centering 
@@ -1744,8 +1744,10 @@ Para ilustrar o método, será aproveitada a base projetada e construída para
 testes do robô, em laboratório, previstos no projeto EMMA. Consiste em uma
 estrutura metálica, formada por perfis extrudados de alumínio estrutural. Sobre
 a estrutura um par de trilhos paralelos permitem o movimento longitudinal da
-placa onde é fixado o robô. A Figura~\ref{fig::estrut_modelo_fisico} apresenta
-uma fotografia da base de testes.
+placa onde é fixado o robô. As dimensões principais são 2 metros de comprimento,
+0,8 metros de largura e 0,6 metros de altura. A
+Figura~\ref{fig::estrut_modelo_fisico} apresenta uma fotografia da base de
+testes.
 
 \begin{figure}[h]
 	\centering 
@@ -2213,7 +2215,7 @@ As forças externas genearlizadas são a projeção do vetor das forças externa
 equação~\ref{eq::fexm} no hiperplano tangente $\tau$.
 %
 \begin{equation}
-	\mathbf{FEXg} = \mathbf{Fex}_M \cdot \boldsymbol{\tau}
+	\mathbf{FEX}g = \mathbf{Fex}_M \cdot \boldsymbol{\tau}
 \end{equation}
 %
 
@@ -2224,7 +2226,7 @@ hiperplano tangente $\tau$.
 %
 \begin{gather}
 	\mathbf{Fin}_M = [\dot{\mathbf{G}}_{M},~ \dot{\mathbf{H}}_{M}] \\
-	\mathbf{FINg} = \mathbf{Fin}_M \cdot \boldsymbol{\tau}
+	\mathbf{FIN}g = \mathbf{Fin}_M \cdot \boldsymbol{\tau}
 \end{gather}
 %
 Finalmente, a equação de movimento do corpo $M$ é obtida pelo equilíbrio das
@@ -2232,7 +2234,7 @@ forças externas e de inércia generalizadas. Portanto, tem-se 6 equações de
 movimento, associadas aos 6 gdl do sistema:
 %
 \begin{equation}
-	FEXg - FINg = 0
+	\mathbf{FEX}g - \mathbf{FIN}g = \mathbf{0}
 \end{equation}
 %
 O sistema \textit{kinematic differential equation} (kde) fornece mais 6
@@ -2332,45 +2334,46 @@ Logo, recorre-se ao método experimental para obter o amortecimento da base.
 A vantagem é que por este método, obtém-se os parâmetros do comportamento total
 da estrutura, não importando as infinitas interações internas dos materiais e de
 atrito impossíveis de se medir ou quantificar individualmente.
-Mais especificamente, o que importa é o comportamento do ponto de interação
-robô-base.
+Mais especificamente, o que importará mesmo é o comportamento do ponto de
+interação robô-base.
 
-Os parâmetros modais da base, associados aos  modos e frequências naturais de
-vibração são obtidos por meio de um ensaio de vibrações.
-A estrutura utilizada para o experimento é a denominada estrutura de testes,
-Figura~\ref{fig::estrut_modelo_fisico}, sendo instrumentada com acelerômetros a
-fim de se obter as acelerações associadas a cada um dos 6 graus de liberdade da
+Os parâmetros modais da base, associados aos  modos e frequências naturais são
+obtidos por meio de um ensaio de vibrações.
+A estrutura utilizada para o experimento que foi apresentada na
+Figura~\ref{fig::estrut_modelo_fisico}, é instrumentada com acelerômetros a fim
+de se obter as acelerações associadas a cada um dos 6 graus de liberdade da
 base, no ponto de interação com o robô. Um martelo instrumentado é utilizado
 para excitar a base e obter as Funções de Resposta em Frequência (FRF's) de cada
 grau de liberdade. Estes dados são utilizados para estimar os parâmetros modais:
 modos de vibração, frequências naturais e amortecimentos.
 
-Os resultados experimentais são então utilizados para calcular os parâmetros
+Os resultados experimentais serão então utilizados para calcular os parâmetros
 $\alpha$ e $\beta$ da matriz de amortecimento proporcional.
 
 
 \subsection{Bancada experimental e Instrumentação}
 
 A base de testes é utilizada para os propósitos do ensaio e instrumentada com
-acelerômetros. Deseja-se obter as acelerações de um ponto virtual, localizado no
-centro da placa de fixação do robô. Este ponto representa a conexão teórica
-entre a base e o manipulador, que restringe qualquer translação ou rotação
-relativa entre eles.
+acelerômetros. Para ter consistência entre os modelos teórico e experimental,
+deseja-se obter as acelerações de um ponto virtual, localizado no centro da
+placa de fixação do robô. Este ponto representa a conexão teórica entre a base e
+o manipulador, que restringe qualquer translação ou rotação relativa entre eles.
 Definindo-se um referencial fixo a este ponto, qualquer deslocamento e rotação
-deste referencial transfere o mesmo movimento para o manipulador.
+deste referencial transfere o mesmo movimento para o manipulador. Logo, este
+ponto está para o modelo experimental assim como $\mathbf{p}^M$ está para o
+modelo teórico da base. Da mesma forma, o referencial local da placa é
+equivalente ao referencial SC-R3 do modelo teórico.
 
 Levando isto em consideração, é preciso que as medidas coletadas do experimento
-reflitam os deslocamentos deste ponto. Para isso, foram utilizados no total 7
-acelerômetros uni-axiais, posicionados estrategicamente na placa de fixação do
-robô. 
+reflitam os deslocamentos deste ponto.
 
-Os acelerômetros utilizados são modelo\ldots\todo{Incluir parágrafo descrição
-dos acelerômetros}
+\subsubsection{Acelerômetros}
 
-A Figura~\ref{fig::acelerometos-base} apresenta a distribuição dos
-acelerômetros na estrutura, onde são representados pelos pequenos cilindros
-indicados, cuja direção de medição é a mesma do seu eixo, e o sentido positivo
-sempre para fora da placa.
+São utilizados no total 7 acelerômetros uni-axiais piezoelétricos, fixados à
+placa por bases magnéticas. A Figura~\ref{fig::acelerometos-base} apresenta a
+distribuição dos acelerômetros na estrutura, onde são representados pelos
+pequenos cilindros indicados, cuja direção de medição é a mesma do seu eixo, e o
+sentido positivo sempre para fora da placa.
 
 \begin{figure}[h]
 	\centering 
@@ -2393,47 +2396,366 @@ $a7$. As acelerações lineares são indicadas pela variável $a$ e as
 rotacionais por $\alpha$ seguidas de subíndice indicando sua orientação. Logo:
 %
 \begin{align}
-	a_x &= \frac{a2+a3}{2} \\
+	a_x &= \frac{a2+a3}{2} \label{eq::acel_ax}\\
 	a_y &= \frac{a4+a5}{2} \\
 	a_z &= - \frac{a6+a7}{2} \\
 	\alpha_x &= \frac{a5-a4}{r1} \\
 	\alpha_y &= \frac{a2-a1}{r1} \\
-	\alpha_z &= \frac{a1-a3}{r2}
+	\alpha_z &= \frac{a1-a3}{r2} \label{eq::acel_alphaz}
 \end{align}
 %
 Onde $r1$ é a distância entre os acelerômetros $a1$ e $a2$, na direção $z$; e
-$r2$ a distância entre os acelerômetros $a6$ e $a7$, direção $y$.
+$r2$ a distância entre os acelerômetros $a6$ e $a7$, na direção $y$.
 
-Note-se que é que as acelerações lineares são calculadas pela média entre dois
+Note-se que que as acelerações lineares são calculadas pela média entre dois
 acelerômetros na mesma direção.
 Já as acelerações angulares pela diferença entre os dois acelerômetros na mesma
 direção, dividida pela distância, $r1$ ou $r2$ entre eles. Considere-se agora
 que cada equação crie um sensor virtual, localizado no centro entre o par
 calculado. Se a placa é rígida, pode-se considerar então que tais acelerações
-são as mesmas correspondentes às do ponto central da placa. 
+são as mesmas correspondentes às do ponto central
+da placa.
 
-Tem-se portanto um vetor das acelerações generalizadas do referencial local da
-placa, em que cada termo representa uma direção dos 6 gdl da base.
+Tem-se portanto um vetor das acelerações generalizadas medidas no referencial
+local da placa, em que cada termo representa uma direção dos 6 gdl da base.
 %
 \begin{equation}
 	\mathbf{a} = \left[ a_x, a_y, a_z, \alpha_x, \alpha_y, \alpha_z \right]
 \end{equation}
 %
 
+\subsubsection{Martelo Instrumentado}
 
+A excitação da estrutura é feita com um martelo instrumentado com sensor de
+força, da fabricante PCB. Pelo tamanho e peso da estrutura a ser testada, é
+recomendável um impacto com energia suficiente para excitar toda a estrutura, a
+fim de obter os modos de vibração em uma faixa larga de frequência. A energia do
+impacto pode ser calculada por:
+\begin{equation}
+	E = m \cdot v
+\end{equation}
+%
+Infere-se que, para ter uma energia mais alta, ou aumenta-se a
+velocidade do impacto, ou a massa do martelo. Como os modelos de martelo com
+massa baixa ($<1~kg$) possuem faixa de medição também pequena, optou-se por um
+martelo de massa elevada. O modelo PCB-086D50 foi escolhido para o ensaio. Este
+martelo possui massa de $5,5~kg$ e faixa de medição de $\pm 25~kN$.
+
+A faixa de frequência excitada também é função do material da ponta do martelo.
+A Figura~\ref{fig::carta_badwidth} apresenta a força do impacto no espectro das
+frequências, obtida pela \textit{Fast Fourier Transform} (FFT) a partir do sinal
+no tempo.
+Percebe-se que para uma mesma força de pico do impacto, uma ponta mais dura
+fornece uma faixa mais larga que quando usada uma ponta macia.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/carta_badwidth}
+ 	\caption{Espectro de frequência do impacto do martelo PCB-086D50. Adaptado de: }
+ 	\label{fig::carta_badwidth}
+\end{figure}
+\todo[inline]{Incluir fonte da carta do martelo}
+
+\subsubsection{Placas de aquisição, chassi e programas}
 
 Para aquisição dos dados experimentais são utilizadas duas placas NI-9234, da
-fabricante National Instruments. Cada placa possui
+fabricante National Instruments. Cada placa possui 4 canais. Uma placa recebe 4
+acelerômetros e a outra 3, mais o martelo instrumentado.
+
+Um chassi portátitil modelo NI cDAQ-9178 com capacidade de até 8 placas
+de aquisição controla a temporização, sincronização e transferência dos dados
+para o computador, via USB. 
+
+O programa SignalExpress fornece uma interface para registro, leitura gráfica,
+análise e pós processamento dos dados adquiridos. Será utilizado para realizar
+a média das aquisições, cálculo das acelerações em cada direção, FFT do impacto
+do martelo e a Função Resposta em Frequência (FRF) das acelerações.
+
+Obtidas as FRF's das acelerações em cada direção, os resultados de
+magnitude e fase das FRF's são importados no programa ME'Scope VES, que oferece
+ferramentas prontas para análise modal e obtenção dos modos, frequências
+naturais e amortecimentos, de forma bastante prática.
+
+A Figura~\ref{fig::foto_bancada} apresenta uma fotografia da bancada
+experimental, montada no Laboratório de Acústica e Vibrações (LAVI/COPPE-UFRJ) e
+a Figura~\ref{fig::diagrama_bancada} um diagrama esquemático, representando os
+sensores, a base e os módulos de aquisição, assim como as conexões entre eles..
+
+\missingfigure[figheight=0.6\textwidth]{Fotografia da bancada}
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/diagrama_bancada}
+ 	\caption{Diagrama da bancada experimental}
+ 	\label{fig::diagrama_bancada}
+\end{figure}
+\todo[inline]{Incluir fontes das figuras dos sensores}
 
 
 
+\subsection{Aquisição e tratamento dos dados}
+
+Os dados coletados pelos acelerômetros e o martelo instrumentado são enviados
+através das placas e chassi de aquisição para tratamento, em tempo real no
+SignalExpress. O pós-processamento no programa calcula as FRF's de cada grau de
+liberdade e os resultados são exportados para o ME'Scope para realizar análise
+modal e estimativa dos parâmetros modais. Segue o detalhamento de cada uma
+destas etapas.
+
+\subsubsection{Aquisição no SignalExpress}
+
+Antes de serem adquiridos, deve-se primeiro preparar o ambiente no
+programa SignalExpress. Nele é mapeado o canal que receberá os dados
+de cada sensor, fornecidos os tipos de sensores e os valores de sensibilidade,
+faixas de trabalho, taxa de aquisição e número de amostras.
+
+Para evitar os fenômenos de \textit{aliasing}, a taxa de aquisição foi definida
+em $50~kHz$\todo{Revisar valores}, longe o suficiente da frequência de
+ressonância esperada da base, e para evitar o vazamento espectral (ou
+\textit{leakage}), o número de amostras como o dobro da taxa, neste caso, $100$
+mil. Isto garante uma janela de tempo de cada amostragem de 2 segundos. Como o
+sinal é quase totalmente amortecido neste intervalo de tempo, não há necessidade
+de utilizar uma função de janelamento (ou \textit{window}) neste sinal.
+É utilizada a função \textit{Averaging} para calcular a média das amostragens,
+pelo método RMS (\textit{Root Mean Square}).
+Serão coletadas 5 amostragens por direção de estímulo, para processamento e
+cálculo dos dados.
+
+Em seguida, são definidas as acelerações do ponto central da base, que são
+calculadas pelas equações~\ref{eq::acel_ax} a \ref{eq::acel_alphaz}. No
+SignalExpress é utilizada a função de pós-processamento \textit{Formula}, que
+permite realizar operações algébricas entre até 4 sinais. Logo, são definidas 6
+funções que calculam as acelerações do ponto virtual central da base.
+
+Por fim, é utilizada a função \textit{Frequency Response} do pacote NI Sound and
+Vibration Assistant do SignalExpress. Esta função recebe  os sinais do
+martelo e as acelerações em uma direção, e calcula as Funções de Transferência
+entre as acelerações (saída) e a força de impacto (entrada).
+
+\subsubsection{Função de Transferência}
+
+Seja a Função de Transferência definida por uma matriz $H_{n \times n}$, formada
+pelos termos $h_{ij}$. Cada termo representa uma FRF da aceleração de cada
+direção $i$ como resposta do impulso do martelo na direção $j$. Logo, para este
+modelo de base, $n$ é igual ao número de graus de liberdade, 6. Portanto 36
+termos definem a Função de Transferência. Como a matriz é
+simétrica,\todo{Incluir referência da matriz simétrica}, podem ser deteminados
+apenas 21 termos.
+%
+\begin{equation}
+H =
+\begin{bmatrix}
+    h_{11} & h_{12} & h_{13} & h_{14} & h_{15} & h_{16} \\
+		   & h_{22} & h_{23} & h_{24} & h_{25} & h_{26} \\
+		   & 		& h_{33} & h_{34} & h_{35} & h_{36} \\
+		   & 		&  		 & h_{44} & h_{45} & h_{46} \\
+		   & 		&  		 &  	  & h_{55} & h_{56} \\
+      \multicolumn{2}{c}{\text{sim.}} & & &    & h_{66} 
+\end{bmatrix}
+\end{equation}
+%
+
+Note-se que para calcular os termos devido a rotação da base, então seria
+necessário excitar um momento em cada direção angular ($r_x,r_y,r_z$) e obter
+$h_{i4}$ a $h_{i6}$. Entretanto, é impossível excitar, com o martelo, um momento
+puro na base. Logo, estes termos não podem ser calculados diretamente. Em
+compensação, o ensaio conta com aquisição simultânea de 6 sinais de saída
+(acelerações) para cada sinal de entrada (impacto) e portanto classifica-se como
+SIMO (\textit{Single Input Multiple Outputs}). A vantagem deste tipo de ensaio é
+que para o caso em que o número de sinais é igual ao número de graus de
+liberdade, obtem-se exatamente uma coluna inteira da matriz de Transferência. De
+uma linha ou uma coluna completa, já há informação suficiente para  se
+determinar os parâmetros modais. Este conceito é útil, pela incapacidade de
+estimular os momentos puros na estrutura.
+
+\subsubsection{Resultados da aquisição}
+
+Para verificar os resultados no SignalExpress, são reservadas áreas para
+plotagem dos seguintes gráficos:
+%
+\begin{itemize}
+  \item Acelerações $a_x, a_y, a_z, \alpha_x, \alpha_y, \alpha_y$ vs.
+  tempo;
+  \item Força do martelo vs. tempo;
+  \item FFT da força do martelo;
+  \item FRF's: $a_x, a_y, a_z, \alpha_x, \alpha_y, \alpha_y$ para $F_x, F_y,
+  F_z$: \\ Tal que em cada FRF fornece: Magnitude; Fase; parte Real; parte
+  Imaginária; e Coerência.
+\end{itemize}
+%
+Como são muitos, ao todo 27 gráficos, serão apresentados apenas os
+resultados para o ensaio de impacto na direção $y$ da base.
+
+\missingfigure{Resultado acelerações vs. tempo}
+
+\missingfigure{Resultado Força do martelo vs. tempo}
+
+\missingfigure{FFT da força do martelo}
+
+\missingfigure{FRF: Magnitude}
+
+\missingfigure{FRF: Fase}
+
+\missingfigure{FRF: Real}
+
+\missingfigure{FRF: Imaginário}
+
+\missingfigure{FRF: Coerência}
+
+A análise modal será feita no programa ME'Scope. Para isso, os resultados devem
+ser exportados em arquivo ASCII na forma numérica, tal que a amostragem de dados
+estjeda disposta em colunas, na seguinte ordem:
+%
+\begin{equation*}
+\begin{matrix}
+Frequencia & Magnitude~\#1  & Fase~\#1  & \ldots & Magnitude~\#6 & Fase~\#6 \\ 
+ \vdots & \vdots & \vdots &  & \vdots & \vdots
+\end{matrix}
+\end{equation*}
+%
+As colunas de Magnitude e Fase correspondem aos
+resultados das 6 FRF's relativas aos 6 graus de liberdade coletados.
+
+\subsubsection{Análise modal no ME'Scope}
+
+O programa ME'SCope é utilizado para identificar os parâmetros modais a partir
+dos dados importados. A interface de importação do programa ajuda a identificar
+os dados e relacionar às direções de medição e excitação correspondentes. 
+
+A opção \textit{Modal Analysis} no ME'Scope é utilizada para caracterizar as
+ressonâncias do sistema e estimar, por uma lista de FRF's fornecidas, os
+parâmetros como frequências naturais, amortecimentos modais e modos de vibração.
+
+O programa então faz um ajuste de curva (\textit{curve fitting}) das FRF's para
+estimar os parâmetros modais. A primeira etapa é identificar a faixa de
+frequência que se deseja analisar. Em seguida, informar quantos modos ou picos
+há naquela faixa. O programa ainda permite a contagem automática, se fornecido um
+valor mínimo para caracterizar o modo.
+
+\missingfigure{Inlcluir imagem da contagem de picos}
+
+Com isso o programa realiza uma estimativa dos coeficientes de um polinômio
+do modelo FRF analítico, pelo ajuste de curva ao modelo experimental. Os
+coeficientes são então processados para obter os parâmetros modais.
+
+\missingfigure{Resultados da análise modal}
+
+Os resultados da análise modal encontram-se na Tabela
+
+\todo[inline]{Incluir tabela dos resultados da análise modal}.
 
 
-\subsection{Aquisição dos dados experimentais}
 
-\subsection{Tratamento dos dados}
+O programa também permite construir o modelo experimental 3D com uma ferramenta
+de modelagem interativa. Pontos específicos da malha que representa o modelo 3D
+são relacionado aos dados fornecidos. Então é possível visualizar como a
+estrutura se comporta dinamicamente por meio da animação do modelo, que de forma
+interativa pode-se selecionar qualquer ponto na faixa de frequência e obter-se
+uma animação do modo de vibração naquela frequência.
 
-\subsection{Cálculo dos parâmetros modais da estrutura}
+\missingfigure{Modelo 3D da base ME'Scope}
+
+
+
+\subsection{Cálculo da Matriz de Amortecimento}
+
+A matriz de amortecimento tem dimensão $6 \times 6$, que corresponde aos 6 graus
+de liberdade (3 translações e 3 rotações) associados às 6 coordenadas
+generalizadas do modelo teórico. Para facilitar seu uso e generalização é
+utilizado o modelo de amortecimento proporcional, em que assume-se
+que o amortecimento depende apenas de dois parâmetros, $\alpha$
+e $\beta$, proporcionais às matrizes de inércia e rigidez respectivamente, de
+acordo com a expressão:
+%
+\begin{equation*}
+	C = \alpha  M + \beta  K
+\end{equation*}
+%
+
+Como demonstrado na seção~\ref{sec::amortecimento}, os parâmetros $\alpha$
+e $\beta$ se baseiam no resultado do amortecimento modal ao longo de uma
+faixa de frequência de interesse. Repetindo a expressão:
+%
+\begin{equation*} \label{eq::alpha_beta}
+	\xi_j = \frac{\alpha}{2 \omega_j} + \frac{\beta \omega_j}{2}
+\end{equation*}
+%
+Onde $\xi_j$ é o amortecimento modal na frequência $ \omega_j$. Esses valores
+foram obtidos experimentalmente, e estão na
+Tabela~\ref{tab::resultado_modal}\todo{Referenciar tabela de resultados modais}.
+
+Selecionando-se os 10 primeiros modos, tem-se o seguinte gráfico, na
+Figura~\ref{fig::amort_x_freq}, do amortecimento em função da frequência, :
+
+\missingfigure{Gráfico do amortecimento vs frequência}
+
+Fazendo o ajuste do gráfico, em termos da equação~\ref{eq::alpha_beta},
+obtém-se:
+%
+\begin{equation}
+	\xi = \frac{48651518}{\omega} + 123546 ~\omega
+\end{equation}
+%
+Logo, pode-se concluir que:
+%
+\begin{align}
+	\frac{\alpha}{2} &= 48651518 \Rightarrow  \alpha = 8584654 \\
+	\frac{\beta}{2} &= 123546 \Rightarrow  \beta = 213145
+\end{align} \todo{Corrigir valores}
+%
+
+E finalmente, a matriz de amortecimento resultante, obtida experimentalmente é:
+%
+\begin{equation}
+	C = 8584654~M + 213145~K
+\end{equation}
+%
+
+Neste ponto, é importante fazer algumas considerações acerca do método
+experimental.
+Hoje, existe uma grande variedade de ferramentas CAD e CAE disponíveis,
+inclusive gratuitass. Para citar alguns exemplos:
+%
+\begin{enumerate*}[label=(\roman*)]
+  \item \emph{Programas CAD gratuitos}: 123D, LibreCAD, FreeCAD, BRL-CAD,
+  OpenSCAD, QCad, SolveSpace
+  \item \emph{Programas CAE gratuitos}: CONSELF, FreeFem++, GetFEM++,
+  VisualFEA (versão acadêmica).
+\end{enumerate*}
+%
+Por isso, obter as matrizes de inércia e de rigidez podem ser tarefas
+relativamente simples, baratas e rápidas de executar, para qualquer estrutura
+que se deseje analisar. Além disso, no ambiente virtual, é possível realizar
+alterações na estrutura, a fim de se obter os valores desejados de inércia ou
+rigidez.
+
+Em comparação, obter a matriz de amortecimento é um processo extremamente
+custoso, pelos seguintes motivos:
+%
+\begin{itemize}
+  \item Requer o modelo físico construído;
+  \item Requer instrumentos caros como os sensores, martelo e placas de
+  aquisição;
+  \item Requer cuidado na aquisição, processamento e tratamento dos dados;
+  \item Requer \textit{softwares} de processamento e pós-processamento;
+  \item Mais difícil de se realizarem modificações estruturais;
+  \item Requer boa análise crítica para validar os resultados, o que significa
+  ter certo grau de experiência.
+\end{itemize}
+%
+
+Assim, antes de se realizar o experimento, deve-se julgar qual o impacto do
+amortecimento no erro cometido pelo robô. É importante ressaltar que o objetivo
+principal do método proposto neste trabalho é oferecer uma forma de estimar se
+os erros devido aos movimentos da base inviabilizam a tarefa que o robô deve
+cumprir. Para fazer este julgamento, pode-se simplesmente testar, no modelos MBS
+acoplado, uma lista de coeficientes para a matriz proporcional de amortecimento,
+e verificar os resultados. Se para um amortecimento baixo, ou alto, ainda
+ocorrem desvios dentro da faixa tolerada do processo, então, a base cumpre com a
+rigidez e amortecimento esperados. Em contrapartida, se os valores tolerados
+dependem de uma faixa específica de amortecimento, então será válido considerar
+a análise experimental.
+
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-

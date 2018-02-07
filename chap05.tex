@@ -1,6 +1,49 @@
 \chapter{Conclusões}
 
+Neste ponto, é importante fazer algumas considerações acerca do método
+experimental.
+Hoje, existe uma grande variedade de ferramentas CAD e CAE disponíveis,
+inclusive gratuitass. Para citar alguns exemplos:
+%
+\begin{enumerate*}[label=(\roman*)]
+  \item \emph{Programas CAD gratuitos}: 123D, LibreCAD, FreeCAD, BRL-CAD,
+  OpenSCAD, QCad, SolveSpace
+  \item \emph{Programas CAE gratuitos}: CONSELF, FreeFem++, GetFEM++,
+  VisualFEA (versão acadêmica).
+\end{enumerate*}
+%
+Por isso, obter as matrizes de inércia e de rigidez podem ser tarefas
+relativamente simples, baratas e rápidas de executar, para qualquer estrutura
+que se deseje analisar. Além disso, no ambiente virtual, é possível realizar
+alterações na estrutura, a fim de se obter os valores desejados de inércia ou
+rigidez.
 
+Em comparação, obter a matriz de amortecimento é um processo extremamente
+custoso, pelos seguintes motivos:
+%
+\begin{itemize}
+  \item Requer o modelo físico construído;
+  \item Requer instrumentos caros como os sensores, martelo e placas de
+  aquisição;
+  \item Requer cuidado na aquisição, processamento e tratamento dos dados;
+  \item Requer \textit{softwares} de processamento e pós-processamento;
+  \item Mais difícil de se realizarem modificações estruturais;
+  \item Requer boa análise crítica para validar os resultados, o que significa
+  ter certo grau de experiência.
+\end{itemize}
+%
+
+Assim, antes de se realizar o experimento, deve-se julgar qual o impacto do
+amortecimento no erro cometido pelo robô. É importante ressaltar que o objetivo
+principal do método proposto neste trabalho é oferecer uma forma de estimar se
+os erros devido aos movimentos da base inviabilizam a tarefa que o robô deve
+cumprir. Para fazer este julgamento, pode-se simplesmente testar, no modelo
+teórico acoplado, uma lista de coeficientes para a matriz proporcional de
+amortecimento, e verificar os resultados. Se para certa faixa de valores ainda
+ocorrem desvios dentro da faixa tolerada do processo, então, a base cumpre com a
+rigidez e amortecimento esperados. Em contrapartida, se os valores tolerados
+dependem de uma faixa específica de amortecimento, então será válido considerar
+a análise experimental.
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 

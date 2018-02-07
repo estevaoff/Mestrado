@@ -14,10 +14,6 @@
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Motivação}
 
-
-% -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
-\section{Objetivos}
-
 A ação dinâmica do robô ao realizar determinada tarefa irá originar, por reação,
 deslocamentos dinâmicos em sua base. Estes deslocamentos causarão algum impacto
 na tarefa a ser realizada como mudanças de orientação, velocidade e
@@ -25,6 +21,47 @@ posicionamento da ferramenta acoplada ao manipulador. Estes efeitos não são
 considerados nos métodos de controle convencionais das juntas do manipulador,
 porque não podem ser previstos sem que haja alguma instrumentação periférica,
 capaz de medir e enviar as informações ao controlador.
+
+O método proposto tem como preocupação oferecer uma metodologia que permite ao
+usuário utilizar as ferramentas que estão à sua disposição pessoal ou da
+instituição (laboratório, empresa, universidade, etc.), não limitando ao uso de
+qualquer \textit{software} específico. Apesar de terem sido utlilizados
+programas de alto nível como Maple, Autodesk Simulation e SolidWorks, ficará
+claro que diversos \textit{softwares} de Álgebra Computacional Simbólica (CAS),
+Análise de Elementos Finitos (FEA) e Desenho Assistido por Computador (CAD),
+respectivamente, poderiam ter sido utilizados.
+
+O amortecimento da estrutura que serve de base para o manipulador tem um papel
+importante na dinâmica do sistema. Como foi demonstrado, o modelo MBS
+acoplado robô-base requer como entrada os parâmetros de inércia, rigidez e amortecimento
+da base. Os dados de inércia são facilmente obtidos pelo modelo CAD e a matriz
+de inércia pela Análise por Elementos Finitos. Entretanto, estas
+ferramentas não são capazes de fornecer informações sobre o amortecimento.
+Modelar o amortecimento é um problema constante na engenharia de sistemas
+mecânicos e continua um desafio.
+
+O sistema robô-base não possui nenhum elemento com a finalidade específica de
+controle ou absorção de vibrações. O que ocorre é o citado amortecimento
+estrutural (seção~\ref{sec::amortecimento}), formado principalmente pelo
+amortecimento do material \todo{Inlcuir referência no texto} e por atrito,
+devido a folgas nos elementos de conexão, parafusos por exemplo.
+
+Apesar de existir métodos para estimar o amortecimento material e de atrito
+analiticamente, estes são adequados para estruturas muito simples e uniformes,
+como vigas, placas ou corpos de prova. A estrutura que forma a base do robô é
+relativamente muito complexa, possuindo diferentes materiais, conexões e formas,
+o que torna impossível modelar analiticamente o amortecimento.
+
+Logo, recorre-se ao método experimental para obter o amortecimento da base.
+A vantagem é que por este método, obtém-se os parâmetros do comportamento total
+da estrutura, não importando as infinitas interações internas dos materiais e de
+atrito impossíveis de se medir ou quantificar individualmente.
+Mais especificamente, o que importará mesmo é o comportamento do ponto de
+interação robô-base.
+
+
+% -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
+\section{Objetivos}
 
 Este trabalho tem como objetivo oferecer um método para calcular e quantificar
 os deslocamentos teóricos da base, e assim calcular os erros de posicionamento,
@@ -49,18 +86,14 @@ instrumentação e controle, de forma a aperfeiçoar o método original, para le
 em consideração as perturbações causadas pela base e corrigir as diferenças de
 posicionamento, velocidade e orientação das juntas do manipulador.
 
-O método proposto tem como preocupação oferecer uma metodologia que permite ao
-usuário utilizar as ferramentas que estão à sua disposição pessoal ou da
-instituição (laboratório, empresa, universidade, etc.), não limitando ao uso de
-qualquer \textit{software} específico. Apesar de terem sido utlilizados
-programas de alto nível como Maple, Autodesk Simulation e SolidWorks, ficará
-claro que diversos \textit{softwares} de Álgebra Computacional Simbólica (CAS),
-Análise de Elementos Finitos (FEA) e Desenho Assistido por Computador (CAD),
-respectivamente, poderiam ter sido utilizados.
-
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Ferramentas utilizadas}
+
+% De maneira geral, o repertório de programas utilizados atende a objetivos
+% específicos previstos nesta pesquisa. Em geral, no entanto, se inserem nas
+% frentes de simulação, previsão aquisição e pós-processamento.
+
 
 \subsubsection{Sophia-Maple}
 
@@ -72,6 +105,7 @@ respectivamente, poderiam ter sido utilizados.
 
 \subsubsection{ME`Scope}
 
-\subsubsection{\LaTeX\ e Eclipse}
 
 \section{Notação}
+
+% Texto introdutório considerando a pluralidade de referências.

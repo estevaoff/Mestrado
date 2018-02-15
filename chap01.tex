@@ -14,59 +14,104 @@
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Motivação}
 
-A ação dinâmica do robô ao realizar determinada tarefa irá originar, por reação,
-deslocamentos dinâmicos em sua base. Estes deslocamentos causarão algum impacto
-na tarefa a ser realizada como mudanças de orientação, velocidade e
-posicionamento da ferramenta acoplada ao manipulador. Estes efeitos não são
-considerados nos métodos de controle convencionais das juntas do manipulador,
-porque não podem ser previstos sem que haja alguma instrumentação periférica,
-capaz de medir e enviar as informações ao controlador.
+Com uma população de robôs industriais cada vez maior em diversas áreas de
+automação, surgem também novas ideias e aplicações utilizando a robótica em
+substituição ao trabalho humano. Seja para melhoria da eficiência,
+impossibilidade de realização manual ou tarefas em ambientes hostis, a robótica
+se torna uma alternativa atrativa também para trabalhos \textit{in situ}, ou
+seja, num ambiente operacional fora de um espaço adaptado especialmente para a
+aplicação robótica, ou bem estruturado.
+Ambientes bem estruturados são geralmente um requisito da maioria das aplicações
+utilizando manipuladores robóticos, porque o robô não tem capacidade de lidar
+com ações ou efeitos do ambiente, e caso ocorram, não pode-se garantir a
+segurança ou qualidade da tarefa a ser executada.
 
-O método proposto tem como preocupação oferecer uma metodologia que permite ao
-usuário utilizar as ferramentas que estão à sua disposição pessoal ou da
-instituição (laboratório, empresa, universidade, etc.), não limitando ao uso de
-qualquer \textit{software} específico. Apesar de terem sido utlilizados
-programas de alto nível como Maple, Autodesk Simulation e SolidWorks, ficará
-claro que diversos \textit{softwares} de Álgebra Computacional Simbólica (CAS),
-Análise de Elementos Finitos (FEA) e Desenho Assistido por Computador (CAD),
-respectivamente, poderiam ter sido utilizados.
+Um exemplo de aplicação robótica \textit{in situ} é o sistema de manutenção de
+pás de turbinas, denominado EMMA\cite{freitas2017state}.
+É um projeto desenvolvido pela empresa THIRTEEN ROBOTICS em parceria com o
+LEAD/COPPE-UFRJ e a Energia Sustentável do Brasil (ESBR). Este sistema consiste
+em realizar um procedimento de manutenção do revestimento das pás de turbinas de
+hidrelétricas do tipo Kaplan, que sofrem desgaste por abrasão e cavitação,
+perdendo sua camada de proteção que deve ser reaplicada. Atualmente, as pás são
+desmontadas e levadas para um galpão, em que, num ambiente bem estruturado, um
+robô de grande porte reaplica o revestimento.
+O objetivo do projeto EMMA é poupar todo o procedimento de desmontagem e
+transporte destas pás, que geram um alto custo, por um sistema de revestimento
+robótico \textit{in situ}, ou seja, dentro do ambiente da turbina.
 
-O amortecimento da estrutura que serve de base para o manipulador tem um papel
-importante na dinâmica do sistema. Como foi demonstrado, o modelo MBS
-acoplado robô-base requer como entrada os parâmetros de inércia, rigidez e amortecimento
-da base. Os dados de inércia são facilmente obtidos pelo modelo CAD e a matriz
-de inércia pela Análise por Elementos Finitos. Entretanto, estas
-ferramentas não são capazes de fornecer informações sobre o amortecimento.
-Modelar o amortecimento é um problema constante na engenharia de sistemas
-mecânicos e continua um desafio.
+O desafio deste projeto está em conseguir instalar o robô com segurança e
+praticidade, no ambiente confinado e de difícil acesso da unidade geradora. Por
+conta do único acesso ser através de uma escotilha de $850~mm$ de diâmetro, o
+robô deve ser de médio a pequeno porte, ter uma base para sua fixação e
+posicionamento próximo a pá, que seja leve e modular, para fácil transporte,
+montagem e acesso pela escotilha. O desafio torna-se ainda maior se considerado
+que o processo de revestimento tem requisitos que devem ser controlados com
+precisão, para garantir sua qualidade. Este tipo de revestimento só pode ser
+aplicado roboticamente porque desvios de posição, orientação ou velocidade do
+processo, podem simplesmente reprovar ou inviabilizar o procedimento.
 
-O sistema robô-base não possui nenhum elemento com a finalidade específica de
-controle ou absorção de vibrações. O que ocorre é o citado amortecimento
-estrutural (seção~\ref{sec::amortecimento}), formado principalmente pelo
-amortecimento do material \todo{Inlcuir referência no texto} e por atrito,
-devido a folgas nos elementos de conexão, parafusos por exemplo.
+Por isso, considerando todas as restrições do sistema, projetou-se, para a
+solução \textit{in situ}, uma base metálica, leve e modular, que possibilitasse
+o posicionamento do robô próximo às pás, em diversas configurações de montagem.
+Porém, simulações por Anáise por Elementos Finitos apresentaram resultados, em
+função de sua configuração, que alertaram sobre o que poderia ser o
+comportamento dinâmico da sua estrutura devido ao movimento do manipulador.
+Neste momento percebeu-se a necessidade de ter um modelo capaz de simular a
+tarefa de revestimento e obter-se assim o comportamento dinâmico acoplado entre
+base e robô, para então quantificar os desvios aos parâmetros controlados do
+processo de revestimento. Elaborar um método para avaliação da dinâmica acoplada
+para casos como este foi o que motivou esta pesquisa.
 
-Apesar de existir métodos para estimar o amortecimento material e de atrito
-analiticamente, estes são adequados para estruturas muito simples e uniformes,
-como vigas, placas ou corpos de prova. A estrutura que forma a base do robô é
-relativamente muito complexa, possuindo diferentes materiais, conexões e formas,
-o que torna impossível modelar analiticamente o amortecimento.
+Logo, de modo geral, pode-se afirmar que a ação dinâmica do robô ao realizar
+determinada tarefa irá originar, por reação, deslocamentos dinâmicos em sua
+base. Estes deslocamentos causarão algum impacto na tarefa a ser realizada como
+mudanças de orientação, velocidade e posicionamento da ferramenta acoplada ao
+manipulador. Estes efeitos não são considerados nos métodos de controle
+convencionais das juntas do manipulador, porque não podem ser previstos sem que
+haja alguma instrumentação periférica, capaz de medir e enviar tais informações
+ao controlador.
 
-Logo, recorre-se ao método experimental para obter o amortecimento da base.
-A vantagem é que por este método, obtém-se os parâmetros do comportamento total
-da estrutura, não importando as infinitas interações internas dos materiais e de
-atrito impossíveis de se medir ou quantificar individualmente.
-Mais especificamente, o que importará mesmo é o comportamento do ponto de
-interação robô-base.
+Caso a base não ofereça a rigidez necessária, a amplitude dos deslocamentos que
+podem simplesmente inviabilizar a tarefa desejada e modificações na estrutura da
+base ou uma nova estrutura deve ser projetada. Por isso, ser capaz de estimar o
+comportamento do sistema, por simulação no computador, é uma grande ferramenta
+para evitar a fabricação de uma solução equivocada.
 
-\todo[inline]{Falar do projeto EMMA e da base de testes}
 
-O objetivo do projeto desta plataforma não era o de oferecer grande
-flexibilidade, mas pelo contrário, ser suficientemente rígida para operar o robô
-com segurança durante testes do projeto EMMA. A análise deste modelo de base
-será interessante para comparar com o modelo rígido e verificar se o projeto,
-que foi realizado antes de existir o método proposto neste trabalho,
-atende a este requisito.
+% O amortecimento da estrutura que serve de base para o manipulador tem um papel
+% importante na dinâmica do sistema. Como foi demonstrado, o modelo MBS
+% acoplado robô-base requer como entrada os parâmetros de inércia, rigidez e amortecimento
+% da base. Os dados de inércia são facilmente obtidos pelo modelo CAD e a matriz
+% de inércia pela Análise por Elementos Finitos. Entretanto, estas
+% ferramentas não são capazes de fornecer informações sobre o amortecimento.
+% Modelar o amortecimento é um problema constante na engenharia de sistemas
+% mecânicos e continua um desafio.
+% 
+% O sistema robô-base não possui nenhum elemento com a finalidade específica de
+% controle ou absorção de vibrações. O que ocorre é o citado amortecimento
+% estrutural (seção~\ref{sec::amortecimento}), formado principalmente pelo
+% amortecimento do material \todo{Inlcuir referência no texto} e por atrito,
+% devido a folgas nos elementos de conexão, parafusos por exemplo.
+% 
+% Apesar de existir métodos para estimar o amortecimento material e de atrito
+% analiticamente, estes são adequados para estruturas muito simples e uniformes,
+% como vigas, placas ou corpos de prova. A estrutura que forma a base do robô é
+% relativamente muito complexa, possuindo diferentes materiais, conexões e formas,
+% o que torna impossível modelar analiticamente o amortecimento.
+% 
+% Logo, recorre-se ao método experimental para obter o amortecimento da base.
+% A vantagem é que por este método, obtém-se os parâmetros do comportamento total
+% da estrutura, não importando as infinitas interações internas dos materiais e de
+% atrito impossíveis de se medir ou quantificar individualmente.
+% Mais especificamente, o que importará mesmo é o comportamento do ponto de
+% interação robô-base.
+
+% O objetivo do projeto desta plataforma não era o de oferecer grande
+% flexibilidade, mas pelo contrário, ser suficientemente rígida para operar o robô
+% com segurança durante testes do projeto EMMA. A análise deste modelo de base
+% será interessante para comparar com o modelo rígido e verificar se o projeto,
+% que foi realizado antes de existir o método proposto neste trabalho,
+% atende a este requisito.
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
@@ -85,7 +130,8 @@ avaliar os desvios causados na trajetória. Se o resultado demonstrar erros fora
 de uma margem de tolerância admitida, o método pode ser utlizado iterativamente,
 alterando-se parâmetros da base.
 Após mudanças estratégicas destes parâmetros -- como materiais, configuração
-geométrica, apoios, contravetamentos, massa, etc. -- obtém-se novos resultados.
+geométrica, apoios, reforço estrutural, massa, etc. -- obtém-se novos
+resultados.
 O objetivo deste processo é, em um ambiente de simulação, verificar a nova base,
 e a partir dos resultados fazer as modificações até atingir a tolerância que
 satisfaz a qualidade da tarefa.
@@ -99,21 +145,103 @@ posicionamento, velocidade e orientação das juntas do manipulador.
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Ferramentas utilizadas}
 
-% De maneira geral, o repertório de programas utilizados atende a objetivos
-% específicos previstos nesta pesquisa. Em geral, no entanto, se inserem nas
-% frentes de simulação, previsão aquisição e pós-processamento.
-
+De maneira geral, o repertório de programas utilizados visa oferecer ferramentas
+importantes como Álgebra Computacional Simbólica (CAS), Análise por Elementos
+Finitos (AEF), Desenho Assistido por Computador (CAD) e aquisição e tratamento
+de dados experimentais. Esta pesquisa também tem como preocupação oferecer uma
+metodologia que permita ao usuário utilizar as ferramentas que estiverem à sua
+disposição pessoal ou da instituição (laboratório, empresa, universidade, etc.),
+não limitando ao uso de qualquer \textit{software} em especial. Embora tenham
+sido utilizados programas de alto nível ficará claro que outros também poderiam
+ter sido utilizados. Por isso, são listados a seguir os programas utilizados e
+também alternativas disponíveis no mercado.
 
 \subsubsection{Sophia-Maple}
 
+Sophia é um conjunto de rotinas, desenvolvido por \citet{lesser1995analysis}
+para modelar sistemas mecânicos multicorpos e derivar suas equações de
+movimento. Foi criado originalmente para Maple, depois foi adaptada uma uma
+versão para o Mathematica.
+Maple\cite{maple} é um programa de álgebra simbólica computacional (CAS), com
+ênfase em manipulações algébricas simbólicas ao invés de numéricas, o que
+permite modelar e solucionar sistemas dinâmicos simbolicamente. O pacote Sophia,
+utilizado com o Maple será descrito apenas por Sophia-Maple.
+
+Alternativas:
+%
+\begin{enumerate*}
+	\item Mathematica;
+	\item SymPy;
+\end{enumerate*}
+
 \subsubsection{SolidWorks}
 
-\subsubsection{Autodesk Simulation}
+SolidWorks\cite{solidworks} é um programa de CAD 3D, utilizado principalmente
+para modelagem de peças e conjuntos mecânicos.
+Este programa tem interface amigável que facilita o desenho de conjuntos e
+montagens complexas. Permite também a definição do material de cada peça, por
+fornecer vasta lista de materiais e suas propriedades físicas e mecânicas.
+Realiza automaticamente o cálculo, por exemplo, de massa, centro de
+gravidade, momentos de inércia e propriedades de seção transversal, que são
+muito úteis para o método. Também permite a conversão do modelo 3D para diversos
+formatos CAD, que facilitam a exportação de versões para Análise por Elementos
+Finitos para outros programas.
 
-\subsubsection{SignalExpress}
+Alternativas:
+%
+\begin{enumerate*}
+	\item AutoCAD;
+	\item CATIA;
+	\item Pro/ENGINEER.
+\end{enumerate*}
 
-\subsubsection{ME`Scope}
+\subsubsection{Simulation Mechanical}
 
+O Simulation Mechanical\cite{autodesk} é um programa para Análise por Elementos
+Finitos distribuido pela Autodesk.  Realiza análises estáticas lineares e não-lineares,
+análise modal, análise de carregamento transiente, análises térmicas e de
+mecânica dos fluidos.
+É utilizado nesta pesquisa para simulações de carregamento estático linear, a
+fim de determinar a matriz de rigidez da base do manipulador. O programa permite
+grande variedade de formatos para importação de modelos CAD, o que facilita a
+integração com o SolidWorks.
+
+Alternativas:
+%
+\begin{enumerate*}
+	\item Abaqus;
+	\item Ansys;
+	\item SolidWorks Simulation.
+\end{enumerate*}
+
+
+\subsubsection{SignalExpress e ME`Scope VES}
+
+Para determinação de parâmetros modais da base do robô é necessário obter dados
+experimentais através de instrumentação da base. São utilizados 2 programas: o
+primeiro para aquisição, visualização e tratamento dos dados; o segundo para
+cálculo dos parâmetros modais.
+
+SignalExpress\cite{signalexpress} é programa aquisição, análise e
+apresentação de dados compatível com diversos instrumentos e sistemas de
+aquisição e medição experimentais e operacionais. 
+É utilizado nesta pesquisa para adquirir e processar os dados do ensaio
+experimental de uma versão de testes da base do robô.
+
+O ME'Scope VES (\textit{Visual Engineering Series})\cite{mescope} é um programa
+para facilitar a visualização e análise de vibrações de máquinas e estruturas
+mecânicas, utilizando os dados reais registrados experimentalmente. O programa
+também realiza análise modal, a partir das Funções de Resposta em Frequência
+(FRF's) dos dados importados. É utilizado portanto para  determinar o
+amortecimento modal, parâmetro necessário ao modelo teórico da base.
+
+Alternativas:
+%
+\begin{enumerate*}
+	\item Brüel \& Kjær PULSE;
+	\item OROS Modal Analysis;
+	\item LabVIEW.
+\end{enumerate*}
 
 \section{Notação}
 

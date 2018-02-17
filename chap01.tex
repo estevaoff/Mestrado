@@ -15,29 +15,28 @@
 \section{Motivação}
 
 Com uma população de robôs industriais cada vez maior em diversas áreas de
-automação, surgem também novas ideias e aplicações utilizando a robótica em
-substituição ao trabalho humano. Seja para melhoria da eficiência,
-impossibilidade de realização manual ou tarefas em ambientes hostis, a robótica
-se torna uma alternativa atrativa também para trabalhos \textit{in situ}, ou
-seja, num ambiente operacional fora de um espaço adaptado especialmente para a
-aplicação robótica, ou bem estruturado.
+automação, surgem também novas ideias e aplicações. Seja para melhoria da
+eficiência, impossibilidade de realização humana ou tarefas em ambientes hostis,
+utilizar robôs se torna uma alternativa atrativa também para trabalhos
+\textit{in situ}, ou operacional em campo, locais não planejados originalmente
+para a aplicação robótica.
 Ambientes bem estruturados são geralmente um requisito da maioria das aplicações
-utilizando manipuladores robóticos, porque o robô não tem capacidade de lidar
-com ações ou efeitos do ambiente, e caso ocorram, não pode-se garantir a
-segurança ou qualidade da tarefa a ser executada.
+utilizando manipuladores robóticos, que não têm capacidade para lidar com ações
+ou efeitos do ambiente e, caso ocorram, não pode-se garantir a segurança ou
+qualidade da tarefa a ser executada.
 
 Um exemplo de aplicação robótica \textit{in situ} é o sistema de manutenção de
 pás de turbinas, denominado EMMA\cite{freitas2017state}.
 É um projeto desenvolvido pela empresa THIRTEEN ROBOTICS em parceria com o
 LEAD/COPPE-UFRJ e a Energia Sustentável do Brasil (ESBR). Este sistema consiste
-em realizar um procedimento de manutenção do revestimento das pás de turbinas de
-hidrelétricas do tipo Kaplan, que sofrem desgaste por abrasão e cavitação,
-perdendo sua camada de proteção que deve ser reaplicada. Atualmente, as pás são
-desmontadas e levadas para um galpão, em que, num ambiente bem estruturado, um
-robô de grande porte reaplica o revestimento.
+em realizar um procedimento de manutenção do revestimento das pás de turbinas do
+tipo Kaplan em usinas hidrelétricas, que sofrem desgaste por abrasão e
+cavitação, perdendo sua camada de proteção devendo ser reaplicada. Atualmente,
+as pás são desmontadas e levadas para um galpão em que, num ambiente bem
+estruturado, um robô de grande porte reaplica o revestimento.
 O objetivo do projeto EMMA é poupar todo o procedimento de desmontagem e
-transporte destas pás, que geram um alto custo, por um sistema de revestimento
-robótico \textit{in situ}, ou seja, dentro do ambiente da turbina.
+transporte destas pás, que geram um alto custo e tempo, por um sistema de
+revestimento robótico \textit{in situ}, ou seja, dentro do ambiente da turbina.
 
 O desafio deste projeto está em conseguir instalar o robô com segurança e
 praticidade, no ambiente confinado e de difícil acesso da unidade geradora. Por
@@ -50,32 +49,44 @@ precisão, para garantir sua qualidade. Este tipo de revestimento só pode ser
 aplicado roboticamente porque desvios de posição, orientação ou velocidade do
 processo, podem simplesmente reprovar ou inviabilizar o procedimento.
 
-Por isso, considerando todas as restrições do sistema, projetou-se, para a
+Por isso, considerando todas as restrições do sistema, projetou-se para a
 solução \textit{in situ}, uma base metálica, leve e modular, que possibilitasse
 o posicionamento do robô próximo às pás, em diversas configurações de montagem.
-Porém, simulações por Anáise por Elementos Finitos apresentaram resultados, em
-função de sua configuração, que alertaram sobre o que poderia ser o
-comportamento dinâmico da sua estrutura devido ao movimento do manipulador.
+Porém, simulações estáticas de carregamento, realizadas por Anáise por Elementos
+Finitos apresentaram resultados que o comportamento dinâmico da estrutura,
+poderia causar grandes amplitudes de deslocamento.
 Neste momento percebeu-se a necessidade de ter um modelo capaz de simular a
 tarefa de revestimento e obter-se assim o comportamento dinâmico acoplado entre
-base e robô, para então quantificar os desvios aos parâmetros controlados do
-processo de revestimento. Elaborar um método para avaliação da dinâmica acoplada
-para casos como este foi o que motivou esta pesquisa.
+base e robô, para então quantificar os desvios causados aos parâmetros
+controlados do processo de revestimento.
 
-Logo, de modo geral, pode-se afirmar que a ação dinâmica do robô ao realizar
+A busca por linhas de pesquisa sobre robôs em bases flexíveis revelou que o tema
+foi explorado principalmente sob um ponto de vista de manipuladores macro-micro,
+sistemas em que consideram a flexibilidade do manipulador, e de métodos de
+controle ativos para amortecer as vibrações. Nestes estudos, carece uma
+metodologia mais sistemática para avaliação dos efeitos da rigidez e
+amortecimento da base, e sua relação com a geometria e materiais da estrutura.
+Assim como, dos erros em relação aos parâmetros controlados de determinado
+processo, causados pela dinâmica da base. Esta pesquisa tem como motivação aliar
+o método de avaliação do sistema robô-base a aplicações práticas da indústria,
+tendo como principal estudo de caso o sistema de revestimento robótico do
+projeto EMMA.
+
+De modo geral, pode-se afirmar que a ação do robô ao realizar
 determinada tarefa irá originar, por reação, deslocamentos dinâmicos em sua
-base. Estes deslocamentos causarão algum impacto na tarefa a ser realizada como
+base. Estes deslocamentos causarão algum impacto na tarefa a ser realizada como:
 mudanças de orientação, velocidade e posicionamento da ferramenta acoplada ao
 manipulador. Estes efeitos não são considerados nos métodos de controle
 convencionais das juntas do manipulador, porque não podem ser previstos sem que
 haja alguma instrumentação periférica, capaz de medir e enviar tais informações
 ao controlador.
 
-Caso a base não ofereça a rigidez necessária, a amplitude dos deslocamentos que
-podem simplesmente inviabilizar a tarefa desejada e modificações na estrutura da
-base ou uma nova estrutura deve ser projetada. Por isso, ser capaz de estimar o
-comportamento do sistema, por simulação no computador, é uma grande ferramenta
-para evitar a fabricação de uma solução equivocada.
+Caso a base não ofereça a rigidez necessária, a amplitude dos deslocamentos pode
+simplesmente inviabilizar a tarefa desejada e, se possível, modificações na
+estrutura da base ou uma nova estrutura devem ser projetadas. Por isso, ser
+capaz de estimar o comportamento do sistema, por simulação no computador, é uma
+importante ferramenta, que pode principalmente evitar o projeto e fabricação de
+uma solução equivocada.
 
 
 % O amortecimento da estrutura que serve de base para o manipulador tem um papel
@@ -118,42 +129,37 @@ para evitar a fabricação de uma solução equivocada.
 \section{Objetivos}
 
 Este trabalho tem como objetivo oferecer um método para calcular e quantificar
-os deslocamentos teóricos da base, e assim calcular os erros de posicionamento,
-velocidade e orientação no seu efetuador. Isto é feito a partir da
-quebra do paradigma da base como uma estrutura idealmente rígida -- ou seja, de
-rigidez tão grande que pudessem ser desconsiderados quaisquer efeitos da ação do
-manipulador -- e considerando-a como um corpo elástico, com flexibilidade e
-amortecimento.
+os deslocamentos teóricos da base, quando excitada pelo movimento do manipulador
+robótico, e assim calcular os erros de posicionamento, velocidade e orientação
+no efetuador do robô, ao longo de uma trajetória. 
 
-Quantificando-se o comportamento dinâmico do sistema base e robô, pode-se então
-avaliar os desvios causados na trajetória. Se o resultado demonstrar erros fora
-de uma margem de tolerância admitida, o método pode ser utlizado iterativamente,
-alterando-se parâmetros da base.
-Após mudanças estratégicas destes parâmetros -- como materiais, configuração
-geométrica, apoios, reforço estrutural, massa, etc. -- obtém-se novos
-resultados.
+Também oferece uma forma de avaliar o efeito, no resultado da trajetória, de
+alterações estruturais na base. Se resultarem erros fora de uma margem de
+tolerância admitida, o método pode ser utlizado iterativamente, realizando-se
+modificações estratégicas da base -- como materiais, configuração geométrica,
+apoios, reforço estrutural, massa, etc.
 O objetivo deste processo é, em um ambiente de simulação, verificar a nova base,
 e a partir dos resultados fazer as modificações até atingir a tolerância que
 satisfaz a qualidade da tarefa.
 
-Além do método iterativo, tem-se por objetivo discutir estratégias de
-instrumentação e controle, de forma a aperfeiçoar o método original, para levar
-em consideração as perturbações causadas pela base e corrigir as diferenças de
-posicionamento, velocidade e orientação das juntas do manipulador.
+Por fim, tem-se por objetivo discutir estratégias futuras de instrumentação e
+controle, para levar em consideração as perturbações causadas pela base e
+corrigir as diferenças de posicionamento, velocidade e orientação das juntas do
+manipulador.
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Ferramentas utilizadas}
 
-De maneira geral, o repertório de programas utilizados visa oferecer ferramentas
-importantes como Álgebra Computacional Simbólica (CAS), Análise por Elementos
-Finitos (AEF), Desenho Assistido por Computador (CAD) e aquisição e tratamento
-de dados experimentais. Esta pesquisa também tem como preocupação oferecer uma
-metodologia que permita ao usuário utilizar as ferramentas que estiverem à sua
+De maneira geral, o repertório de programas utilizados compõe um conjunto de
+ferramentas importantes para o método, como: Álgebra Computacional Simbólica
+(CAS), Análise por Elementos Finitos (AEF), Desenho Assistido por Computador
+(CAD), aquisição e tratamento de dados experimentais. Esta pesquisa também tem
+como preocupação permitir ao usuário utilizar as ferramentas que estiverem à sua
 disposição pessoal ou da instituição (laboratório, empresa, universidade, etc.),
 não limitando ao uso de qualquer \textit{software} em especial. Embora tenham
 sido utilizados programas de alto nível ficará claro que outros também poderiam
-ter sido utilizados. Por isso, são listados a seguir os programas utilizados e
+ter sido utilizados. Por isso, são listados a seguir os programas escolhidos e
 também alternativas disponíveis no mercado.
 
 \subsubsection{Sophia-Maple}

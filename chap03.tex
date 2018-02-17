@@ -8,51 +8,46 @@
 O método proposto pode ser dividido em 5 etapas:
 %
 \begin{enumerate}
-  \item Modelo dinâmico do Robô;
-  \item Modelo dinâmico da Base;
+  \item Modelo dinâmico do robô (MBS - Robô);
+  \item Modelo dinâmico da base (MBS - Base);
   \item Ensaio Experimental da Base;
-  \item Modelo dinâmico acoplado da Base com Robô;
-  \item Tratamento dos resultados.
+  \item Modelo dinâmico acoplado (MBS - Robô- Base);
+  \item Cálculo dos erros teóricos.
 \end{enumerate}
 
 Os modelos dinâmicos -- robô, base e  acoplado -- são apresentados nas
 seções~\ref{sec::robo},~\ref{sec::base} e ~\ref{sec::acoplado}, onde
-demonstra-se o desenvolvimento cinemático e dinâmico destes sistemas multicorpos
-(MBS).
+demonstra-se o desenvolvimento da cinemática e dinâmica destes sistemas
+multicorpos.
 Com o auxílio do \textit{software} de álgebra computacional Maple, utilizando as
 rotinas do Sophia, revela-se uma forma prática e sistemática de modelar o
 sistema multicorpos de qualquer número de graus de liberdade e, pelo método de
 Kane, deduzir-se rapidamente as equações de movimento dos sistemas.
 
-O MBS do robô configura o manipulador como sobre uma base ideal, ou
-perfeitamente rígida, já que sua origem o seu referencial não oferece nenhum
-grau de liberdade. Com o MSB do robô realiza-se, portanto, as simulações
-dinâmicas das trajetórias ``ideais'', ou seja, que seriam obtidas numa base
-perfeitamente rígida. Este resultado fornecerá os as posições, velocidades e
-orientações ideais que serão referência para comparação destes parâmetros
-resultantes do modelo acoplado.
+O MBS - Robô configura o manipulador como sobre uma base ideal, ou perfeitamente
+rígida, já que em sua origem não se oferece nenhum grau de liberdade. Com este
+modelo realiza-se, portanto, as simulações dinâmicas das trajetórias ``ideais'',
+ou seja, que seriam obtidas numa base perfeitamente rígida. Este resultado
+fornecere as posições, velocidades e orientações que serão referência para
+comparação destes mesmos parâmetros resultantes do modelo acoplado.
 
 Para modelagem da base, é necessário fornecer as matrizes que representam sua
 rigidez e amortecimento. Na seção~\ref{sec::base} é demonstrado um método de se
 obter a matriz de rigidez por meio de Análise por Elementos Finitos (AEF).
 
-Para calcular a matriz de amortecimento, é necessário realizar uma análise modal
-experimental da estrutura-base. Para isso, é utilizado um modelo físico da
-denominado base de teste.
 Na seção~\ref{sec::experimento} apresenta-se como obter os parâmetros modais da
 base por meio de ensaio de vibrações. Os dados são tratados para obter as
 Funções de Resposta em Frequência (FRF's) e então estimar seus parâmetros
 modais. O resultado fornece a matriz de amortecimento da base de teste que será
 utilizada no modelo MBS acoplado.
 
-O MBS acoplado robô e base considera os 6 graus de liberdade da base (3
-tranlações e 3 rotações) e os 5 graus de liberdade do robô, formando um sistema
-único acoplado de 11 gdl. É simulada a mesma trajetória fornecida no modelo
-rígido, com o objetivo de comparar os resultados de posição, velocidade e
-orientação da ferramenta quando o robô opera sobre uma base rígida em relação a
-mesma operação do robô sobre base flexível. São então verificados os efeitos da
-elasticidade da base sobre os parâmetros controlados do processo sendo
-executado pelo braço robótico.
+O MBS acoplado considera os 6 graus de liberdade da base (3 tranlações e 3
+rotações) e os 5 graus de liberdade do robô, formando um sistema único acoplado
+de 11 gdl. É simulada a mesma trajetória fornecida no modelo rígido, com o
+objetivo de comparar os resultados quando o robô opera sobre uma base rígida em
+relação a mesma operação do robô sobre base flexível. São então verificados os
+efeitos da elasticidade da base sobre os parâmetros controlados do processo
+sendo executado.
 
 A Figura~\ref{fig::visgeral} resume a visão geral
 do método proposto facilitando a visualização das relações entre os modelos.
@@ -69,29 +64,29 @@ do método proposto facilitando a visualização das relações entre os modelos
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Modelo do robô} \label{sec::robo}
 
-Nesta seção, são detalhados os procedimentos para representar o manipulador
-robótico como um conjunto MBS e utilizá-lo para simular as trajetórias
-referentes a uma determinada tarefa. O manipulador será descrito pelo conjunto
-de Sistemas de Coordenadas (SC's) referente a cada uma de suas juntas, pelas
-distâncias entre os SC's e posição dos centros de massa de cada elo, e pelos
-parâmetros de massa e momento de inércia de cada elo. Os elos do robô e a
-ferramenta acoplada no efetuador representam cada corpo do sistema MBS. A
-modelagem do manipulador é simplificada utilizando as rotinas de CAS
-desenvolvida especialmente para MBS, o Sophia, assim como a notação algébrica de
-Lesser, apresentada na seção~\ref{sec::sophia-kane}.
+% Nesta seção, são detalhados os procedimentos para representar o manipulador
+% robótico como um conjunto MBS e utilizá-lo para simular as trajetórias
+% referentes a uma determinada tarefa. O manipulador será descrito pelo conjunto
+% de Sistemas de Coordenadas (SC's) referente a cada uma de suas juntas, pelas
+% distâncias entre os SC's e posição dos centros de massa de cada elo, e pelos
+% parâmetros de massa e momento de inércia de cada elo. Os elos do robô e a
+% ferramenta acoplada no efetuador representam cada corpo do sistema MBS. A
+% modelagem do manipulador é simplificada utilizando as rotinas de CAS
+% desenvolvida especialmente para MBS, o Sophia, assim como a notação algébrica de
+% Lesser, apresentada na seção~\ref{sec::sophia-kane}.
 
 \subsection{Descrição do braço robótico} \label{sec::descricao_mh12}
 
 O manipulador escolhido para estudo é o mesmo que será utilizado no projeto EMMA
 para revestimento de superfícies metálicas por HVOF. Trata-se de um robô
 comercial da série MOTOMAN, modelo MH12, fabricado pela Yaskawa Motoman
-(Figura~\ref{fig::mh12_foto}).
+apresentado na Figura~\ref{fig::mh12_foto}.
 
 \begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.3\textwidth}
         \includegraphics[width=\textwidth]{figs/mh12_foto}
-        \caption{MOTOMAN MH12. \\Fonte: adaptada de}
+        \caption{MOTOMAN MH12. \\Fonte: adaptada de~\cite{manualmh12}}
         \label{fig::mh12_foto}
     \end{subfigure}
     \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
@@ -99,11 +94,10 @@ comercial da série MOTOMAN, modelo MH12, fabricado pela Yaskawa Motoman
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.5\textwidth}
         \includegraphics[width=\textwidth]{figs/mh12_diagram}
-        \caption{Diagrama dos elos e juntas. \\Fonte: adaptada de}
+        \caption{Diagrama dos elos e juntas. \\Fonte: adaptada de~\cite{manualmh12}}
         \label{fig::mh12_diagram}
     \end{subfigure}
     \caption{Manipulador robótico para modelo}\label{fig::resumo_mh12}
-    \todo[inline]{Inncluir referências das figuras - MH12 specsheet}
 \end{figure}
 
 \begin{table}[h]
@@ -123,11 +117,11 @@ T  & Efetuador        & q6                                        \\ \bottomrule
 \end{tabular}
 \end{table}
 
-Este robô é um braço antropomórfico de 6 juntas rotacionais e portanto 6 graus
-de liberdade (6 gdl), contendo o último elo um porta-ferramentas que suporta uma
-carga útil de até 12 kg. A Figura~\ref{fig::mh12_diagram} apresenta os nomes dos
-elos e coordenadas generalizadas associados a cada um dos sistemas de
-coordenadas e são resumidos na Tabela~\ref{tab::resumo_mh12}.
+Este robô é do tipo braço antropomórfico de 6 juntas rotacionais e portanto 6
+graus de liberdade (6 gdl), contendo o último elo um porta-ferramentas que
+suporta uma carga útil de até 12 kg. A Figura~\ref{fig::mh12_diagram} apresenta
+os nomes dos elos e coordenadas generalizadas associados a cada um dos sistemas
+de coordenadas e são resumidos na Tabela~\ref{tab::resumo_mh12}.
 
 O alcance horizontal deste manipulador chega a 1,440~m, e vertical a
 2,511~m. Estão representados no diagrama do espaço de trabalho na
@@ -138,8 +132,7 @@ pontos alcançáveis pelo manipulador, dentro dos limites de cada junta.
 	\centering 
  	\includegraphics[width=0.7\textwidth]{figs/workspace}
  	\caption[Vistas lateral e superior do espaço de trabalho]{Vistas lateral e
- 	superior do espaço de trabalho. \\Fonte: adaptada de}
- 		\todo[inline]{Inncluir referência da figura - MH12 specsheet}
+ 	superior do espaço de trabalho \\Fonte: adaptada de~\cite{manualmh12}}
  	\label{fig::workspace}
 \end{figure}
 
@@ -451,9 +444,9 @@ robótico. Infelizmente os parâmetros de inércia individuais de cada corpo nã
 são fornecidos pelos fabricantes e, portanto, serão estimados pelo método a
 seguir.
 
-Do manual do MOTOMAN MH12\todo{incluir ref: manual mh12}, tem-se que a massa
-total do robô é de 130~kg. Também é disponibilizado, diretamente pelo
-fabricante, um modelo CAD com ótimo detalhamento de cada corpo individualmente.
+Do manual do MOTOMAN MH12~\cite{manualmh12}, informa-se a massa total do robô,
+de 130~kg. Também é disponibilizado, diretamente pelo fabricante, um modelo CAD
+com ótimo detalhamento de cada corpo individualmente.
 
 O programa SolidWorks foi utilizado para obter informações importantes para a
 estimativa dos parâmetros de inércia. Nele é possível obter o volume de cada elo
@@ -686,8 +679,8 @@ integral e derivativa, ou $Kp$, $Td$ e $Ti$ respectivamente. Esses parâmetros
 foram sintonizados para cada junta individualmente, fazendo-se simulações de
 resposta para uma função degrau de referência. Os resultados mostraram que este
 método é suficiente para seguir a trajetória e manter os erros dentro de uma
-margem de tolerância aceitável. Alguns dos resultados são demonstrados no
-Apêndice X\todo{Incluir apêndice para resultados PID}.
+margem de tolerância aceitável. 
+\todo[inline]{Incluir resultados da investigação dos parâmetros PID?}.
 
 Como resultado da análise, encontrou-se os melhores resultados
 para o conjunto de parâmetros apresentados na\todo{atualizar parâmetros PID}
@@ -956,7 +949,8 @@ ferramenta.
 
 A posição final da ferramenta pode ser portanto expressa como função da posição
 de sua extremidade e orientação em termos das coordenadas generalizadas, de
-acordo com a equação~\ref{eq::posf}.
+acordo com a equação~\ref{eq::posf}.\todo{Incluir figura representando a posição e orientação final da
+ferramenta}
 %
 \begin{equation}
 	\mathbf{x}_{f} = \begin{bmatrix}
@@ -973,8 +967,7 @@ acordo com a equação~\ref{eq::posf}.
 \end{align}
 %
 
-\todo[inline]{Incluir figura representando a posição e orientação final da
-ferramenta}
+
 
 \subsubsection{Cálculo da posição do pulso}
 
@@ -1199,7 +1192,7 @@ posição da ponta da ferramenta, pela equação~\ref{eq::posf}.
 Como este ponto está alinhado ao eixo do efetuador, faz-se $dx = dz = 0$ e $dy
 = pBTy$.
 Reescrevendo a equação no referencial inercial, as componentes do vetor
-$\mathbf{p}_{f}^{Z}$ são:
+$\mathbf{p}_{f}^{Z}$ são:\todo{Pensar em mudar estas eqs de lugar}
 %
 \begin{multline}
 	x_f =  \left[  \left( -{\it c4}\,{\it s5}\,{\it pBTy}+{\it pURx} \right) {
@@ -1233,51 +1226,13 @@ $\mathbf{p}_{f}^{Z}$ são:
 		\\ +{\it c1}\,{\it s4}\,{\it s5}\,{\it pBTy}
 \end{multline}
 
-\todo[inline]{Pensar em mudar estas eqs de lugar}
+
 
 Tem-se portanto, pelo conjunto de equações~\ref{eq::q3ik} a \ref{eq::q6ik}, a
 solução cinemática inversa do manipulador MOTOMAN MH12.
 
 
 \subsection{Tarefa e trajetória} \label{sec::tarefa_traj}
-
-A trajetória que o manipulador, ou mais especificamente a ferramenta acoplada,
-deverá seguir para cumprir determinada tarefa, é uma etapa extremamente
-importante para o método proposto. Os parâmetros como posição, velocidade e
-orientação ao longo de um dado caminho são impostos ao robô através do
-planejamento da trajetória. 
-
-O planejamento é feito aliando-se o caminho desejado aos requisitos necessários
-ligados a uma deter
-
-A importância de incluir corretamente os parâmetros da trajetória se
-deve ao fato de que são estes parâmetros que serão verificados ao se comparar
-os resultados do robô no modelo de base rígida aos resultados do modelo do robô
-sobre uma base flexível. 
-
-Se a tarefa é, por exemplo, o processo de revestimento por HVOF de uma
-superfície , o robô deve seguir uma trajetória ao longo daquela superfície, de
-forma a cobrí-la totalmente com o material aspersado. Como visto na
-seção~\ref{sec::ikin_traj} uma maneira simples de cobrir uma superfície é pelo
-movimento de ``zigue-zague''\todo{Rever / reescrever esse parágrafo}, ilustrado
-na Figura~\ref{fig::zigzag}.
-
-\missingfigure{Figura esquemática da trajetória}.
-
-O sistema de revestimento por HVOF que motiva este trabalho, realiza a tarefa
-sobre uma superfície suavemente curva, que representa o perfil hidráulico, da pá
-da turbina. Como um dos requisitos do processo é manter a distância fixa entre a
-pistola de revestimento e a pá, a trajetória não está restrita a apenas um
-plano.
-
-\begin{figure}[h]
-	\centering 
- 	\includegraphics[width=0.75\textwidth]{figs/coat_blade}
- 	\caption[Revestimento da face curva de uma pá]{Revestimento da face curva de
- 	uma pá. \\Fonte: \ldots}
- 	\label{fig::trajec_600x30}
- 	\todo[inline]{Incluir fonte da figura do Renan}
-\end{figure}
 
 As trajetórias para representar este processo serão simplificadas neste
 trabalho, pela consideração de que as superfícies são planas e que pode-se
@@ -1322,7 +1277,7 @@ longo desta região.
 \end{figure}
 
 A Figura~\ref{fig::trajec3D_600x500x10} apresenta essa tarefa no ambiente 3D
-de simulação, com o robô no início da trajetória. 
+de simulação, com o robô no início da trajetória.
 
 \begin{figure}[h!]
 	\centering 
@@ -2420,9 +2375,8 @@ fornece uma faixa mais larga que quando usada uma ponta macia.
 	\centering 
  	\includegraphics[width=0.95\textwidth]{figs/carta_badwidth}
  	\caption[Espectro de frequência do impacto do martelo PCB-086D50]{Espectro de
- 	frequência do impacto do martelo PCB-086D50 \\
- 	Fonte: adaptado de \ldots }
- 	\label{fig::carta_badwidth} \todo[inline]{Incluir fonte da carta do martelo}
+ 	frequência do impacto do martelo PCB-086D50. \\	Fonte: adaptado de~\cite{manualpcb} }
+ 	\label{fig::carta_badwidth}
 \end{figure}
 
 
@@ -2910,7 +2864,7 @@ representação no ambiente 3D com o robô no início do primeiro paralelo.
   \textbf{Velocidade da ferramenta:} $30~m/min$
 \end{tcolorbox}
 %
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{figs/traj2}

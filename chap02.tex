@@ -42,6 +42,45 @@
 \subsection{Cinemática Inversa e planejamento de
 trajetória}\label{sec::ikin_traj}
 
+
+% exact cellular de composition
+% Bountrophedon Path
+% Coverage path planning
+
+Os parâmetros como posição, velocidade e orientação ao longo de um dado caminho
+são impostos ao robô através do planejamento da trajetória.
+
+% O planejamento é feito aliando-se o caminho desejado aos requisitos necessários
+% ligados a uma deter
+
+A importância de incluir corretamente os parâmetros da trajetória se
+deve ao fato de que são estes parâmetros que serão verificados ao se comparar
+os resultados do robô no modelo de base rígida aos resultados do modelo do robô
+sobre uma base flexível. 
+
+Se a tarefa é, por exemplo, o processo de revestimento por HVOF de uma
+superfície , o robô deve seguir uma trajetória ao longo daquela superfície, de
+forma a cobrí-la totalmente com o material aspersado. Como visto na
+seção~\ref{sec::ikin_traj} uma maneira simples de cobrir uma superfície é pelo
+movimento de ``zigue-zague'', ilustrado
+na Figura~\ref{fig::zigzag}.\todo{Rever / reescrever esse parágrafo}
+
+\missingfigure{Figura esquemática da trajetória}.
+
+O sistema de revestimento por HVOF que motiva este trabalho, realiza a tarefa
+sobre uma superfície suavemente curva, que representa o perfil hidráulico, da pá
+da turbina. Como um dos requisitos do processo é manter a distância fixa entre a
+pistola de revestimento e a pá, a trajetória não está restrita a apenas um
+plano.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.75\textwidth]{figs/coat_blade}
+ 	\caption[Revestimento da face curva de uma pá]{Revestimento da face curva de
+ 	uma pá. \\Fonte: \citet{8206216}}
+ 	\label{fig::trajec_600x30}
+\end{figure}
+
 \subsection{Dinâmica}
 
 \subsection{Equações de Movimento}
@@ -82,7 +121,7 @@ trajetória}\label{sec::ikin_traj}
 \begin{figure}[h]
 	\centering 
  	\includegraphics[width=0.85\textwidth]{figs/base_telesc_turbina}
- 	\caption{Base telescópica PRP para manutenção de revestimento
+ 	\caption{Base telescópica PRPP para manutenção de revestimento
  	\textit{in-situ}}
  	\label{fig::base_telesc_turbina}
 \end{figure}

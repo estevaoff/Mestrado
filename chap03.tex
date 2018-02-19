@@ -8,10 +8,10 @@
 O método proposto pode ser dividido em 5 etapas:
 %
 \begin{enumerate}
-  \item Modelo dinâmico do robô (MBS - Robô);
-  \item Modelo dinâmico da base (MBS - Base);
+  \item Modelo dinâmico do robô (MBS Robô);
+  \item Modelo dinâmico da base (MBS Base);
   \item Ensaio Experimental da Base;
-  \item Modelo dinâmico acoplado (MBS - Robô- Base);
+  \item Modelo dinâmico acoplado (MBS Robô-Base);
   \item Cálculo dos erros teóricos.
 \end{enumerate}
 
@@ -24,7 +24,7 @@ rotinas do Sophia, revela-se uma forma prática e sistemática de modelar o
 sistema multicorpos de qualquer número de graus de liberdade e, pelo método de
 Kane, deduzir-se rapidamente as equações de movimento dos sistemas.
 
-O MBS - Robô configura o manipulador como sobre uma base ideal, ou perfeitamente
+O MBS Robô configura o manipulador como sobre uma base ideal, ou perfeitamente
 rígida, já que em sua origem não se oferece nenhum grau de liberdade. Com este
 modelo realiza-se, portanto, as simulações dinâmicas das trajetórias ``ideais'',
 ou seja, que seriam obtidas numa base perfeitamente rígida. Este resultado
@@ -41,7 +41,7 @@ Funções de Resposta em Frequência (FRF's) e então estimar seus parâmetros
 modais. O resultado fornece a matriz de amortecimento da base de teste que será
 utilizada no modelo MBS acoplado.
 
-O MBS acoplado considera os 6 graus de liberdade da base (3 tranlações e 3
+O MBS Robô-Base considera os 6 graus de liberdade da base (3 tranlações e 3
 rotações) e os 5 graus de liberdade do robô, formando um sistema único acoplado
 de 11 gdl. É simulada a mesma trajetória fornecida no modelo rígido, com o
 objetivo de comparar os resultados quando o robô opera sobre uma base rígida em
@@ -153,23 +153,19 @@ Como resultado, tem-se um sistema de 5 gdl.
 
 Como foi discutido na seção~\ref{sec::cinematica}, o procedimento mais utilizado
 para a modelagem cinemática de manipuladores robóticos é o método dos parâmetros
-de Denavit-Hartenberg (parâmetros D-H). Apesar de sua popularidade e vasta
-utilização na modelagem cinemética de manipuladores variados, este método possui
-regras que acabam restringindo uma livre escolha dos sistemas de coordenadas e
-as direções dos eixos de referência. Dependendo da geometria do robô, pode ser
-uma tarefa trabalhosa definir os parâmetros e referenciais mais convenientes, e
-que resultem em um sistema final simplificado.
+de Denavit-Hartenberg. Apesar de sua popularidade e vasta utilização na
+modelagem cinemética de manipuladores variados, o pacote Sophia-Maple será
+utilizado, uma vez que já fornece praticidade e flexibilidade para derivar as
+equações cinemáticas de sistemas multicorpos, sem nenhum aumento de
+complexidade. Pode-se dizer inclusive que este método é vantajoso em relação ao
+DH, por não restringir a escolha dos referenciais, permitindo investigar
+configurações que melhorem a eficiência das manipulações algébricas.
 
-Um maior controle sobre a escolha dos referenciais e dos parâmetros da geometria
-pode reduzir significativamente o custo computacional do modelo.
-Neste sentido, o Sophia-Maple é uma ferramenta mais flexível, que permite, ao
-usuário, total liberdade sobre a escolha dos referenciais, sem nenhum aumento de
-complexidade de modelagem. Uma escolha estratégica da posição e orientação dos
-sistemas de coordenadas pode resultar em equações cinemáticas e transformações de
-referenciais mais simplificadas. Neste trabalho serão utilizadads as rotinas do
-Sophia para modelagem da cinemática direta do manipulador robótico.
+Demonstra-se portanto os procedimentos para modelagem de um manipulador robótico
+pelas rotinas do Sophia-Maple. A cada etapa são apresentadas as linhas de código
+correspondentes, a fim de ilustrar a praticidade do método.
 
-\subsubsection{Sistemas de Coordenadas e Transformações Homogêneas}
+\subsubsection{Sistemas de Coordenadas}
 
 A primeira etapa para obter-se as equações cinemáticas será definir o sistema de
 coordenadas fixo em cada elo do robô. A Figura~\ref{fig::scs} é um modelo CAD do

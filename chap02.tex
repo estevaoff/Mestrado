@@ -52,22 +52,19 @@ No entanto, para ter maior controle da modelagem matemática, dos métodos e das
 simplificações e tratamento e pós-processamento dos resultados, este trabalho
 não fez uso de um programa comercial dedicado. Para isso, derivou-se toda a
 cinemática, dinâmica e equações de movimento dos sistemas simbolicamente, no
-Sophia-Maple. Isto permite que o método seja livre de qualquer restrição imposta
-pelas capacidade de qualquer programa, tornando explícita a metodologia proposta
-e permitindo repeti-la e verifica-la em qualquer outra plataforma.
+Sophia-Maple. Isto permite que o método seja livre de restrições impostas pelas
+capacidade de qualquer programa, tornando explícita a metodologia proposta e
+permitindo repeti-la e verifica-la em qualquer outra plataforma.
 
 
 \subsection{Cinemática}\label{sec::cinematica}
 
-Os conceitos de análise cinemática que se seguem nesta seção compõe os
-fundamentos básicos de diversos textos de áreas como Dinâmica de Corpos Rígidos,
-Sistemas Multicorpos e Robótica. As referências utilizadas para os
-fundamentos da cinemática tratados a seguir são:
-\cite{tenenbaum2006fundamentals},
-\cite{kane1985dynamics},
-\cite{shabana2013dynamics},
-\cite{sciavicco2012modelling} e
-\cite{spong2006robot}
+Os fundamentos da cinemática, tratados a seguir, são reunidos de livros-texto de
+referência nas disciplinas de Dinâmica de Corpos Rígidos
+\cite{tenenbaum2006fundamentals} e \cite{kane1985dynamics}, Sistemas Multicorpos
+\cite{shabana2013dynamics} e Robótica \cite{sciavicco2012modelling} e
+\cite{spong2006robot}. Esses autores guiam os conceitos básicos utilizados para
+modelagem matemática dos sistemas multicorpos aqui apresentados.
 
 \subsubsection{Sistemas de Coordenadas}
 
@@ -107,16 +104,16 @@ Note-se que $^{R}\textrm{\textbf{u}}_{p}$ também pode ser escrito como a soma d
 \end{equation}
 %
 
-Logo, qualquer ponto no do corpo B pode ser descrito como uma soma da posição
-do referencial do corpo, com respeito ao referencial global, mais o vetor posição
-do ponto com respeito ao refencial local.
+Logo, qualquer ponto no do corpo B pode ser descrito como uma soma da posição do
+referencial do corpo, com respeito ao referencial global e o vetor posição do
+ponto com respeito ao refencial local.
 
 A escolha dos SC's impacta substancialmente no tamanho das equações
 cinemáticas que descrevem os movimentos dos corpos. Uma escolha perspicaz do conjunto de
 SC's utilizado é importante para a eficiência do código e do cálculo
 computacional.
 
-\subsubsection{Matrizes de Rotação e Transformação Homogênea}
+\subsubsection{Matrizes de Rotação}
 
 As matrizes de rotação definem a orientação relativa entre 2 sistemas de
 coordenadas. As matrizes que representam as rotações básicas em torno
@@ -158,11 +155,49 @@ quaisquer rotações básicas. Por exemplo:
 \end{equation}
 %
 Esta em especial representa um método comum para para especificar a matriz de
-rotação que orienta um corpo em função 3 quantidades independentes $\phi, \theta, \psi$,
-denominado \emph{Ângulos de Euler}, tal que de 3 rotações, não
+rotação que orienta um corpo em função 3 quantidades independentes $\phi,
+\theta, \psi$, denominado \emph{Ângulos de Euler}, tal que de 3 rotações, não
 ocorram 2 rotações sucessivas em torno do mesmo eixo.
-Outros métodos comuns para especificar uma matriz de rotação são ângulos \textit{Roll-Pitch-Yaw}, ângulos de Bryan e
-representação Eixo-Ângulo.
+Outros métodos comuns para especificar uma matriz de rotação são ângulos
+\textit{Roll-Pitch-Yaw}, Quaternions~\cite{sciavicco2012modelling} e ângulos de
+Bryan~\cite{wittenburg2013dynamics}.
+
+Também é possível uma representação exponencial da matriz de rotação. É
+demonstrado didaticamente em~\cite{murray1994mathematical}, um método para
+relacionar a rotação em $R \in \mathbb{R}^{3\times3}$, a uma representação
+exponencial em termos de eixo, $\boldsymbol{\omega} \in \mathbb{R}^{3}$, e um
+ângulo, $\theta \in \mathbb{R}$.
+%
+\begin{equation}
+	R(\omega, \theta) = e^{\hat{\omega} \theta}
+\end{equation}
+%
+Realizando um desenvolvimento matemático chega-se a uma solução fechada para o
+ângulo e eixo correspondentes a uma matriz de rotação.
+%
+\begin{gather}
+%eq1
+	\theta =  \cos^{-1}\left(\frac{tr(R) - 1}{2}\right) \label{eq::ang_erro} \\
+%eq2	
+	\omega = \frac{1}{2 s_\theta} \begin{bmatrix}
+r_{32}-r_{23}\\ 
+r_{13}-r_{31}\\ 
+r_{21}-r_{12}
+\end{bmatrix} \label{eq::eixo_erro}
+\end{gather}
+%
+
+As equações~\ref{eq::ang_erro} e \ref{eq::eixo_erro} são fundamentais para
+fornecer os erros de orientação do efetuador do robô, devido aos deslocamentos
+da base, de uma forma mais conveniente e ilustrativa que a representação
+matricial.
+
+
+
+
+
+
+\subsubsection{Transformação Homogênea}
 
 Se os referenciais são coincidentes, a representação de um vetor com respeito a
 outro referencial é simplesmente a projeção do vetor através da matriz de
@@ -174,8 +209,8 @@ rotação:
 %
 
 Se um referencial fixo num corpo desloca-se em relação a outro referencial, como
-na Figura~\ref{fig::sist_refs}, a representação de $p$ descrito em SC-R, pode
-ser torna-se:
+na Figura~\ref{fig::sist_refs}, a representação de $p$ descrito em SC-R, poderia
+ser escrita como:
 %
 \begin{equation} \label{eq::upemr}
 	^{R}\textrm{\textbf{u}}_{p} = {}^{R}\textrm{\textbf{u}}^{B} + R \cdot
@@ -192,17 +227,19 @@ do movimento rígido na forma matricial.
 \begin{pmatrix}
 R & d\\ 
 0 & 1
-\end{pmatrix} ~,~ \in ~ \mathbb{R}_{4\times4}
+\end{pmatrix} ~,~ \in ~ \mathbb{R}^{4\times4}
 \end{equation}
 %
-Onde $R$ representa a matriz de rotação $3\times3$ e $d$ o vetor translação
-$3\times1$ entre os referenciais.
+Onde $R \in \mathbb{R}^{3\times3}$ representa a matriz de rotação e $d \in
+\mathbb{R}^{3}$ o vetor translação entre os referenciais.
 
 Logo, a equação~\ref{eq::upemr}, poderia ser representada simplesmente por:
 %
 \begin{equation}
 	^{R}\textrm{\textbf{u}}_{p} = H_{B}^{R} \cdot ^{B}\textrm{\textbf{u}}_{p}
 \end{equation}
+
+
 
 \subsubsection{Velocidade Angular, Linear e Aceleração}
 
@@ -216,7 +253,7 @@ referencial $R$ é:
 	\times \mathbf{v}
 \end{equation}
 %
-Onde o vetor ${}^{R}\boldsymbol{\omega}^{C}$ é chamada vetor velocidade angular
+Onde ${}^{R}\boldsymbol{\omega}^{C}$ é chamado vetor velocidade angular
 de C em R.
 De uma forma mais geral, a relação de um vetor $\mathbf{u}$, com respeito a 2
 referenciais, movendo-se arbitrariamente em relação um ao outro é expresso como:
@@ -260,44 +297,71 @@ B em relação a R e o termo $2{}^{R}\boldsymbol{\omega}^{B} \times
 \subsubsection{Cinemática de Manipuladores Robóticos}
 
 Manipuladores robóticos consistem em um sistema mecânico composto por uma série
-de corpos(elos), conectados por juntas. Cada junta fornece um, e apenas um, grau
-de liberdade, podendo ser translacional (primsático) ou rotacional (juntas de
+de corpos (elos), conectados por juntas. Cada junta fornece um, e apenas um,
+grau de liberdade, podendo ser translacional (primsático) ou rotacional (juntas de
 revolução). A estrutura de juntas de um robô pode ser descrita por uma sequência
 de caracteres representando os tipos de juntas: ``R'' para rotacional e ``P''
 para prismática. Logo, o manipulador MOTOMAN MH12 pode ser caracterizado por
-RRRRRR, por exemplo, por possuir 6 juntas de revolução.
+RRRRRR, por exemplo, por ser formado por 6 juntas de revolução.
 
 A formulação das relações cinemáticas permitem o estudo de um problema chave em
 robótica, da cinemática direta, que consiste na determinação de um método
-sistemático e geral para descrever o movimento do efetuador, em função do
-movimento das juntas.
-
-Um método largamente utilizado para sistematização da análise cinemática de
-manipuladores robóticos, é de \emph{Denavit-Hartenberg} (DH).
-Consiste em definir as matrizes de transformação homogênea de cada elo $i$ a
-partir de apenas 4 parâmetros: $\theta_i, a_i, d_i, \alpha_i$, que são
-respectivamente comprimento, torção e \textit{offset} do elo, e ângulo da junta.
-
-A cinemática direta, portanto, envolve o cálculo da pose (posição e orientação)
-do efetuador, $\xi_{E}$, como função do valor da juntas $\mathbf{q}$. 
+sistemático e geral para descrever a pose (posição e orientação) do
+efetuador, $\xi_{E}$, em função do valor das juntas, $\mathbf{q}$. Pode ser
+expresso matematicamente como:
 %
 \begin{equation}
 	\xi_{E} = \mathcal{K}(\mathbf{q})
 \end{equation}
 %
 
+Um método, presente em praticamente todos os livros de introdução a robótica,
+utilizado para sistematização da análise cinemática de manipuladores robóticos,
+é de \emph{Denavit-Hartenberg} (DH)~\cite{denavit1955}.
+Consiste em definir as matrizes de transformação homogênea de cada elo a partir
+de apenas 4 parâmetros: $a_i, \alpha_i, d_i, \vartheta_i$, que são
+respectivamente para cada elo $i$ comprimento, torção e \textit{offset} e o
+ângulo da junta.
+Uma ilustração da utilização do método é apresentada na
+Figura~\ref{fig::tipica_dh}, que representa um manipulador tipo pulso esférico
+de 3 gdl e na Tabela~\ref{tab::param_dh} a estrutura típica de representação dos
+parâmetros DH.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.50\textwidth]{figs/tipica_dh}
+ 	\caption[Manipulador tipo pulso esférico na convenção DH]{Manipulador
+ 	tipo pulso esférico na convenção DH \\ Fonte: adaptado de
+ 	\cite{sciavicco2012modelling}}
+ 	\label{fig::tipica_dh}
+\end{figure}
+
+%
+\begin{table}
+\centering
+\caption{Parâmetros DH do pulso esférico}
+\label{tab::param_dh}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+Elo & $a_i$ & $\alpha_i$ & $d_i$ & $\vartheta_i$ \\ \midrule
+1   & 0     & $-\pi/2$   & 0     & $\vartheta_1$ \\
+2   & 0     & $\pi/2$    & 0     & $\vartheta_2$ \\
+3   & 0     & 0          & $d_6$ & $\vartheta_3$ \\ \bottomrule
+\end{tabular}
+\end{table}
+%
 
 \subsection{Cinemática Inversa}\label{sec::ikin}
 
 O problema inverso, ou seja, encontrar o valor das juntas $\mathbf{q}$ que
-satisfazem $\xi_{E}$ é feito pela análise da cinemática inversa. Logo:
+satisfazem $\xi_{E}$, é feito pela análise da cinemática inversa. Logo:
 %
 \begin{equation} \label{eq::invq}
 	\mathbf{q} = \mathcal{K}^{-1}(\xi_{E})
 \end{equation}
 %
 
-A solução deste problema é fundamental importância, porque transforma o
+A solução deste problema é de fundamental importância, porque transforma o
 movimento desejado do efetuador, no espaço cartesiano, no valor correspondente
 das juntas. Entretanto, o problema da cinemática inversa é muito mais complexo,
 pelos seguintes motivos:
@@ -311,22 +375,27 @@ pelos seguintes motivos:
 \end{itemize}
 %
 
-\subsubsection{Desacoplamento cinemático}
-
 De qualquer forma, para o manipulador de 6 gdl MOTOMAN MH12 que é tratado nesta
 pesquisa, há pelo menos 16 soluções admissíveis, número que é reduzido se
 considerados os limites de juntas.
 
-A maioria dos manipuladores atuais são cinematicamente simples, e é devido a
-dificuldade da solução da cinemática inversa que eles evoluiram assim. Há hoje
-diversas técnicas para resolver o problema, para citar alguns exemplos: método
-analítico, geométrico, subproblemas de Paden-Kahen, Jacobiano Transposto,
-Pseudoinversa e Mínimos Quadrados Amortecido~\cite{buss2004introduction}. 
+Os manipuladores comerciais evoluiram mantendo uma estrutura cinematicamente
+simples, muito em virtude da dificuldade da solução da cinemática inversa.
+Manipuladores mais complexos têm  Há hoje diversas
+técnicas para resolver o problema inverso, para citar alguns exemplos:
+método geométrico~\cite{spong2006robot}, 
+subproblemas de Paden-Kahan~\cite{murray1994mathematical}, 
+Jacobiano Transposto, Pseudoinversa e Mínimos Quadrados
+Amortecido~\cite{buss2004introduction}.
 
-Devido a sua simplicidade, e por funcnionar bem com a modelagem simbólica
-no Sophia-Maple, o método utilizado foi o geométrico. É demonstrado a seguir a
-metodologia apresentada por \citet{spong2006robot} para chegar à solução da
-equação~\ref{eq::invq} pela abordagem geométrica.
+Devido a sua simplicidade, e por funcionar bem para manipulador escolhido, o
+método utilizado foi o geométrico. É demonstrado a seguir a metodologia
+apresentada por \citet{spong2006robot}, utilizando o conceito de desacoplamento
+cinemático, para chegar à solução da equação~\ref{eq::invq} pela abordagem
+geométrica.
+
+
+\subsubsection{Desacoplamento cinemático}
 
 O manipulador MOTOMAN MH12 possui 6 graus de liberdade e é caracterizado como um
 manipulador antropomórfico com pulso esférico. Assim, as 3 primeiras juntas são
@@ -361,11 +430,12 @@ análise geométrica das Figuras~\ref{fig::geom_pos_sup} e
 	\theta_{3} &= \atantwo(D, \pm \sqrt{1-D^2}) \label{eq::theta2}
 \end{align}
 %
+Onde:
 \begin{equation*}
 		D = \frac{x_c^2+y_c^2-d^2 + (z_c-d_1)^2 - a_2^2 - a_3^2}{2a_2 a_3}
 \end{equation*}
 %
-Onde $(x_c, y_c, z_c)$ é a posição da extremidade do manipulador em que
+Os termos $(x_c, y_c, z_c)$ são a posição da extremidade do manipulador em que
 é acoplado o pulso, $d$ é a distância de \textit{offset} da primeira junta,
 $a_2$ e $a_3$ são os comprimentos dos elos. Utiliza-se a notação simplificada
 das funções trigonométricas, portanto $s_2, c_2$, por exemplo, correpondem a
@@ -413,15 +483,15 @@ Logo, a equação que deve ser resolvida é a seguinte:
 
 
 A matriz $R$ é a que define a orientação desejada. Utilizando os ângulos de
-Euler para rotações em torno dos eixos YZY é:
+Euler para rotações em torno dos eixos ZYZ é:
 %
 \begin{equation}
-R_{YZY} = 
-\left( \begin {array}{ccc} c_\phi \,c_\theta \,c_\psi -s_\phi \,s_\psi &-c
-\phi \,s_\theta &c_\phi \,c_\theta \,s_\psi +s_\phi \,c_\psi 
-\\ \noalign{\medskip}s_\theta \,c_\psi &c_\theta &s_\theta \,s_\psi 
-\\ \noalign{\medskip}-s_\phi \,c_\theta \,c_\psi -c_\phi \,s_\psi &s_\phi \,
-s_\theta &-s_\phi \,c_\theta \,s_\psi +c_\phi \,c_\psi \end {array} \right)
+R_{zyz} = 
+\begin{pmatrix}
+c_\phi c_\theta c_\psi - s_\phi s_\psi & -c_\phi c_\theta s_\psi - s_\phi c_\psi & c_\phi s_\theta\\ 
+s_\phi c_\theta c_\psi + c_\phi s_\psi & -s_\phi c_\theta s_\psi + c_\phi c_\psi & s_\phi s_\theta\\ 
+-s_\theta c_\psi & s_\theta s_\psi & c_\theta
+\end{pmatrix}
 \end{equation}
 %
 
@@ -441,12 +511,14 @@ E do pulso para o efetuador:
 %
 \begin{equation}
 R_3^6 = 
-\left( \begin {array}{ccc} { c_4}\,{ c_5}\,{ c_6}-{ s_4}\,{
- s_6}&-{ c_4}\,{ s_5}&{ c_4}\,{ c_5}\,{ s_6}+{ c_6}\,{
- s_4}\\ \noalign{\medskip}{ s_5}\,{ c_6}&{ c_5}&{ s_5}\,{
- s_6}\\ \noalign{\medskip}-{ c_5}\,{ c_6}\,{ s_4}-{ c_4}\,{
- s_6}&{ s_4}\,{ s_5}&-{ c_5}\,{ s_4}\,{ s_6}+{ c_4}\,{
- c_6}\end {array} \right)
+\begin{pmatrix}
+{ c_4} { c_5} { c_6}-{ s_4} {
+ s_6}&-{ c_4} { s_5}&{ c_4} { c_5} { s_6}+{ c_6} {
+ s_4}\\ { s_5} { c_6}&{ c_5}&{ s_5} {
+ s_6}\\ -{ c_5} { c_6} { s_4}-{ c_4} {
+ s_6}&{ s_4} { s_5}&-{ c_5} { s_4} { s_6}+{ c_4} {
+ c_6}
+\end{pmatrix} 
 \end{equation}
 %
 
@@ -454,6 +526,17 @@ Logo, utilizando os resultados da cinemática inversa de posicionamento,
 $\theta_1, \theta_2, \theta_3$ e definindo-se a orientação pelos ângulos de
 Euler $\phi, \theta, \psi$ estão fornecidas no total 9 equações para 3
 incógnitas $\theta_4, \theta_5, \theta_6$. 
+
+Resolvendo-se o sistema, obtém-se:
+%
+\begin{align}
+	\theta_4 &= \atantwo(c_1 c_{23} r_{13} + s_1 c_{23} r_{23} + s_{23} r_{33},
+	-c_1 c_{23} r_{13} - s_1 c_{23} r_{23} + c_{23} r_{33} ) \\
+	\theta_5 &= \atantwo(s_1 r_{13} - c_1 r{23}, \pm \sqrt{1- (s_1 r_{13} - c_1
+	r_{23})^2}) \\
+	\theta_6 &= \atantwo(-s_1 r{11} + c_1 r_{21}, s_1 r{12} - c_1 r_{22})
+\end{align}
+
 
 \subsection{ Planejamento de trajetória} \label{sec::plan_traj}
 

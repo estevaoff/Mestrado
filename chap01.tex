@@ -31,7 +31,7 @@ pás de turbinas, denominado EMMA\cite{freitas2017state}.
 LEAD/COPPE-UFRJ e a Energia Sustentável do Brasil (ESBR). Este sistema consiste
 em realizar um procedimento de manutenção do revestimento das pás de turbinas do
 tipo Kaplan em usinas hidrelétricas, que sofrem desgaste por abrasão e
-cavitação, perdendo sua camada de proteção devendo ser reaplicada. Atualmente,
+cavitação, perdendo sua camada de proteção que deve ser reaplicada. Atualmente,
 as pás são desmontadas e levadas para um galpão em que, num ambiente bem
 estruturado, um robô de grande porte reaplica o revestimento.
 O objetivo do projeto EMMA é poupar todo o procedimento de desmontagem e
@@ -43,7 +43,7 @@ praticidade, no ambiente confinado e de difícil acesso da unidade geradora. Por
 conta do único acesso ser através de uma escotilha de $850~mm$ de diâmetro, o
 robô deve ser de médio a pequeno porte, ter uma base para sua fixação e
 posicionamento próximo a pá, que seja leve e modular, para fácil transporte,
-montagem e acesso pela escotilha. O desafio torna-se ainda maior se considerado
+montagem e acesso pela escotilha. O desafio mostra-se ainda maior se considerado
 que o processo de revestimento tem requisitos que devem ser controlados com
 precisão, para garantir sua qualidade. Este tipo de revestimento só pode ser
 aplicado roboticamente porque desvios de posição, orientação ou velocidade do
@@ -52,9 +52,9 @@ processo, podem simplesmente reprovar ou inviabilizar o procedimento.
 Por isso, considerando todas as restrições do sistema, projetou-se para a
 solução \textit{in situ}, uma base metálica, leve e modular, que possibilitasse
 o posicionamento do robô próximo às pás, em diversas configurações de montagem.
-Porém, simulações estáticas de carregamento, realizadas por Anáise por Elementos
-Finitos apresentaram resultados que o comportamento dinâmico da estrutura,
-poderia causar grandes amplitudes de deslocamento.
+Porém, simulações estáticas de carregamento da base, realizadas por Anáise por
+Elementos Finitos, apresentaram resultados que alertaram sobre o que poderia ser
+um deslocamento dinâmico excessivo da estrutura em operação real.
 Neste momento percebeu-se a necessidade de ter um modelo capaz de simular a
 tarefa de revestimento e obter-se assim o comportamento dinâmico acoplado entre
 base e robô, para então quantificar os desvios causados aos parâmetros
@@ -158,7 +158,7 @@ ferramentas importantes para o método, como: Álgebra Computacional Simbólica
 como preocupação permitir ao usuário utilizar as ferramentas que estiverem à sua
 disposição pessoal ou da instituição (laboratório, empresa, universidade, etc.),
 não limitando ao uso de qualquer \textit{software} em especial. Embora tenham
-sido utilizados programas de alto nível ficará claro que outros também poderiam
+sido utilizados programas específicos ficará claro que outros também poderiam
 ter sido utilizados. Por isso, são listados a seguir os programas escolhidos e
 também alternativas disponíveis no mercado.
 
@@ -168,10 +168,11 @@ Sophia é um conjunto de rotinas, desenvolvido por \citet{lesser1995analysis}
 para modelar sistemas mecânicos multicorpos e derivar suas equações de
 movimento. Foi criado originalmente para Maple, depois foi adaptada uma uma
 versão para o Mathematica.
-Maple\cite{maple} é um programa de álgebra simbólica computacional (CAS), com
-ênfase em manipulações algébricas simbólicas ao invés de numéricas, o que
-permite modelar e solucionar sistemas dinâmicos simbolicamente. O pacote Sophia,
-utilizado com o Maple será descrito apenas por Sophia-Maple.
+Maple\cite{maple}, desenvolvido pela MapleSoft, é um programa de álgebra
+simbólica computacional (CAS), com ênfase em manipulações algébricas simbólicas
+ao invés de numéricas, o que permite modelar e solucionar sistemas dinâmicos
+simbolicamente. O pacote Sophia, utilizado com o Maple será denominado por
+Sophia-Maple.
 
 Alternativas:
 %
@@ -182,8 +183,8 @@ Alternativas:
 
 \subsubsection{SolidWorks}
 
-SolidWorks\cite{solidworks} é um programa de CAD 3D, utilizado principalmente
-para modelagem de peças e conjuntos mecânicos.
+SolidWorks\cite{solidworks}, desenvolvido pela Dassault Systèmes, é um programa
+de CAD 3D utilizado principalmente para modelagem de peças e conjuntos mecânicos.
 Este programa tem interface amigável que facilita o desenho de conjuntos e
 montagens complexas. Permite também a definição do material de cada peça, por
 fornecer vasta lista de materiais e suas propriedades físicas e mecânicas.
@@ -228,18 +229,19 @@ experimentais através de instrumentação da base. São utilizados 2 programas:
 primeiro para aquisição, visualização e tratamento dos dados; o segundo para
 cálculo dos parâmetros modais.
 
-SignalExpress\cite{signalexpress} é programa aquisição, análise e
-apresentação de dados compatível com diversos instrumentos e sistemas de
+SignalExpress\cite{signalexpress}, da National Instruments, é programa
+aquisição, análise e apresentação de dados compatível com diversos instrumentos e sistemas de
 aquisição e medição experimentais e operacionais. 
 É utilizado nesta pesquisa para adquirir e processar os dados do ensaio
 experimental de uma versão de testes da base do robô.
 
 O ME'Scope VES (\textit{Visual Engineering Series})\cite{mescope} é um programa
-para facilitar a visualização e análise de vibrações de máquinas e estruturas
-mecânicas, utilizando os dados reais registrados experimentalmente. O programa
-também realiza análise modal, a partir das Funções de Resposta em Frequência
-(FRF's) dos dados importados. É utilizado portanto para  determinar o
-amortecimento modal, parâmetro necessário ao modelo teórico da base.
+desenvolvido pela Vibrant Technology para facilitar a visualização e análise de
+vibrações de máquinas e estruturas mecânicas, utilizando os dados reais
+registrados experimentalmente. O programa também realiza análise modal, a partir
+das Funções de Resposta em Frequência (FRF's) dos dados importados. É utilizado
+portanto para  determinar o amortecimento modal, parâmetro necessário ao modelo
+teórico da base.
 
 Alternativas:
 %

@@ -397,23 +397,7 @@ Por fim, o último termo representa a quantidade de \texttt{Evectors} que formam
 Uma vez que as velocidades generalizadas foram definidas pode-se obter o
 conjunto de vetores tangentes, pelo cálculo das velocidades parciais, que formam
 o chamado hiperplano tangente.
-Este plano é uma generalização da superfície que restringe o movimento do
-sistema multicorpo e é obtido pela diferenciação das velocidades com respeito
-às coordenadas generalizadas, conforme visto na seção~\ref{sec::cinematica}. As
-velocidades parciais são calculadas pela expressão das velocidades
-generalizadas, na equação~\ref{eq::velgen}. O termo explicitado na
-equação~\ref{eq::tau} define o vetor tangente associado a i-ésima coordenada
-generalizada.
-%
-\begin{gather}
-%eq1
-	^{R}\mathbf{v} = \frac{\mathrm{d} \mathbf{r}}{\mathrm{d} t} = \sum_{i}^{n}
-	\dot{q_{i}} \frac{\partial r}{\partial q_{i}} + \frac{\mathrm{d}
-	q_{i}}{\mathrm{d} t} \label{eq::velgen}\\
-%eq2
-	\dot{q_{i}} \frac{\partial r}{\partial q_{i}} = \tau_{i} \label{eq::tau}
-\end{gather}
-%
+
 A função \texttt{KMtangents} do Sophia-Maple obtém os termos que formam os
 vetores tangentes em \texttt{Kvectors} para cada coordenada generalizada. O
 conjunto que forma o hiperplano tangente introduz uma estrutura do Sophia, dos
@@ -936,17 +920,16 @@ Inversa.
 
 \subsection{Cinemática Inversa}\label{sec::ikin_mh12}
 
-Como o manipulador MOTOMAN MH12 é do tipo antropomórfico 6R com pulso esférico,
-a modelagem da cinemática inversa se resume em encontrar os parâmetros das
-juntas que satisfazem ao problema desacoplado, detalhado na
-seção~\ref{sec::ikin_traj}, ou seja, as funções $q_{1}, q_{2}, q_{3}$ que
-satisfazem a posição e $q_{4}, q_{5}, q_{6}$ que satisfazem a orientação da
-ferramenta.
+A solução da cinemática inversa se resume em encontrar os parâmetros das juntas
+resume-se a encontrar os valores de $q_{1}, q_{2}, q_{3}$ que satisfazem a
+posição do pulso e $q_{4}, q_{5}, q_{6}$ que satisfazem a orientação da
+ferramenta. Na seção~\ref{sec::ikin} detalhou-se como encontrar uma solução
+elegante pelo método geométrico, compatível para o manipulador MH12.
 
-A posição final da ferramenta pode ser portanto expressa como função da posição
-de sua extremidade e orientação em termos das coordenadas generalizadas, de
-acordo com a equação~\ref{eq::posf}.\todo{Incluir figura representando a posição e orientação final da
-ferramenta}
+A pose final da ferramenta pode ser expressa em termos dos parâmetros
+de posição e de orientação, de acordo com a equação~\ref{eq::posf}.
+
+\todo{Incluir figura representando a posição e orientação final da ferramenta}
 %
 \begin{equation}
 	\mathbf{x}_{f} = \begin{bmatrix}
@@ -955,7 +938,7 @@ ferramenta}
 	\label{eq::posf}	
 \end{equation}
 %
-\noindent onde: 
+Onde:
 %
 \begin{align}
 \mathbf{p}_{f}^Z &= [x_f,y_f,z_f]^Z \\
@@ -970,11 +953,13 @@ ferramenta}
 A primeira tarefa será calcular a posição da ferramenta em termos das
 coordenadas generalizadas.
 Como visto na seção~\ref{sec::ikin_traj}, pode-se expressá-la convenientemente
-pela posição da origem do pulso, porque esta só depende das coordenadas $q_1, q_2$ e $q_3$.
+pela posição da origem do pulso, porque esta só depende das coordenadas $q_1,
+q_2$ e $q_3$.
 
 A posição da ponta da ferramenta, $p_{f}$, é então a posição da origem do pulso,
 $p_{w}$ em SC-R, somada ao vetor das dimensões da ferramenta, no referencial
 SC-B:
+%
 \begin{equation}
 	\mathbf{p}_{f}^Z = \mathbf{p}_{w} + [d_{x}, d_{y}, d_{z}]^B \label{eq::posf}
 \end{equation}

@@ -3,8 +3,8 @@
 A pesquisa bilbliográfica deste trabalho é delineada pelo estudo de sistemas
 multicorpos, que faz uma revisão da modelagem cinemática e dinâmica desses
 sistemas; a análise dinâmica de estruturas, que busca métodos para obter a
-matriz de rigidez e amortecimento da base; a pesquisa sobre manipuladores
-robóticos compostos por elementos flexíveis; e tarefas robóticas de precisão
+matriz de rigidez e amortecimento da base; a pesquisa sobre sistemas robóticos
+compostos por elementos flexíveis; e por fim tarefas robóticas de precisão
 \textit{in situ}.
 
 
@@ -750,7 +750,7 @@ Onde:
 
 
 De forma similar, as equações que descrevem a dinâmica do movimento angular são
-determinadas, pela equação Euler, como a variação da quantidade de movimento
+determinadas, pela equação de Euler, como a variação da quantidade de movimento
 angular $H$ igual ao somatório dos momentos externos, com respeito
 ao centro de massa, que agem sobre o corpo.
 %
@@ -850,6 +850,86 @@ que reduz o número de equações a serem resolvidas.
 
 \subsection{Sophia-Maple e Método de Kane}\label{sec::sophia_kane}
 
+\subsubsection{Kane}
+
+O método de Lagrange tem a vantagem de eliminar as forças que não realizam
+trabalho, mas a desvantagem de ter que lidar com cálculo diferencial das
+equações de energia. O método de Newton-Euler introduz as forças de contato e
+restrição, que devem ser resolvidas para chegar às equações de movimento, no
+entanto, apenas relações de cálculo vetorial são suficientes para fornecer o
+modelo cinemático completo do sistema. Neste sentido, o método de Kane pode ser
+considerado como tendo as vantagens destes métodos, mas sem as desvantagens.
+
+No artigo que originou o método~\cite{kane1965derivation} Kane e Wang resumem as
+características da metodologia: 
+%
+\begin{enumerate*}[label=\emph{\alph*})]
+	\item automaticamente elimina as forças que não realizam trabalho;
+	\item aplicável a sistemas holonômicos e não-holonômicos;
+	\item conduz diretamente a equações de diferenciais de primeira ordem.
+\end{enumerate*}
+
+O tempo computacional necessário para resolver um sistema de equações cresce
+quadraticamente com a dimensão do sistema e as forças e torques de restrição
+podem ser grandes, o que leva a passos de integração pequenos para prevenir a
+divergência da solução~\cite{stoneking2013implementation}. Neste sentido, o
+método detalhado por~\citet{kane1985dynamics} tornou-se popular para derivar as
+equações de movimento de sistemas MBS, sobretudo porque fornece um número mínimo
+de equações.
+
+As equações de Kane são normalmente apresentadas como o seguinte conjunto de
+equações:
+%
+\begin{align} \label{eq::kane}
+	F_r + F_r^{*} = 0 \qquad, r = 1,\ldots,n
+\end{align}
+%
+Onde $n$ é o número de graus de liberdade, $F_r$ são as forças externas
+generalizadas e $F_r^{*}$ as forças de inércia generalizadas, que podem ser
+expressas para um conjunto de N corpos, respectivamente por:
+%
+\begin{gather}
+%eq1
+	F_r = \sum_{k=1}^{N}(\boldsymbol{\omega}_r^k \cdot \mathbf{T}_k) +
+\sum_{k=1}^{N}(\mathbf{v}_r^k \cdot \mathbf{F}_k) \\
+%eq2
+	F_r^{*} = \sum_{k=1}^{N}\left[\boldsymbol{\omega}_r^k \cdot (-I_k
+\boldsymbol{\alpha}_k - \boldsymbol{\omega}_k \times \mathbf{H}_k)\right] +
+\sum_{k=1}^{N}\left[ \mathbf{v}_r^k \cdot (\mathbf{F} - m \mathbf{a})_k \right]
+= 0
+\end{gather}
+%
+
+Os vetores $\boldsymbol{\omega}_r$ e $\mathbf{v}_k$ são respectivamente as
+\emph{velocidades parciais angulares} e \emph{velocidades parciais}. De forma
+mais geral, pode-se encontrar um vetor de velocidades generalizadas e
+deste obter o chamado hiperplano tangente.
+
+Este plano é uma generalização da superfície que restringe o movimento do
+sistema MBS e é obtido pela diferenciação das velocidades com respeito às
+coordenadas generalizadas do sistema. As velocidades parciais são calculadas
+pela expressão das velocidades generalizadas, na equação~\ref{eq::velgen}. O
+termo explicitado na equação~\ref{eq::tau} define o vetor tangente associado a
+i-ésima coordenada generalizada.
+%
+\begin{gather}
+%eq1
+	\mathbf{v} = \frac{\mathrm{d} \mathbf{p}}{\mathrm{d} t} = \sum_{k=1}^{N}
+	\dot{q_{k}} \frac{\partial p}{\partial q_{k}} + \frac{\mathrm{d}
+	q_{k}}{\mathrm{d} t} \label{eq::velgen}\\
+%eq2
+	\frac{\partial p}{\partial q_{k}} = \tau_{k} \label{eq::tau}
+\end{gather}
+%
+
+O hiperplano tangente, $\tau$, projeta a equação de equilíbrio dinâmico de
+Newton-Euler, para ao mesmo tempo eliminar as forças que não realizam trabalho e obter-se as
+equações~\ref{eq::kane} das forças de inércia e externas generalizadas que
+formam as equações de movimento.
+
+
+\subsubsection{Sophia e notação de Lesser}
+
 Sophia é um conjunto de rotinas implementado para Maple. O programa foi
 desenvolvido pelo professor Martin Lesser do KTH Royal Institute of Technology,
 Suécia, e sua sintaxe e utilização está bem detalhada no livro intitulado
@@ -862,31 +942,101 @@ do método de Kane. Posteriormente foram implementadas por
 também o pacote \texttt{exmex}, para exportação das equações de movimento para
 solução numérica no MATLAB ou Octave.
 
-\subsubsection{Kane}
+Para auxiliar a compreensão da notação utilizada por Lesser e implementada para
+o Sophia, faz-se uma pequena revisão dos principais termos utilizados pelo
+programa para lidar eficientemente com a álgebra de vetores e tensores. 
 
-A formulação de Kane 
+\medskip \noindent
+\texttt{- Evector} -- No Sophia, os vetores são compostos por objetos de duas
+partes:
+seu conjunto de componentes e a identificação do sistema de coordenadas a que se
+refere. Este objeto é chamado de \texttt{Evector}, tal que 'E' indica que este
+pertence ao espaço tridimensional Euclidiano. Como exemplo, o vetor posição de
+um ponto paralelo ao vetor unitário $\mathbf{a}_1$ a uma distância $L1$ é
+definido como um \texttt{Evector} da seguinte forma:
+
+\medskip \texttt{> Evector(L1,0,0, A);	} \medskip
+
+\noindent O que retorna: \texttt{[[L1, 0, 0], A]} \medskip
 
 
+\medskip \noindent
+\texttt{- chainSimpRot} -- Esta função representa o método mais direto para se
+relacionar os referenciais como uma sequência de rotações simples. Para
+isso cria-se uma lista contendo os referenciais relacionados, o eixo de rotação
+e a variável, ou coordenada generalizada associada àquela rotação. A função
+\texttt{chainSimpRot} reune em uma lista, a lista de rotações. Por exemplo:
 
-Este plano é uma generalização da superfície que restringe o movimento do
-sistema MBS e é obtido pela diferenciação das velocidades com respeito
-às coordenadas generalizadas, conforme visto na seção~\ref{sec::cinematica}. As
-velocidades parciais são calculadas pela expressão das velocidades
-generalizadas, na equação~\ref{eq::velgen}. O termo explicitado na
-equação~\ref{eq::tau} define o vetor tangente associado a i-ésima coordenada
-generalizada.
+\medskip \texttt{> chainSimpRot([N, A, 3, q1], [A, B, 3, q2]);	}
+\medskip
+
+Desta forma, define-se internamente as matrizes de rotação entre os referenciais
+A, B e N. Estas relações são utilizadas para relacionar os referenciais e
+permitir a diferenciação dos 'E' vetores.
+
+\medskip \noindent
+\texttt{- DiffFrame} -- Para diferenciar os 'E' vetores em função de qualquer
+variável em relação a qualquer referencial, a função \texttt{DiffFrame} é
+utilizada (ou sua variação \texttt{\&fdt}. Como argumento são fornecidos o
+vetor, a variável e o referencial.
+Esta função é útil para derivar os vetores posição e calcular as velocidades
+lineares.
+
+\medskip \noindent
+\texttt{- \&av} -- A velocidade angular entre dois referenciais pode ser
+facilmente calculada pela função \texttt{\&av}. Como exemplo, para calcular o
+vetor $^A\boldsymbol{\omega}^B$:
+
+\medskip \texttt{> wNB := N \&av B; } \medskip
+
+\medskip \noindent
+\texttt{- Edyad} -- Assim como os 'E'vetores, os tensores são compostos por dois
+termos: componentes e um referencial associado, denominando-se \texttt{Edyad}.
+
+\medskip \noindent
+\texttt{- \&o} e \texttt{\&xx} -- O produto escalar entre 'E' vetores e 'E'
+tensores pode ser obtido com a função \texttt{\&o}.
+Já o produto vetorial é obtido pela função \texttt{\&xx}. Em ambos os casos, o
+resultado mantém a estrutura da notação e não requer que os vetores ou tensores
+estejam escritos no mesmo referencial, lidando automaticamente com as
+transformações necessárias.
+
+\medskip \noindent
+\texttt{- SKvector} -- Os super \texttt{Kvector} ou \texttt{SKvector} são
+vetores formados por uma lista de 'K' vetores. Como exemplo, o vetor das
+velocidades generalizadas é um \texttt{Kvector}, no sentido de que é uma lista
+de \texttt{Evector} e o vetor do hiperplano tangente, $\tau$, é um
+\texttt{SKvector}, por ser formado por uma lista de \texttt{Kvector}.
 %
-\begin{gather}
-%eq1
-	^{R}\mathbf{v} = \frac{\mathrm{d} \mathbf{r}}{\mathrm{d} t} = \sum_{i}^{n}
-	\dot{q_{i}} \frac{\partial r}{\partial q_{i}} + \frac{\mathrm{d}
-	q_{i}}{\mathrm{d} t} \label{eq::velgen}\\
-%eq2
-	\dot{q_{i}} \frac{\partial r}{\partial q_{i}} = \tau_{i} \label{eq::tau}
-\end{gather}
+\begin{equation}
+\tau = 
+\begin{bmatrix}
+\boldsymbol{\tau}_1\\ 
+\vdots\\ 
+\boldsymbol{\tau}_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+\begin{bmatrix}
+\boldsymbol{\tau}_1^1\\ 
+\vdots\\ 
+\boldsymbol{\tau}_1^k
+\end{bmatrix}\\ 
+\vdots\\ 
+\begin{bmatrix}
+\boldsymbol{\tau}_n^1\\ 
+\vdots\\ 
+\boldsymbol{\tau}_n^k
+\end{bmatrix}\\ 
+\end{bmatrix}
+\end{equation}
 %
 
-\subsubsection{Notação de Lesser e Lennartsson}
+Sophia demonstra duas grandes vantagens. A primeira é que reduz a necessidade de
+lidar com a manipulação de expressões algébricas extensas. A segunda é a
+sistematização da modelagem do sistema mecânico, por meio de declarações simples
+e objetivas do problema.
+
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-

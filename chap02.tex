@@ -3,7 +3,7 @@
 A pesquisa bilbliográfica deste trabalho é delineada pelo estudo de sistemas
 multicorpos, que faz uma revisão da modelagem cinemática e dinâmica desses
 sistemas; a análise dinâmica de estruturas, que busca métodos para obter a
-matriz de rigidez e amortecimento da base; a pesquisa sobre sistemas robóticos
+matriz de rigidez e amortecimento da base; pesquisa sobre sistemas robóticos
 compostos por elementos flexíveis; e por fim tarefas robóticas de precisão
 \textit{in situ}.
 
@@ -24,7 +24,7 @@ Figura~\ref{fig::mbs_diagram}.
 \begin{figure}[h]
 	\centering 
  	\includegraphics[width=0.75\textwidth]{figs/mbs_diagram}
- 	\caption[Representação de um sistema MBS]{Representação de um sistema MBS.
+ 	\caption[Representação de um sistema MBS]{Representação de um sistema MBS
  	\\Fonte: adaptado de \cite{neto2003stabilization}}
  	\label{fig::mbs_diagram}
 \end{figure}
@@ -60,8 +60,8 @@ Os fundamentos da cinemática e da dinâmica, tratados a seguir, são reunidos d
 livros-texto de referência nas disciplinas de Dinâmica de Corpos Rígidos
 \cite{tenenbaum2006fundamentals} e \cite{kane1985dynamics}, Sistemas Multicorpos
 \cite{shabana2013dynamics} e Robótica \cite{sciavicco2012modelling} e
-\cite{spong2006robot}. Esses autores guiam os conceitos básicos utilizados para
-modelagem matemática dos sistemas multicorpos aqui apresentados.
+\cite{spong2006robot}. Esses autores guiam os conceitos básicos apresentados
+nesta seção para modelagem matemática dos sistemas multicorpos.
 
 
 \subsection{Cinemática}\label{sec::cinematica}
@@ -829,7 +829,7 @@ por:
 	\frac{\partial L}{\partial \mathbf{q}} = \boldsymbol{\Upsilon}
 \end{equation}
 %
-Onde $\boldsymbol{\Upsilon}$ são as forças externas agindo sobre cada
+Onde $\boldsymbol{\Upsilon}$ são as forças externas associadas a cada
 coordenada generalizada do sistema.
 
 O método de Lagrange é interessante sobretudo porque reduz o número de equações
@@ -857,11 +857,11 @@ trabalho, mas a desvantagem de ter que lidar com cálculo diferencial das
 equações de energia. O método de Newton-Euler introduz as forças de contato e
 restrição, que devem ser resolvidas para chegar às equações de movimento, no
 entanto, apenas relações de cálculo vetorial são suficientes para fornecer o
-modelo cinemático completo do sistema. Neste sentido, o método de Kane pode ser
-considerado como tendo as vantagens destes métodos, mas sem as desvantagens.
+modelo cinemático completo do sistema. Já o método de Kane pode ser
+considerado como tendo as vantagens de ambos, mas sem as desvantagens.
 
-No artigo que originou o método~\cite{kane1965derivation} Kane e Wang resumem as
-características da metodologia: 
+No artigo que originou o método~\cite{kane1965derivation}, Kane e Wang resumem
+as características da metodologia: 
 %
 \begin{enumerate*}[label=\emph{\alph*})]
 	\item automaticamente elimina as forças que não realizam trabalho;
@@ -880,9 +880,9 @@ de equações.
 As equações de Kane são normalmente apresentadas como o seguinte conjunto de
 equações:
 %
-\begin{align} \label{eq::kane}
+\begin{equation} \label{eq::kane}
 	F_r + F_r^{*} = 0 \qquad, r = 1,\ldots,n
-\end{align}
+\end{equation}
 %
 Onde $n$ é o número de graus de liberdade, $F_r$ são as forças externas
 generalizadas e $F_r^{*}$ as forças de inércia generalizadas, que podem ser
@@ -901,16 +901,15 @@ expressas para um conjunto de N corpos, respectivamente por:
 %
 
 Os vetores $\boldsymbol{\omega}_r$ e $\mathbf{v}_k$ são respectivamente as
-\emph{velocidades parciais angulares} e \emph{velocidades parciais}. De forma
-mais geral, pode-se encontrar um vetor de velocidades generalizadas e
+\emph{velocidades parciais angulares} e \emph{velocidades parciais lineares}. De
+forma mais geral, pode-se encontrar um vetor de velocidades generalizadas e
 deste obter o chamado hiperplano tangente.
-
 Este plano é uma generalização da superfície que restringe o movimento do
 sistema MBS e é obtido pela diferenciação das velocidades com respeito às
 coordenadas generalizadas do sistema. As velocidades parciais são calculadas
 pela expressão das velocidades generalizadas, na equação~\ref{eq::velgen}. O
 termo explicitado na equação~\ref{eq::tau} define o vetor tangente associado a
-i-ésima coordenada generalizada.
+k-ésima coordenada generalizada.
 %
 \begin{gather}
 %eq1
@@ -923,9 +922,21 @@ i-ésima coordenada generalizada.
 %
 
 O hiperplano tangente, $\tau$, projeta a equação de equilíbrio dinâmico de
-Newton-Euler, para ao mesmo tempo eliminar as forças que não realizam trabalho e obter-se as
-equações~\ref{eq::kane} das forças de inércia e externas generalizadas que
-formam as equações de movimento.
+Newton-Euler, para ao mesmo tempo eliminar as forças que não realizam trabalho e
+obter-se um número mínimo de equações das forças de inércia e externas
+generalizadas.
+As equações cinemáticas diferenciais~\ref{eq::kde} (ou kde, de \textit{kinematic
+differential equations}) permitem transformar o sistema de equações diferenciais
+de segunda ordem, em dois conjuntos de primeira ordem.
+%
+\begin{equation} \label{eq::kde}
+	u_r = \dot{q}_r \qquad, r = 1,\ldots,n
+\end{equation}
+%
+
+As equações~\ref{eq::kane} e \ref{eq::kde} formam, portanto, um sistema de
+equações de diferenciais ordinárias não-lineares de primeira ordem, que
+representam as equações de movimento do sistema MBS.
 
 
 \subsubsection{Sophia e notação de Lesser}
@@ -936,15 +947,15 @@ Suécia, e sua sintaxe e utilização está bem detalhada no livro intitulado
 ``\textit{The Analysis of Complex Nonlinear Mechanical
 Systems}''\cite{lesser1995analysis}. Sophia foi desenhado especificamente para
 modelagem simbólica de sistemas mecânicos multicorpos, e oferece uma forma
-sistemática e simples de se chegar às equações de movimento do sistema, através
-do método de Kane. Posteriormente foram implementadas por
-\citet{lennartsson1999efficient} melhorias no Sophia para eficiência algébrica e
-também o pacote \texttt{exmex}, para exportação das equações de movimento para
-solução numérica no MATLAB ou Octave.
+sistemática e simples de se chegar às equações de movimento através do método de
+Kane. Posteriormente foram implementadas por \citet{lennartsson1999efficient}
+melhorias no Sophia para eficiência algébrica e também o pacote \texttt{exmex},
+para exportação das equações de movimento para solução numérica no MATLAB ou
+Octave.
 
-Para auxiliar a compreensão da notação utilizada por Lesser e implementada para
-o Sophia, faz-se uma pequena revisão dos principais termos utilizados pelo
-programa para lidar eficientemente com a álgebra de vetores e tensores. 
+Para auxiliar a compreensão da notação utilizada por Lesser no Sophia, faz-se
+uma pequena revisão dos principais termos utilizados pelo programa para lidar
+eficientemente com a álgebra de vetores e tensores.
 
 \medskip \noindent
 \texttt{- Evector} -- No Sophia, os vetores são compostos por objetos de duas
@@ -964,8 +975,8 @@ definido como um \texttt{Evector} da seguinte forma:
 \texttt{- chainSimpRot} -- Esta função representa o método mais direto para se
 relacionar os referenciais como uma sequência de rotações simples. Para
 isso cria-se uma lista contendo os referenciais relacionados, o eixo de rotação
-e a variável, ou coordenada generalizada associada àquela rotação. A função
-\texttt{chainSimpRot} reune em uma lista, a lista de rotações. Por exemplo:
+e a variável, ou coordenada generalizada associada àquela rotação pela função
+\texttt{chainSimpRot} que reune em uma lista, a lista de rotações. Por exemplo:
 
 \medskip \texttt{> chainSimpRot([N, A, 3, q1], [A, B, 3, q2]);	}
 \medskip
@@ -974,24 +985,23 @@ Desta forma, define-se internamente as matrizes de rotação entre os referencia
 A, B e N. Estas relações são utilizadas para relacionar os referenciais e
 permitir a diferenciação dos 'E' vetores.
 
-\medskip \noindent
-\texttt{- DiffFrame} -- Para diferenciar os 'E' vetores em função de qualquer
-variável em relação a qualquer referencial, a função \texttt{DiffFrame} é
-utilizada (ou sua variação \texttt{\&fdt}. Como argumento são fornecidos o
-vetor, a variável e o referencial.
+\medskip \noindent \texttt{- DiffFrame} -- Para diferenciar os 'E' vetores em
+função de qualquer variável em relação a qualquer referencial, a função
+\texttt{DiffFrame} (ou sua variação \texttt{\&fdt}) é utilizada. Como argumento
+são fornecidos o vetor, a variável e o referencial.
 Esta função é útil para derivar os vetores posição e calcular as velocidades
 lineares.
 
 \medskip \noindent
 \texttt{- \&av} -- A velocidade angular entre dois referenciais pode ser
 facilmente calculada pela função \texttt{\&av}. Como exemplo, para calcular o
-vetor $^A\boldsymbol{\omega}^B$:
+vetor $^N\boldsymbol{\omega}^B$:
 
 \medskip \texttt{> wNB := N \&av B; } \medskip
 
 \medskip \noindent
 \texttt{- Edyad} -- Assim como os 'E'vetores, os tensores são compostos por dois
-termos: componentes e um referencial associado, denominando-se \texttt{Edyad}.
+termos: componentes e um referencial associado.
 
 \medskip \noindent
 \texttt{- \&o} e \texttt{\&xx} -- O produto escalar entre 'E' vetores e 'E'
@@ -1042,12 +1052,149 @@ e objetivas do problema.
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Análise dinâmica de estruturas}
 
-\subsection{Matriz de rigidez} \label{sec::rigidez}
+O projeto e análise de estruturas que estão sujeitas a carregamentos dinâmicos
+consiste em assumir idealizações e simplificações da estrutura física a fim de
+representá-la como um modelo analítico ou matemático. \citet{paz2012structural}
+resume estas idealizações nos seguintes grupos: 
+%
+\begin{enumerate*}[label=\emph{\alph*})]
+	\item \emph{material}: simplificações e premissas como homogeneidade e
+	isotropia;
+	\item \emph{carregamento}: as forças consideradas concentradas em pontos
+	específicos, repentina ou periodicamente aplicadas;
+	\item \emph{geometria}: perfis extrudados, ou vigas são normalmente
+	considerados elementos unidirecionais, podem ser discretizadas em nós.
+\end{enumerate*}
 
-\subsection{Amortecimento proporcional} \label{sec::amortecimento}
+Para ilustrar o projeto e análise dinâmica de estruturas,
+\citet{craig2006fundamentals} ilustram bem as etapas necessárias, como pode ser
+visto no diagrama da Figura~\ref{fig::analise_estrut}. Estes passos guiam a
+modelagem e verificação do projeto para base do robô no método proposto nesta
+pesquisa.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.98\textwidth]{figs/analise_estrut}
+ 	\caption[Diagrama de investigação da dinâmica de estruturas]{Diagrama de
+ 	investigação da dinâmica de estruturas \\Fonte:
+ 	adaptado de \cite{craig2006fundamentals}}
+ 	\label{fig::analise_estrut}
+\end{figure}
+
+As equações de movimento que regem o comportamento dinâmico dependem da massa,
+rigidez e amortecimento da estrutura, de acordo com a expressão:
+%
+\begin{equation} \label{eq::eqmov_structural}
+	M \ddot{\mathbf{q}} + C \dot{\mathbf{q}} + K \mathbf{q} = \mathbf{f}(t)
+\end{equation}
+%
+
+Logo, deve-se haver uma forma de fornecer estes parâmetros ao modelo matemático
+da estrutura, a fim de realizar a análise do seu comportamento dinâmico.
+
+
+\subsection{Rigidez} \label{sec::rigidez}
+
+A rigidez relaciona o deslocamento, devido a deformações elásticas da estrutura,
+ao carregamento imposto.
+Para uma estrutura de $n$ graus de liberdade, e coordenadas generalizadas $q$
+associadas aos graus de liberdade da estrutura, podemos escrever:
+%
+\begin{equation} \label{eq::rigidez}
+	\mathbf{f} = K \mathbf{q}
+\end{equation}
+%
+O termo $K$ é uma matriz quadrada e simétrica que representa a matriz de
+coeficientes de influência de rigidez da estrutura.
+\citet{turner23stiffness} apresentaram um método para obter a rigidez total de
+uma estrutura, pela soma da rigidez de unidades discretizadas, que ficou
+conhecido como método da rigidez direta (ou \textit{direct stiffness method}).
+
+Este método permite avaliar a relação entre força e deslocamento de qualquer nó
+do modelo analítico da estrutura e montar a matriz de rigidez associada aos
+graus de liberdade daquele ponto. Os coeficientes de influência $k_{ij}$ da
+matriz $K$ podem ser calculados coluna a coluna. Para isso, são realizados
+deslocamentos prescritos unitários na direção $j$ de cada grau de liberdade do
+nó e calculadas as forças de reação na direção $i$ àquele deslocamento. As
+forças e momentos de reação calculadas são exatamente os necessários para manter
+a configuração dada pelo deslocamento prescrito na direção $i$, sem permitir
+nenhum deslocamento na direção $j$. Como exemplo, considere-se o modelo
+analítico bidimensinoal da Figura~\ref{fig::ex_stiff_analitico}.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/ex_stiff_analitico}
+ 	\caption[Exemplo de estrutura analítica para matriz de rigidez]{Exemplo de estrutura
+ 	analítica para matriz de rigidez: (a)
+ 	modelo analítico; (b) deslocamento unnitário em q1; (c) deslocamento
+ 	unitário em q2; (d) deslocamento unitário em q3. Fonte:
+ 	adaptado de \cite{weaver2012matrix}}
+ 	\label{fig::ex_stiff_analitico}
+\end{figure}
+
+No exemplo, o ponto B da estrutura possui 3 graus de liberdade: 2 translacionais
+e um rotacional, representados por $q1, q2, q3$. São aplicados deslocamentos
+unitários em cada direção e restringidos os deslocamentos nas outras direções em
+cada caso. De acordo com a equação~\ref{eq::rigidez}, pode-se calcular cada
+coeficiente de rigidez $k_{ij}$ como:
+%
+\begin{equation}
+	k_{ij} = \frac{f_i}{q_j}
+\end{equation}
+%
+Onde $f_i$ são as cargas de reação ao deslocamento prescrito em cada caso. A
+matriz de rigidez será portanto $K_{3\times3}$, função das propriedades de
+material e geometria dos elementos AB e BC e das condições de contorno.
+
+Calcular analiticamente a matriz de rigidez por este método é viável para
+estruturas simples. Para estruturas mais complexas, tridimensionais, com
+restrições, carregamentos e contatos variados, será utilizado um modelo
+numérico, resolvido por Análise de Elementos Finitos, utilizando o método
+apresentado para obter a matriz de rigidez associada a um ponto de interesse da
+estrutura.
+
+
+\subsection{Amortecimento} \label{sec::amortecimento}
+
+Do ponto de vista prático, as propriedades de amortecimento de um sistema
+raramente são conhecidas, ao contrário das propriedades de rigidez e inércia.
+A abordagem mais comum é tratar o amortecimento como viscoso, ou seja, as forças
+de amortecimento dependem apenas das velocidades generalizadas, como considerado
+na equação~\ref{eq::eqmov_structural}.
+Porém, é necessário um método para obter a matriz de amortecimento da estrutura,
+a fim de poder utilizá-la no modelo matemático matricial.
+
+\subsubsection{Amortecimento de Rayleigh}
+
+Também conhecido como amortecimento proporcional, este método consiste em
+definir a matriz de amortecimento por meio de dois parâmetros $\alpha$ e
+$\beta$, proporcionais às matrizes de inércia e rigidez. 
+%
+\begin{equation}
+	C = \alpha M + \beta K	
+\end{equation}
+%
+
+Ainda assim, os coeficientes devem ser encontrados. Pode ser verificado
+em~\cite{craig2006fundamentals} que a transformação ortogonal da matriz $C$
+fornece a equação do amortecimento modal como função dos coeficientes
+proporcionais:
+%
+\begin{equation} \label{eq::xir}
+	\xi_r = \frac{1}{2}\left(\frac{\alpha}{\omega_r} + \beta \omega_r\right )
+\end{equation}
+%
+Onde $\xi_r$ e $\omega_r$ são respectivamente o amortecimento modal e a
+frequência natural do r-ésimo modo de vibração. Artigos de
+\citet{chen1996estimation}, \citet{adhikari2004rayleigh} e
+\citet{schwarz2013proportional} apresentam metodologias para ajustar os
+coeficientes de Rayleigh aos resultados experimentais de análise modal.
+
 
 \subsection{Frequência Natural, Modo de Vibração e Amortecimento}
 \label{sec::param_mod}
+
+
 
 \subsection{Ensaio experimental de vibrações}
 

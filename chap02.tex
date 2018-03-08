@@ -154,7 +154,7 @@ q1}{\mathrm{d} t}, ..., \frac{\mathrm{d} qn}{\mathrm{d} t}\right] \rightarrow  \
 
 As matrizes de rotação definem a orientação relativa entre 2 sistemas de
 coordenadas. As matrizes que representam as rotações básicas em torno
-dos eixos $x, y$ e $z$ são: 
+dos eixos $x, y$ e $z$ de um sistema de coordenadas cartesiano são: 
 %
 \begin{equation}
 	R_{x,\theta} = 
@@ -377,7 +377,7 @@ Consiste em uma convenção para fornecer sistematicamente as matrizes de
 transformação homogênea de cada sistema de coordenadas a partir de apenas 4
 parâmetros:
 $a_i, \alpha_i, d_i, \vartheta_i$, que são respectivamente para cada elo $i$
-comprimento, torção e \textit{offset} e o ângulo da junta.
+comprimento, torção, \textit{offset} e o ângulo da junta.
 Uma ilustração da utilização do método é apresentada na
 Figura~\ref{fig::tipica_dh}, que representa um manipulador tipo pulso esférico
 de 3 gdl e na Tabela~\ref{tab::param_dh} a estrutura típica de representação dos
@@ -419,8 +419,8 @@ satisfazem $\xi_{E}$, é feito pela análise da cinemática inversa. Logo:
 
 A solução deste problema é de fundamental importância, porque transforma o
 movimento desejado do efetuador, no espaço cartesiano, no valor correspondente
-das juntas. Entretanto, o problema da cinemática inversa é muito mais complexo,
-pelos seguintes motivos~\cite{sciavicco2012modelling}:
+das juntas. Entretanto, \citet{sciavicco2012modelling} explicam por que o
+problema da cinemática inversa é muito mais complexo:
 %
 \begin{itemize}
   \item As equações a serem resolvidas são geralmente não lineares, então nem
@@ -710,8 +710,8 @@ representa o caminho percorrido sobre a superfície.
 \end{figure}
 
 Devido à complexidade deste método, necessidade de ferramentas especiais e por
-não acrescentar diferenças significativas esperadas para o resultado da dinâmica
-robô-base, é utilizado o método de \textit{boustrophedon} para planejamento do
+não acrescentar diferenças significativas esperadas no estudo do presente
+trabalho, é utilizado o método de \textit{boustrophedon} para planejamento do
 caminho, considerando os requisitos do processo de revestimento para
 planejamento da trajetória.
 
@@ -860,8 +860,8 @@ entanto, apenas relações de cálculo vetorial são suficientes para fornecer o
 modelo cinemático completo do sistema. Já o método de Kane pode ser
 considerado como tendo as vantagens de ambos, mas sem as desvantagens.
 
-No artigo que originou o método~\cite{kane1965derivation}, Kane e Wang resumem
-as características da metodologia: 
+No artigo que originou o método, \citet{kane1965derivation} resumem
+as principais características da metodologia: 
 %
 \begin{enumerate*}[label=\emph{\alph*})]
 	\item automaticamente elimina as forças que não realizam trabalho;
@@ -873,9 +873,9 @@ O tempo computacional necessário para resolver um sistema de equações cresce
 quadraticamente com a dimensão do sistema e as forças e torques de restrição
 podem ser grandes, o que leva a passos de integração pequenos para prevenir a
 divergência da solução~\cite{stoneking2013implementation}. Neste sentido, o
-método detalhado por~\citet{kane1985dynamics} tornou-se popular para derivar as
-equações de movimento de sistemas MBS, sobretudo porque fornece um número mínimo
-de equações.
+método agora detalhado por~\citet{kane1985dynamics} tornou-se popular para
+derivar as equações de movimento de sistemas MBS, sobretudo porque fornece um
+número mínimo de equações.
 
 As equações de Kane são normalmente apresentadas como o seguinte conjunto de
 equações:
@@ -949,9 +949,9 @@ Systems}''\cite{lesser1995analysis}. Sophia foi desenhado especificamente para
 modelagem simbólica de sistemas mecânicos multicorpos, e oferece uma forma
 sistemática e simples de se chegar às equações de movimento através do método de
 Kane. Posteriormente foram implementadas por \citet{lennartsson1999efficient}
-melhorias no Sophia para eficiência algébrica e também o pacote \texttt{exmex},
-para exportação das equações de movimento para solução numérica no MATLAB ou
-Octave.
+melhorias no programa para eficiência algébrica e também o pacote
+\texttt{exmex}, para exportação das equações de movimento para solução numérica
+no MATLAB ou Octave.
 
 Para auxiliar a compreensão da notação utilizada por Lesser no Sophia, faz-se
 uma pequena revisão dos principais termos utilizados pelo programa para lidar
@@ -1178,7 +1178,7 @@ $\beta$, proporcionais às matrizes de inércia e rigidez.
 Ainda assim, os coeficientes devem ser encontrados. Pode ser verificado
 em~\cite{craig2006fundamentals} que a transformação ortogonal da matriz $C$
 fornece a equação do amortecimento modal como função dos coeficientes
-proporcionais:
+de Rayleigh:
 %
 \begin{equation} \label{eq::xir}
 	\xi_r = \frac{1}{2}\left(\frac{\alpha}{\omega_r} + \beta \omega_r\right )
@@ -1188,15 +1188,217 @@ Onde $\xi_r$ e $\omega_r$ são respectivamente o amortecimento modal e a
 frequência natural do r-ésimo modo de vibração. Artigos de
 \citet{chen1996estimation}, \citet{adhikari2004rayleigh} e
 \citet{schwarz2013proportional} apresentam metodologias para ajustar os
-coeficientes de Rayleigh aos resultados experimentais de análise modal.
+coeficientes de Rayleigh aos resultados experimentais de análise modal, o que
+será muito útil para formar a matriz de amortecimento do sistema MBS da base.
 
 
-\subsection{Frequência Natural, Modo de Vibração e Amortecimento}
-\label{sec::param_mod}
+\subsection{Análise modal experimental} \label{sec::modal_analysis}
+
+A análise modal pode ser definida como um processo onde descreve-se uma
+estrutura em termos de suas características naturais, que são a frequência,
+amortecimento e modo -- suas propriedades
+dinâmicas~\cite{avitabile2001experimental}.
+
+Os modos de vibração, ou ressonâncias, são propriedades inerentes da estrutura,
+determinadaos pela massa, rigidez, amortecimento e condições de contorno. Cada
+modo é definido por uma frequência natural, amortecimento modal e forma.
+Especificando-se o movimento de dois ou mais pontos na estrutura, define-se a a
+Forma de Deflexão Operacional (ou ODS, de \textit{Operational Deflection
+Shape})~\cite{schwarz1999experimental}, o que fornece uma visualização do
+movimento e forma de vibração de uma determinada estrutura ou equipamento.
+.
+
+\citet{rao2011mechanical} resumem o aparato experimental necessário para análise
+modal por ensaio de vibrações:
+%
+\begin{enumerate}
+  \item Um excitador, que aplica uma força de entrada conhecida. Pode ser um
+  \textit{shaker} ou um martelo instrumentado, por exemplo;
+  \item Um transdutor para converter o sinal físico de movimento da estrutura em
+  sinal elétrico, como acelerômetro por exemplo;
+  \item Um analisador com condicionador de sinal, para realizar tarefas de
+  processamento de sinais e análise modal utilizando um \textit{software} compatível. O tipo mais
+  utilizado é o analisador pela transformada rápida de Fourier (ou FFT, de
+  \textit{fast fourier transform}). 
+\end{enumerate}
+
+A análise modal requer que algumas considerações sejam válidas.
+\citet{dossing1988structural} explica que a principal premissa é a linearidade.
+Logo, a resposta será sempre proporcional à excitação. Esta consideração implica
+também nas seguintes propriedades:
+%
+\begin{itemize}	
+  \item \emph{Superposição}. Uma FRF medida não depende do tipo de excitação, desde que
+  seja conhecida;
+  \item \emph{Homogeneidade}. A FRF independe do nível de excitação.
+  \item \emph{Reciprocidade}. A FRF medida entre quaisquer 2 gdl's independe
+  de quem é a excitação e quem é a resposta. Isto implica que a matriz
+  $H(\omega)$ é simétrica.
+\end{itemize}
+
+\subsubsection{Teste com martelo instrumentado}
+
+Este método é o mais popular para teste modal utilizado hoje, pela rapidez,
+conveniência e baixo custo, podendo ser utilizado em uma grande variedade de
+estruturas e máquinas. A Figura~\ref{fig::impact_testing} apresenta as etapas de
+uma análise modal com martelo instrumentado.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.60\textwidth]{figs/impact_testing}
+ 	\caption[Análise modal com martelo instrumentado]{Análise modal com martelo
+ 	instrumentado \\
+ 	Fonte: adaptado de \cite{schwarz1999experimental}}
+ 	\label{fig::impact_testing}
+\end{figure}
+
+A forma da resposta em frequência da excitação do impacto depende da massa e
+rigidez do martelo e da estrutura. Segundo~\citet{rao2011mechanical}, a faixa
+útil de frequência da excitação é limitada, de modo que a partir de um certo
+valor a estrutura não recebe energia suficiente para excitar modos de frequência
+mais altas. Normalmente, este valor é limitado a uma queda de amplitude da
+excitação entre $10~dB$ a $20~dB$. A Figura~\ref{fig::range_hammer} apresenta um
+resultado típico da resposta em frequência da excitação por impacto, indicando a
+faixa útil a ser considerada.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.55\textwidth]{figs/range_hammer}
+ 	\caption[Resposta em frequência de um impacto por martelo
+ 	instrumentado]{Resposta em frequência de um impacto por martelo
+ 	instrumentado \\
+ 	Fonte: adaptado de \cite{rao2011mechanical}}
+ 	\label{fig::range_hammer}
+\end{figure}
+
+Logo, para estruturas grandes, normalmente são necessários martelos de massa
+elevada, a fim de fornecer energia suficiente para excitar uma faixa
+considerável de frequência.
 
 
+\subsubsection{Função de Resposta em Frequência}
 
-\subsection{Ensaio experimental de vibrações}
+A Função de Resposta em Frequência, ou FRF, descreve a relação entre a saída e
+entrada entre 2 pontos numa estrutura como função da frequência, sendo numa
+análise de vibrações, a aceleração de saída, em relação à força de excitação de
+entrada. \citet{avitabile2001experimental} acrescenta que a FRF contém
+informações do sistema com respeito a frequências e amortecimento e uma coleção
+de FRF's contém informação com respeito à forma, ou modos. E conclui: é a medida
+mais importante relacionada à análise modal experimental. A
+Figura~\ref{fig::diagrama_frf} demonstra a representação da função FRF,
+$H(\omega)$ em diagrama de bloco.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.65\textwidth]{figs/diagrama_frf}
+ 	\caption{Diagrama de bloco de uma FRF de um sistema mecânico}
+ 	\label{fig::diagrama_frf}
+\end{figure}
+
+Normalmente os dados são obtidos em amostras e são computadas as médias, para
+obter-se a FRF e a Coerência. A função de coerência é usada como
+ferramenta para avaliação da qualidade dos dados, identificando o quanto o dado de saída se
+relaciona com o de entrada~\cite{avitabile2001experimental}. A coerência
+$\beta(\omega)$ mede o ruído presente no sinal, sendo portanto $\beta = 0$ ruído
+puro e $\beta \approx 1$ como alta correlação dos sinais de entrada e saída,
+livres de ruído. A Figura~\ref{fig::coerencia} apresenta um resultado típico da
+análise modal, sobrepondo a magnitude da FRF, o espectro de frequência da
+excitação e a coerência. Note-se que a partir de aproximadamente $400~Hz$, a
+coerência diminiu drasticamente, e portanto, o resultado a partir desta
+frequência é muito ruidoso e não deve ser considerado útil.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.85\textwidth]{figs/coerencia}
+ 	\caption[Resultados típicos de medição da excitação, FRF e
+ 	coerência]{Resultados típicos de medição da excitação (linha azul), FRF
+ 	(linha preta) e coerência (linha vermelha).	Fonte: adaptado de
+ 	\cite{avitabile2001experimental}}
+ 	\label{fig::coerencia}
+\end{figure}
+
+Cada FRF medida é associada a um único gdl de entrada com um único gdl de saída.
+As FRF's são indicadas por dois índices, $i$ representando o gdl da excitação e
+$j$ o gdl da saída.
+%
+\begin{equation}
+	H_{ij} = \frac{X_i}{F_j}
+\end{equation}
+
+Logo, a função de resposta em frequência pode ser representada por uma matriz $n
+\times n$, onde $n$ é o número de graus de liberdade medidos da estrutura.
+Estruturas reais têm infitos graus de liberdade, mas devido a restrições de
+tempo e custo, apenas um número finito e relativamente pequeno é medido.
+
+Devido às propriedades de linearidade citadas anteriormente, apenas uma linha ou
+uma coluna da matriz de resposta em frequência bastam para fornecer toda a
+informação necessária para a análise dos parâmetros modais de uma estrutura.
+
+
+\subsubsection{Determinação dos parâmetros modais}
+
+Um método simples de encontrar os parâmetros modais é,
+segundo~\citet{rao2011mechanical} utilizar a abordagem de
+único-grau-de-liberdade. Consistem em dividir o gráfico da FRF em faixas de
+frequência de modo a cada faixa englobar um único pico. Isto implica que a
+função de resposta naquela faixa é dominada por um único modo. Logo, cada pico
+representará uma ressonância, associada aquela frequência no pico. Isto está
+representado na Figura~\ref{fig::tipical_frf}
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.85\textwidth]{figs/tipical_frf}
+ 	\caption[Resultado para determinação dos parâmetros modais]{Resultado para
+ 	determinação dos parâmetros modais \\ Fonte: adaptado de
+ 	\cite{rao2011mechanical}}
+ 	\label{fig::tipical_frf}
+\end{figure}
+
+O amortecimento modal também pode ser calculado pelo resultado da
+Figura~\ref{fig::tipical_frf}, de acordo com a expressão:
+%
+\begin{equation}
+	\zeta_j = \frac{\omega_j^{(2)} - \omega_j^{(1)}}{2 \omega_j}
+\end{equation}
+%
+Onde $\omega_j^{(2)}$ e $\omega_j^{(1)}$ são conhecidos como frequências de
+meia-banda situados em cada lado da frequência de ressonância $\omega_j$, de
+forma que satisfazem a seguinte relação:
+%
+\begin{equation}
+	\left | H(i\omega_j)^{(1)}) \right | = \left | H(i\omega_j)^{(2)}) \right | =
+	\frac{\left | H(i\omega_j) \right |}{\sqrt{2}}
+\end{equation}
+
+Existem também outros métodos para determinação dos parâmetros modais, para
+citar os mais comuns:
+decaimento logarítmico, que avalia a resposta no tempo ou Nyquist que plota o
+gráfico da FRF nos eixos real e imaginário, podem ser
+verificados em~\cite{rao2011mechanical}.
+
+\subsubsection{Ajuste de curva}
+
+O ajuste de curva (\textit{curve fitting}) é o processo analítico que determina
+os parâmetros matemáticos que fornecem o melhor ajuste aos dados
+obtidos experimentalmente~\cite{dossing1988structural}.
+Os métodos de ajuste de curva podem ser classificados como: 
+%
+\begin{enumerate}[label=\emph{\alph*})]
+	\item local SDOF;
+	\item local MDOF;
+	\item Global;
+	\item Multi-referenciado.
+\end{enumerate}
+%
+Os métodos locais são aplicados para uma FRF de cada vez e são indicados para
+conjuntos de densidade modal moderada. Os métodos global e multi-referenciado
+são aplicados para todo o conjunto medido de FRF's e são indicados para dados
+com alta densidade modal~\cite{schwarz1999experimental}. 
+
+Felizmente hoje diversos softwares comerciais fornecem ferramentas para ajuste
+de curva, ODS e obtenção dos parâmetros modais. Entre eles, pode-se citar:
+ME'scope~\cite{mescope}, PULSE~\cite{pulse} e OROS Modal Analysis~\cite{oros}. 
+
 
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
@@ -1204,9 +1406,18 @@ coeficientes de Rayleigh aos resultados experimentais de análise modal.
 
 \subsection{Manipuladores flexíveis}
 
+
 \subsection{Manipuladores sobre bases flexíveis}
 
+% Macro-micro manipuladores
+
 \subsection{Tarefas de precisão utilizando manipuladores robóticos}
+
+% Revestimento
+% Cirurgia
+% Montagem de componentes eletrônicos?
+% Solda?
+
 
 \subsection{Sistema de revestimento por asperção térmica} \label{sec::hvof}
 

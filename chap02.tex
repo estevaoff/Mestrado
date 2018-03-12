@@ -1403,23 +1403,53 @@ ME'scope~\cite{mescope}, PULSE~\cite{pulse} e OROS Modal Analysis~\cite{oros}.
 
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Manipuladores robóticos industriais}\label{sec::manind}
+Nesta seção busca-se tópicos relacionados à dinâmica de multicorpos elásticos ou
+composta por elementos flexíveis voltada à robótica. Pesquisa-se também tarefas
+robóticas existentes e que requerem precisão, de modo que a qualidade da tarefa
+pode ser afetada pela elasticidade não considerada de elementos do robô ou do
+ambiente.
+E por fim, verifica-se robôs comerciais que são utilizados em serviço, ou
+\textit{in situ}, em que os fatores do ambiente não permitem uma instalação
+superdimensionada e rígida, favorecendo a ocorrência de vibrações e
+deslocamentos da ponta do robô. Ou seja, situações para as quais o método
+proposto nesta pesquisa pretende fornecer ferramentas para quantificar erros e
+adequar o projeto da instalação e operação robótica de serviço.
 
 \subsection{Manipuladores flexíveis}
 
+A presente pesquisa tem como estudo de caso manipuladores robóticos industriais
+sobre bases em que sua flexibilidade elástica não pode ser negligenciada. Por
+isso, pesquisa-se por trabalhos em que explorou-se tanto a elasticidade do robô
+em si, quanto a elasticidade da estrutura que o fixa no ambiente, sua base.
 
-\subsection{Manipuladores sobre bases flexíveis}
+Um robô de elos flexíveis consiste em uma série de braços estruturalmente
+flexíveis conectados por juntas para formar o
+mecanismo. Mas na maioria dos casos, a flexibilidade estrutural não é a intenção
+de projeto, mas consequência da construção do manipulador a partir de requisitos
+sobre a massa e geometria de seus componentes~\cite{moallem2000flexible}.
+
+Por causa de requisitos de desempenho, como alta velocidade e
+acurácia, e aplicações espaciais envolvendo grandes estruturas, mas utilizando
+materiais leves para economia de combustível, a consideração da flexibilidade
+estrutural em robótica torna-se relevante. A partir da década de 1980, diversos
+textos foram publicados~\cite{sunada1983dynamic}, \cite{bayo1987finite} e
+\cite{yang1988dynamic}, buscando modelar o comportamento dinâmico destes
+manipuladores. Mas, devido a complexidade da análise, a maioria dos casos
+restringiu-se ao braço robótico flexível de apenas um ou dois elos.
+
+Técnicas de controle destes manipuladores foram desenvolvidas a partir de então,
+a fim de evitar evitar falhas de posicionamento do efetuador e de perseguição da
+trajetória.
+Em 2004, ~\citet{benosman2004control} fazem um levantamento de 119 textos
+relacionados ao controle de manipuladores flexíveis, apresentando as diferentes
+técnicas de modelamento e controle destes casos.
+
+
+
+\subsubsection{Manipuladores sobre bases flexíveis}
 
 % Macro-micro manipuladores
 
-\subsection{Tarefas de precisão utilizando manipuladores robóticos}
-
-% Revestimento
-% Cirurgia
-% Montagem de componentes eletrônicos?
-% Solda?
-
-
-\subsection{Sistema de revestimento por asperção térmica} \label{sec::hvof}
 
 \subsection{Tarefas robóticas \textit{in-situ}} \label{sec::insitu}
 

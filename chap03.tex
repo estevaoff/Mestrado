@@ -2241,13 +2241,17 @@ $10^{-2}~mm$ em $q1$ e $10^{-11}~rad$ em $q5$.
 \section{Ensaio Experimental} \label{sec::experimento}
 
 Os parâmetros modais da base, associados aos modos e frequências naturais são
-obtidos por meio de um ensaio de vibrações.
-A estrutura utilizada para o experimento que foi apresentada na
-Figura~\ref{fig::estrut_modelo_fisico}, é instrumentada com acelerômetros a fim
-de se obter as acelerações associadas a cada um dos 6 graus de liberdade da
-base, no ponto de interação com o robô. Um martelo instrumentado é utilizado
-para excitar a base e obter as Funções de Resposta em Frequência (FRF's) de cada
-grau de liberdade. Estes dados são utilizados para estimar os parâmetros modais:
+obtidos por meio de análise modal por ensaio de vibrações.
+A estrutura de testes (Figura~\ref{fig::estrut_modelo_fisico}) é instrumentada
+com acelerômetros a fim de se obter a dinâmica da base. Para o modelo
+experimental foram selecionados 6 graus de liberdade para medição: as 3
+translações e 3 rotações no sistema de coordenadas cartesiano. Para isso, foi
+idealizado um ponto para origem do sistema de coordenadas da base, que é
+coincidente com o ponto teórico de fixação do robô. Logo, os 6 graus de
+liberdade estão associados às translações e rotações em relação ao sistema de
+coordenadas fixo neste ponto.
+Um martelo instrumentado é utilizado para excitar a base e obter as Funções de Resposta em Frequência (FRF's) de cada grau de liberdade.
+Estes dados são utilizados para estimar os parâmetros modais:
 modos de vibração, frequências naturais e amortecimentos.
 
 Os resultados experimentais serão então utilizados para calcular os parâmetros
@@ -2386,7 +2390,12 @@ experimental, montada no Laboratório de Acústica e Vibrações (LAVI/COPPE-UFR
 a Figura~\ref{fig::diagrama_bancada} um diagrama esquemático, indicando os
 sensores, a base e os módulos de aquisição, assim como as conexões entre eles..
 
-\missingfigure[figheight=0.6\textwidth]{Fotografia da bancada}
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/foto_bancada}
+ 	\caption{Aparato da bancada experimental no laboratório}
+ 	\label{fig::foto_bancada}
+\end{figure}
 
 \begin{figure}[h]
 	\centering 
@@ -2394,6 +2403,7 @@ sensores, a base e os módulos de aquisição, assim como as conexões entre ele
  	\caption{Diagrama da bancada experimental}
  	\label{fig::diagrama_bancada}
 \end{figure}
+
 \todo[inline]{Incluir fontes das figuras dos sensores}
 
 

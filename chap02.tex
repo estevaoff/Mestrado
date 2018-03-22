@@ -41,7 +41,7 @@ sistemas MBS, e possuem interface gráfica e ferramentas para modelagem ou
 importação de corpos CAD e elementos padronizados de conectores, como juntas de
 de vários tipos, molas e amortecedores. Para citar alguns:
 %
-\begin{enumerate*}[label=\roman*]
+\begin{enumerate*}[label=\emph{\roman*})]
 	\item MSC ADAMS;
 	\item Universal Mechanism;
 	\item MapleSim.
@@ -53,7 +53,7 @@ simplificações e tratamento e pós-processamento dos resultados, este trabalho
 não fez uso de um programa comercial dedicado. Para isso, derivou-se toda a
 cinemática, dinâmica e equações de movimento dos sistemas simbolicamente, no
 Sophia-Maple. Isto permite que o método seja livre de restrições impostas pelas
-capacidade de qualquer programa, tornando explícita a metodologia proposta e
+capacidades destes programas, e torna explícita a metodologia proposta e
 permitindo repeti-la e verifica-la em qualquer outra plataforma.
 
 Os fundamentos da cinemática e da dinâmica, tratados a seguir, são reunidos de
@@ -710,9 +710,9 @@ representa o caminho percorrido sobre a superfície.
 \end{figure}
 
 Devido à complexidade deste método, necessidade de ferramentas especiais e por
-não acrescentar diferenças significativas esperadas no estudo do presente
-trabalho, é utilizado o método de \textit{boustrophedon} para planejamento do
-caminho, considerando os requisitos do processo de revestimento para
+não acrescentar diferenças significativas para a discussão que se apresenta
+neste trabalho, é utilizado o método de \textit{boustrophedon} para planejamento
+do caminho, considerando os requisitos do processo de revestimento para
 planejamento da trajetória.
 
 
@@ -725,7 +725,7 @@ clássicos para derivar as equações que regem o movimento do sistema. Outros
 métodos também foram explorados historicamente, como as equações de
 Hamilton~\cite{shabana2013dynamics},
 Boltzmann-Hamel~\cite{papastavridis1994boltzmann} e
-Gibbs-Appell~\cite{gibbsappell}, e podem ser encontrados na literatura.
+Gibbs-Appell~\cite{gibbsappell}.
  
 \subsubsection{Equações de Newton-Euler}
 
@@ -1076,7 +1076,7 @@ pesquisa.
 	\centering 
  	\includegraphics[width=0.98\textwidth]{figs/analise_estrut}
  	\caption[Diagrama de investigação da dinâmica de estruturas]{Diagrama de
- 	investigação da dinâmica de estruturas \\Fonte:
+ 	investigação da dinâmica de estruturas. \\Fonte:
  	adaptado de \cite{craig2006fundamentals}}
  	\label{fig::analise_estrut}
 \end{figure}
@@ -1257,8 +1257,8 @@ rigidez do martelo e da estrutura. Segundo~\citet{rao2011mechanical}, a faixa
 útil de frequência da excitação é limitada, de modo que a partir de um certo
 valor a estrutura não recebe energia suficiente para excitar modos de frequência
 mais altas. Normalmente, este valor é limitado a uma queda de amplitude da
-excitação entre $10~dB$ a $20~dB$. A Figura~\ref{fig::range_hammer} apresenta um
-resultado típico da resposta em frequência da excitação por impacto, indicando a
+excitação entre $10~dB$ a $20~dB$. A Figura~\ref{fig::range_hammer}
+apresenta um resultado típico da resposta em frequência da excitação por impacto, indicando a
 faixa útil a ser considerada.
 
 \begin{figure}[h]
@@ -1271,8 +1271,8 @@ faixa útil a ser considerada.
  	\label{fig::range_hammer}
 \end{figure}
 
-Logo, para estruturas grandes, normalmente são necessários martelos de massa
-elevada, a fim de fornecer energia suficiente para excitar uma faixa
+Logo, para estruturas grandes e pesadas, normalmente são necessários martelos de
+massa elevada, a fim de fornecer energia suficiente para excitar uma faixa
 considerável de frequência.
 
 
@@ -1417,42 +1417,255 @@ adequar o projeto da instalação e operação robótica de serviço.
 
 \subsection{Manipuladores flexíveis}
 
-A presente pesquisa tem como estudo de caso manipuladores robóticos industriais
-sobre bases em que sua flexibilidade elástica não pode ser negligenciada. Por
-isso, pesquisa-se por trabalhos em que explorou-se tanto a elasticidade do robô
-em si, quanto a elasticidade da estrutura que o fixa no ambiente, sua base.
+% A presente pesquisa tem como estudo de caso manipuladores robóticos industriais
+% sobre bases em que sua flexibilidade elástica não pode ser negligenciada. Por
+% isso, pesquisa-se por trabalhos em que explorou-se tanto a elasticidade do robô
+% em si, quanto a elasticidade da estrutura que o fixa no ambiente, sua base.
 
 Um robô de elos flexíveis consiste em uma série de braços estruturalmente
-flexíveis conectados por juntas para formar o
-mecanismo. Mas na maioria dos casos, a flexibilidade estrutural não é a intenção
-de projeto, mas consequência da construção do manipulador a partir de requisitos
-sobre a massa e geometria de seus componentes~\cite{moallem2000flexible}.
+flexíveis conectados por juntas para formar o mecanismo. Mas na maioria dos
+casos, a flexibilidade estrutural não é a intenção de projeto, mas consequência
+da construção do manipulador a partir de requisitos sobre a massa e geometria de
+seus componentes~\cite{moallem2000flexible}.
+Sistemas de manipuladores flexíveis oferecem diversas vantagens em contraste com
+seus concorrentes tradicionais rígidos. De acordo com~\cite{tokhi2008flexible},
+estes possuem resposta mais rápida, menor consumo de energia, menores atuadores,
+menor massa e custo gerais.
 
-Por causa de requisitos de desempenho, como alta velocidade e
-acurácia, e aplicações espaciais envolvendo grandes estruturas, mas utilizando
-materiais leves para economia de combustível, a consideração da flexibilidade
-estrutural em robótica torna-se relevante. A partir da década de 1980, diversos
-textos foram publicados~\cite{sunada1983dynamic}, \cite{bayo1987finite} e
+% Por causa de requisitos de produtividade, como alta velocidade e
+% acurácia, ou aplicações espaciais envolvendo grandes estruturas que utilizam
+% materiais leves para economia de combustível, a consideração da flexibilidade
+% estrutural em robótica torna-se relevante.
+
+A partir da década de 1980, diversos textos foram
+publicados~\cite{sunada1983dynamic}, \cite{bayo1987finite} e
 \cite{yang1988dynamic}, buscando modelar o comportamento dinâmico destes
 manipuladores. Mas, devido a complexidade da análise, a maioria dos casos
-restringiu-se ao braço robótico flexível de apenas um ou dois elos.
-
-Técnicas de controle destes manipuladores foram desenvolvidas a partir de então,
-a fim de evitar evitar falhas de posicionamento do efetuador e de perseguição da
+restringiu-se ao braço robótico flexível de apenas um ou dois elos.Técnicas de
+controle destes manipuladores foram desenvolvidas a partir de então, a fim de
+evitar evitar falhas de posicionamento do efetuador e de perseguição da
 trajetória.
 Em 2004, ~\citet{benosman2004control} fazem um levantamento de 119 textos
 relacionados ao controle de manipuladores flexíveis, apresentando as diferentes
 técnicas de modelamento e controle destes casos.
 
+Há pelo menos 3 métodos principais~\cite{dwivedy2006dynamic} para modelamento de
+robôs de elementos flexíveis: método do modo
+assumido~\cite{robinett2012flexible}, método de elementos
+finitos~\cite{bricout1990finite} e modelo de parâmetros
+concentrados~\cite{zhu1999simulation}.
+
+O método do modo assumido consiste em achar a solução geral na forma:
+%
+\begin{equation}
+	\omega (\chi ,t) = \sum_{i=1}^{n}\phi_i(\chi ) q_i(t)
+\end{equation}
+%
+Onde $\phi_i(\chi)$ são os modos de vibração dos elos e $q_i(t)$ as coordenadas
+generalizadas associada ao i-ésimo modo. Entretanto, este método requer que os
+modos sejam fornecidos de antemão e calculados analiticamente.
+
+O método dos parâmetros concentrados considera que o elo do robô possui massa
+específica $\rho$, geometria $L$ e rigidez à flexão $EI$ e que, portanto, pode
+ser simplificado por uma mola de rigidez $k$ e uma massa concentrada $Me$. A
+Figura~\ref{fig::lumped} apresenta a simplificação do método para um manipulador
+de um único elo com uma carga útil de massa $Mt$ na sua extremidade.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.75\textwidth]{figs/lumped}
+ 	\caption[Modelo de parâmetros concentrados]{Modelo de parâmetros concentrados
+ 	\\ Fonte: adaptado de \cite{zhu1999simulation}}
+ 	\label{fig::lumped}
+\end{figure}
+
+Realizando o desenvolvimento pelas equações de Lagrange, obtém-se as equações de
+movimento deste sistema na forma:
+%
+\begin{gather}
+	M \ddot{p} = -k(p-L \theta) \\
+	I_h \ddot{\theta} - k L(p-L \theta) = \tau
+\end{gather}
+%
+Onde $\tau$ representa o torque de acionamento do braço, na direção $Z$.
+
+Este método, apesar de ser orientado para manipuladores com flexibilidade em
+seus elos, mostra-se interessante para modelar a base flexível do manipulador.
+Fazendo-se as devidas adaptações, pode-se considerar a base como um dos elos
+flexíveis do robô e obter-se a rigidez e inércia de sua estrutura, e chegar-se
+às equações de movimento de modo equivalente.
 
 
-\subsubsection{Manipuladores sobre bases flexíveis}
+\subsection{Manipuladores sobre bases flexíveis}
 
-% Macro-micro manipuladores
+Em sistemas de manipuladores sobre bases móveis, o acoplamento dinâmico entre o
+braço robótico e sua base prejudica a acurácia de posicionamento e a destreza
+operacional do robô. \citet{yoshida1996moving} classificam estes sistemas em
+quatro categorias:
+%
+\begin{enumerate*}[label=\alph*)]
+	\item manipulador de flutuação livre;
+	\item manipulador montado sobre estrutura flexível;
+	\item macro-micro manipuladores;
+	\item manipulador montado sobre veículo móvel.
+\end{enumerate*}
+%
+É interessante notar que a metodologia desta pesquisa permite analisar qualquer
+um destes sistemas, embora os estudos de caso tenham se focado em bases que se
+enquadram no o item \emph{b} da classificação. A Figura~\ref{fig::classes_bases}
+ilustra cada classe esquematicamente.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.75\textwidth]{figs/classes_bases}
+ 	\caption[Classes de manipuladores sobre bases móveis]{Classes de
+ 	manipuladores sobre bases móveis \\ Fonte: adaptado de
+ 	\cite{yoshida1996moving}}
+ 	\label{fig::classes_bases}
+\end{figure}
+
+Como exemplo de manipuladores em flutuação livre são os robôs de serviço
+espaciais, dedicados à manutenção de sistemas em órbita, o que inclui
+o reparo, montagem, reabastecimento e melhorias em espaçonaves, após
+implantação~\cite{flores2014review}. Este sistema é apresentado na
+Figura~\ref{fig::space_robot}, em que um sistema com robô captura uma
+espaçonave  para realizar um seriço em órbita.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.75\textwidth]{figs/space_robot}
+ 	\caption[Manipulador sobre base flutuante em órbita]{Manipulador sobre base
+ 	flutuante para operação em órbita. \\ Fonte: adaptado de
+ 	\cite{flores2014review}}
+ 	\label{fig::space_robot}
+\end{figure}
+
+Os macro-micro manipuladores são sistemas robóticos em que é necessário longo
+alcance, ao mesmo tempo que realiza tarefas de precisão em seu
+efetuador~\cite{sharon1993macro}.
+Isto é feito pelo uso de dois manipuladores em série, em que o primeiro (macro)
+tem o objetivo de posicionamento e alcance elevado, com uso de braços compridos
+e esbeltos, o que os torna bastante flexíveis; e o segundo (micro), realiza a
+tarefa num espaço de trabalho reduzido e equipado com a ferramenta para
+operação, como pode ser verificado na Figura~\ref{fig::macro_micro}. Nesta
+classe de sistemas, o macro-manipulador pode possui flexibilidade tanto nos elos
+quanto nas juntas e o micro-manipulador é considerado rígido.
+Diversos métodos de controle foram propostos como a estabilização do sistema
+pelo controle apenas do micro-manipulador~\cite{book1989vibration} ou controle
+do planejamento de trajetória para minimizar as vibrações~\cite{torres1993path},
+que apresenta uma técnica chamada Mapa de Acoplamento (ou \textit{Coupling
+Map}). 
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.70\textwidth]{figs/macro_micro}
+ 	\caption[Macro-micro manipulador]{Macro-micro manipulador para satélite \\
+ 	Fonte: adaptado de \cite{schubert2000impedance}}
+ 	\label{fig::macro_micro}
+\end{figure}
+
+Os manipuladores montados sobre estruturas flexíveis podem ser tratados como
+casos especiais de sistemas macro-micro manipuladores. Nestes casos, a base na
+qual o robô está fixado é excitada pelo movimento do braço robótico e aparecem
+grandes deslocamentos devido à elasticidade da estrutura da base.
+Geralmente, os métodos de controle destes sistemas associam-se a duas classes:
+controle do amortecimento~\cite{george2002inertial}, \cite{lew2001simple} e
+controle do ponto final do efetuador~\cite{sharon1993macro},
+\cite{torres1993path}. No controle de ponto final, a posição e orientação
+precisam ser medidas com respeito a um referencial inercial, podendo ser medidos
+indiretamente como por exemplo, com extensômetros no ponto de acoplamento da
+estrutura com o robô~\cite{mavroidis1997optimal}.
+A vantagem deste método é que não é necessário interromper a tarefa para
+amortecer as vibrações da estrutura de suporte. O sistema Shaky II apresentado
+na Figura~\ref{fig::shaky} foi desenvolvido~\cite{mavroidis1997optimal}
+para avaliar a dinâmica desta classe de sistema robótico e validar
+experimentalmente métodos de controle por controle de ponto final inferido.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.50\textwidth]{figs/shaky}
+ 	\caption[Estrutura experimental do Shaky II para validação de
+ 	controle de ponto final]{Estrutura experimental do Shaky II para validação de
+ 	controle de ponto final. Fonte: adaptado de \cite{mavroidis1997optimal}}
+ 	\label{fig::shaky}
+\end{figure}
+
+Outra solução para evitar vibrações e grandes amplitudes de deformação é o
+de escoramento ou contravetamento dos elementos flexíveis no
+ambiente~\cite{lew1994bracing}. O escoramento em estruturas estacionárias
+ajudaria a enrijecer e amortecer a estrutura flexível e evitar grandes erros de
+posicionamento do efetuador. Esta estratégia é explorada nesta pesquisa no
+sentido de verificar configurações de base que satisfazem a rigidez necessária para o
+processo.
+
+Seja o vetor de coordenadas generalizadas representado por $\boldsymbol{\xi} =
+[\phi, q]$, onde $\boldsymbol{\phi} = [x, y, z, \theta_x, \theta_y, \theta_z]$
+são as coordenadas generalaizadas da base, o sistema dinâmico do manipulador sobre base móvel pode
+ser expresso por:
+%
+\begin{equation}
+	H(\xi) \ddot{\boldsymbol{\xi}} + C(\xi , \dot{\xi}) \dot{\boldsymbol{\xi}} + K
+	\boldsymbol{\xi} = \boldsymbol{\Xi}
+\end{equation}
+%
+Onde $H(\xi) \in \Re^{6+n \times 6+n}$ é a matriz de inércia acoplada, $C$ e $K
+\in \Re^{6+n \times 6+n}$ contém em $C$ os termos de amortecimento viscoso da
+base e centrífugos e de Coriolis do braço robótico, e em $K$ a matriz de rigidez
+da base.
+O vetor $\boldsymbol{\Xi} = [0, \tau]$ contém os torques externos de controle do
+manipulador e considera as forças externas na base nulas. Na forma matricial,
+pode-se escrever a matriz de inércia acoplada como:
+%
+\begin{equation}
+	H(\xi) = \begin{pmatrix}
+			H_b 	&	H_{bm} \\ 
+			H_{bm}	&	H_m
+\end{pmatrix}
+\end{equation}
+%
+Em que o termo $H_b \in \Re^{6}$ representa o tensor de inércia da base, $H_m
+\in \Re^{n}$ representa o tensor de inércia do manipulador, onde $n$ é o número
+de graus de liberdade, e $H_{bm}$ o tensor de inércia do acoplamento
+base-manipulador.
+
+Será interessante notar que estes termos de acoplamento serão calculados
+automaticamente ao seguir o procedimento sistemático das rotinas do Sophia,
+sendo necessário apenas fornecer as matrizes $H_b$ e $H_m$ isoladamente assim
+como a cadeia de sistemas de referência locais para se chegar ao modelo
+acoplado. No método proposto, a interação entre base e robô, que gera forças devido a
+rigidez e amortecimento da base, e são tratados como esforços externos
+proporcionais ao deslocamento e velocidade do ponto de acoplamento. E os termos
+de Coriolis e centrífugos também surgem do cálculo algébrico com as
+funções do Sophia, sem a necessidade de investigar estes termos individualmente. 
 
 
-\subsection{Tarefas robóticas \textit{in-situ}} \label{sec::insitu}
 
+\subsection{Tarefas robóticas \textit{in situ}} \label{sec::insitu}
+
+Diversas operações de inspeção ou manutenção de equipamentos \textit{in situ}
+são perigosas ou de difícil acesso para realização humana. Os manipuladores da
+classe macro-micro são uma solução interessante para essas operações porque
+fornecem um espaço de trabalho ampliado pelo manipulador macro, assim como toda
+a precisão e agilidade de um manipulador micro.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/inspection_robots}
+ 	\caption[Robôs de inspeção]{Robôs de inspeção: a) tanques subterrâneos; b)
+ 	pontes. \\ Fonte:
+ 	adaptado de \cite{mavroidis1995end}}
+ 	\label{fig::inspection_robots}
+\end{figure}
+
+Um exemplo é o sistema de remoção e transporte de resíduos nucleares (WD\&C) de
+tanques subterrâneos, cujo acesso é limitado (Figura~\ref{fig::inspection_robots}.a). Um
+manipulador longo e esbelto permite a entrada pelo duto de acesso e o
+posicionamento do robô menor para alcançar e remover o material do
+tanque~\cite{knape1990development}. Outro exemplo é de sistema robótico de longo alcance para inspeção de pontes
+(Figura~\ref{fig::inspection_robots}.b). Para sistemas como esse em que a
+inspeção é feita por imagens~\cite{oh2009bridge}, as vibrações da ponte
+propagadas pelos elos do manipulador, e condições de vento por exemplo, podem
+tornar as imagens borradas e inutilizáveis.
 
 
 \begin{figure}[h]

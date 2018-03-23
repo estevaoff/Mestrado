@@ -1584,8 +1584,7 @@ experimentalmente métodos de controle por controle de ponto final inferido.
 \begin{figure}[h]
 	\centering 
  	\includegraphics[width=0.50\textwidth]{figs/shaky}
- 	\caption[Estrutura experimental do Shaky II para validação de
- 	controle de ponto final]{Estrutura experimental do Shaky II para validação de
+ 	\caption[Estrutura experimental do Shaky II]{Estrutura experimental do Shaky II para validação de
  	controle de ponto final. Fonte: adaptado de \cite{mavroidis1997optimal}}
  	\label{fig::shaky}
 \end{figure}
@@ -1642,31 +1641,138 @@ funções do Sophia, sem a necessidade de investigar estes termos individualment
 
 \subsection{Tarefas robóticas \textit{in situ}} \label{sec::insitu}
 
-Diversas operações de inspeção ou manutenção de equipamentos \textit{in situ}
-são perigosas ou de difícil acesso para realização humana. Os manipuladores da
-classe macro-micro são uma solução interessante para essas operações porque
-fornecem um espaço de trabalho ampliado pelo manipulador macro, assim como toda
-a precisão e agilidade de um manipulador micro.
+Hoje os robôs não estão mais limitados a operações de fábrica e estão
+substituindo atividades humanas fora do ambiente industrial, seja por segurança,
+eficácia ou produtividade. Operações robóticas de inspeção ou manutenção de
+equipamentos realizadas no próprio local onde operam, ou \textit{in situ}, são
+perigosas ou de difícil acesso para realização humana. Por isso, soluções
+utilizando robôs para executar tais tarefas têm se tornado uma alternativa
+atraente . Os manipuladores da classe macro-micro são uma solução interessante
+para essas operações porque fornecem um espaço de trabalho ampliado pelo
+manipulador macro, assim como toda a precisão e agilidade de um manipulador
+micro.
 
 \begin{figure}[h]
 	\centering 
  	\includegraphics[width=0.95\textwidth]{figs/inspection_robots}
  	\caption[Robôs de inspeção]{Robôs de inspeção: a) tanques subterrâneos; b)
- 	pontes. \\ Fonte:
- 	adaptado de \cite{mavroidis1995end}}
+ 	pontes. \\ Fonte: adaptado de \cite{mavroidis1995end}}
  	\label{fig::inspection_robots}
 \end{figure}
 
-Um exemplo é o sistema de remoção e transporte de resíduos nucleares (WD\&C) de
-tanques subterrâneos, cujo acesso é limitado (Figura~\ref{fig::inspection_robots}.a). Um
-manipulador longo e esbelto permite a entrada pelo duto de acesso e o
-posicionamento do robô menor para alcançar e remover o material do
-tanque~\cite{knape1990development}. Outro exemplo é de sistema robótico de longo alcance para inspeção de pontes
-(Figura~\ref{fig::inspection_robots}.b). Para sistemas como esse em que a
+Um exemplo desta classe de robôs de serviço é o sistema de remoção e transporte
+de resíduos nucleares (WD\&C) de tanques subterrâneos, cujo acesso é limitado
+(Figura~\ref{fig::inspection_robots}a). Um manipulador longo e esbelto permite
+a entrada pelo duto de acesso e o posicionamento do robô menor para alcançar e
+remover o material do tanque~\cite{knape1990development}. Outro exemplo é de
+sistema robótico de longo alcance para inspeção de pontes
+(Figura~\ref{fig::inspection_robots}b). Para sistemas como esse em que a
 inspeção é feita por imagens~\cite{oh2009bridge}, as vibrações da ponte
 propagadas pelos elos do manipulador, e condições de vento por exemplo, podem
 tornar as imagens borradas e inutilizáveis.
 
+Uma lista crescente de serviços \textit{in situ} já podem ser realizados por
+robôs como por exemplo: pintura, limpeza, manutenção, cirurgias, montagem de
+veículos espaciais, armamento militar, agricultura e
+outros~\cite{nof1999handbook}. Em todos estes casos, onde o ambiente não é
+normalmente preparado para a tarefa, que na maioria das vezes é apenas
+temporária, e por isso há que se prever o comportamento dinâmico do sistema
+robô-base-ambiente para que se garanta a qualidade da tarefa.
+
+
+\subsubsection{EMMA - Protótipo para revestimento de turbinas
+hidráulicas \textit{in situ}}
+
+As turbinas hidráulicas de geração de energia do tipo Kaplan sofrem danos em
+suas pás devido, principalmente, a efeitos de abrasão e cavitação relativos aos
+escoamento.
+Antes de serem instaladas, estas pás recebem um revestimento metálico de carbeto
+de tungstênio, que protegem contra os efeitos do escoamento. Com o tempo esta
+proteção se desgasta e inicia um processo de degradação da pá, causando
+vibrações, instabilidade do escoamento e perda de eficiência
+energética~\cite{escaler2006detection}. A Figura~\ref{fig::rijeza_hvof}
+apresenta o revestimento sendo aplicado antes da instalação por um braço
+robótico, em ambiente bem estruturado.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/rijeza_hvof}
+ 	\caption[Aplicação de revestimento em ambiente estruturado]{Aplicação de revestimento em ambiente estruturado.
+ 	\\ Fonte: adaptado de website da Rijeza, disponível em www.rijeza.com.br
+ 	(acessado em Mar-2018)}
+ 	\label{fig::rijeza_hvof}
+\end{figure}
+
+
+Para evitar este problema, o revestimento deve ser reaplicado em períodos
+programados de manutenção. Isto implica, hoje, em parar a unidade geradora,
+desmontar as pás, levar até a área de manutenção e reaplicar o revestimento fora
+do ambiente da turbina, resultando em um procedimento de alta complexidade
+operacional de manobra e transporte, riscos, alto custo e principalmente: tempo
+de parada de máquina.
+
+Para atenuar este problema, foi projetado um sistema robótico, denominado EMMA,
+para reaplicação do revestimento dentro da unidade geradora, que dispensa a
+necessidade de desmontagem das pás, realizando todo o processo de revestimento
+\textit{in situ}. Este sistema tem o desafio de lidar com o difícil e limitado
+acesso, operar em ambiente confinado, de superfície curva, inclinada e
+escorregadia, alta umidade e temperatura. Pelo acesso ser limitado a uma
+escotilha de $800~mm$ e outra de $350~mm$ de diâmetro, o sistema deve ser
+modular e leve, a fim de ser transportado e montado manualmente no interior da turbina. A
+Figura~\ref{fig::turbina_ug} ilustra o interior da unidade geradora, destacando
+os principais equipamentos no interior e indicando os acessos da escotilha
+superior e escotilha inferior.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.90\textwidth]{figs/turbina_ug}
+ 	\caption{Vista esquemática do interior da unidade geradora}
+ 	\label{fig::turbina_ug}
+\end{figure}
+
+Outro desafio é atender aos requisitos do processo de revestimento. A técnica
+utilizada de revestimento por asperção térmica chamada HVOF (de \textit{high
+velocity oxy-fuel}) requer o aparato apresentado na
+Figura~\ref{fig::hvof_aparato}. Neste processo, uma mistura de combustível e
+oxigênio é alimentadando continuamente a uma câmara de combustão. O gás
+resultante emana do bocal em um jato, a uma velocidade normalmente acima de
+$1000~m/s$, onde as partículas de carbeto de tungstênio se misturam, se
+aquecendo, acelerando e colidindo contra o material base, formando a camada de
+revestimento~\cite{kuroda2008warm}.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.90\textwidth]{figs/hvof_aparato}
+ 	\caption[Aparato do processo de revestimento por HVOF]{Aparato do processo de
+ 	revestimento por HVOF. \\ Fonte: adaptado de~\cite{kuroda2008warm}}
+ 	\label{fig::hvof_aparato}
+\end{figure}
+
+Para obter uma camada regular de revestimento, é necessário obedecer requisitos
+de velocidade da pistola, distância para o metal base, orientação e passo. A
+Tabela~\ref{tab::req_hvof} resume os principais dados do processo HVOF.
+
+\begin{table}[h]
+\centering
+\caption[Dados do processo HVOF para revestimento da pá]{Dados do processo HVOF
+para revestimento da pá. Fonte: \citet{freitas2017state}}
+\label{tab::req_hvof}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Componente}            & \textbf{Valor}  	\\ \midrule
+Massa da pistola HVOF          & 8 kg           	\\
+Temperatura da chama           & 3000$^{\circ}$ C     \\
+Empuxo da pistola              & 15 N           	\\
+Precisão do manipulador        & 5 mm          		\\
+Distância da pistola para a pá & 230-240 mm 		\\
+Ângulo da pistola para a pá    & 90$^{\circ}$         \\
+Velocidade do efetuador        & 40 m min$^{-1}$   		\\
+Ruído sonoro do HVOF           & 100-140 dB    		\\
+Temperatura da pá              & até 110$^{\circ}$    \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\lipsum[1-1]
 
 \begin{figure}[h]
 	\centering 

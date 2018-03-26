@@ -1655,8 +1655,8 @@ micro.
 \begin{figure}[h]
 	\centering 
  	\includegraphics[width=0.95\textwidth]{figs/inspection_robots}
- 	\caption[Robôs de inspeção]{Robôs de inspeção: a) tanques subterrâneos; b)
- 	pontes. \\ Fonte: adaptado de \cite{mavroidis1995end}}
+ 	\caption[Robôs de inspeção \textit{in situ}]{Robôs de inspeção \textit{in
+ 	situ}: a) tanques subterrâneos; b) pontes. \\ Fonte: adaptado de \cite{mavroidis1995end}}
  	\label{fig::inspection_robots}
 \end{figure}
 
@@ -1690,38 +1690,37 @@ Antes de serem instaladas, estas pás recebem um revestimento metálico de carbe
 de tungstênio, que protegem contra os efeitos do escoamento. Com o tempo esta
 proteção se desgasta e inicia um processo de degradação da pá, causando
 vibrações, instabilidade do escoamento e perda de eficiência
-energética~\cite{escaler2006detection}. A Figura~\ref{fig::rijeza_hvof}
-apresenta o revestimento sendo aplicado antes da instalação por um braço
-robótico, em ambiente bem estruturado.
+energética~\cite{escaler2006detection}.
 
 \begin{figure}[h]
 	\centering 
  	\includegraphics[width=0.80\textwidth]{figs/rijeza_hvof}
  	\caption[Aplicação de revestimento em ambiente estruturado]{Aplicação de revestimento em ambiente estruturado.
- 	\\ Fonte: adaptado de website da Rijeza, disponível em www.rijeza.com.br
+ 	Fonte: adaptado de website da Rijeza, disponível em www.rijeza.com.br
  	(acessado em Mar-2018)}
  	\label{fig::rijeza_hvof}
 \end{figure}
-
 
 Para evitar este problema, o revestimento deve ser reaplicado em períodos
 programados de manutenção. Isto implica, hoje, em parar a unidade geradora,
 desmontar as pás, levar até a área de manutenção e reaplicar o revestimento fora
 do ambiente da turbina, resultando em um procedimento de alta complexidade
 operacional de manobra e transporte, riscos, alto custo e principalmente: tempo
-de parada de máquina.
+de parada de máquina. A Figura~\ref{fig::rijeza_hvof}
+apresenta o revestimento sendo aplicado antes da instalação por um braço
+robótico, em ambiente industrial e bem estruturado.
 
-Para atenuar este problema, foi projetado um sistema robótico, denominado EMMA,
-para reaplicação do revestimento dentro da unidade geradora, que dispensa a
-necessidade de desmontagem das pás, realizando todo o processo de revestimento
-\textit{in situ}. Este sistema tem o desafio de lidar com o difícil e limitado
-acesso, operar em ambiente confinado, de superfície curva, inclinada e
-escorregadia, alta umidade e temperatura. Pelo acesso ser limitado a uma
+Como uma alternativa para manutenção das pás, foi projetado um sistema robótico,
+denominado EMMA, para reaplicação do revestimento dentro da unidade geradora,
+que dispensa a necessidade de desmontagem das pás, realizando todo o processo de
+aplicação \textit{in situ}. Este sistema tem o desafio de lidar com o difícil
+e limitado acesso, operar em ambiente confinado, de superfície curva, inclinada
+e escorregadia, alta umidade e temperatura. Pelo acesso ser limitado a uma
 escotilha de $800~mm$ e outra de $350~mm$ de diâmetro, o sistema deve ser
-modular e leve, a fim de ser transportado e montado manualmente no interior da turbina. A
-Figura~\ref{fig::turbina_ug} ilustra o interior da unidade geradora, destacando
-os principais equipamentos no interior e indicando os acessos da escotilha
-superior e escotilha inferior.
+modular e leve, a fim de ser transportado e montado manualmente no interior da
+turbina. A Figura~\ref{fig::turbina_ug} ilustra o interior da unidade geradora,
+destacando os principais equipamentos no interior e indicando os acessos da
+escotilha superior e escotilha inferior.
 
 \begin{figure}[h]
 	\centering 
@@ -1759,37 +1758,81 @@ para revestimento da pá. Fonte: \citet{freitas2017state}}
 \label{tab::req_hvof}
 \begin{tabular}{@{}ll@{}}
 \toprule
-\textbf{Componente}            & \textbf{Valor}  	\\ \midrule
-Massa da pistola HVOF          & 8 kg           	\\
-Temperatura da chama           & 3000$^{\circ}$ C     \\
-Empuxo da pistola              & 15 N           	\\
-Precisão do manipulador        & 5 mm          		\\
-Distância da pistola para a pá & 230-240 mm 		\\
-Ângulo da pistola para a pá    & 90$^{\circ}$         \\
-Velocidade do efetuador        & 40 m min$^{-1}$   		\\
-Ruído sonoro do HVOF           & 100-140 dB    		\\
-Temperatura da pá              & até 110$^{\circ}$    \\ \bottomrule
+\textbf{Componente}           							& \textbf{Valor}  		\\ \midrule
+Massa da pistola HVOF        							& 8 kg           		\\
+Temperatura da chama         							& 3000$^{\circ}$ C  	\\
+Empuxo da pistola             							& 15 N           		\\
+Passo entre parelelos da trajetória	   	    			& 3 mm  				\\
+Distância da pistola para a pá 							& 230-240 mm 			\\
+Ângulo da pistola para a superfície da pá				& 90$^{\circ}$      	\\
+Velocidade perpendicular à superfície da pá  			& 40 m min$^{-1}$   	\\
+Ruído sonoro do HVOF          							& 100-140 dB    		\\
+Temperatura da pá              							& até 110$^{\circ}$ C 	\\ \bottomrule
 \end{tabular}
 \end{table}
 
-\lipsum[1-1]
+Nota-se pelos dados apresentados a impossibilidade de se realizar esta tarefa
+manualmente e a necessidade de ter um sistema preciso para realizá-la por robô,
+a fim de atender aos requisitos do processo.
+
+Pela limitação de acesso e espaço apertado próximo às pás, um dos principais
+critérios para seleção do manipulador foi seu tamanho. Isto implica em um
+espaço de trabalho reduzido em relação ao tamanho da pá, o que resulta na
+necessidade de fixar o robô em mais de uma posição a fim de cobrir
+toda a face. Para isso é necessária uma base com graus de liberdade suficientes,
+que permitam a mudança de posicionamento do robô, para cada região da pá. 
+
+Foram estudados diversos conceitos de base, e classificados de acordo com os
+graus de liberdade fornecidos. Dentre eles, destacam-se os conceitos
+Prismático-Rotacional-Prismático-Prismático (PRPP), da
+Figura~\ref{fig::base_telesc_turbina} e Prismático-Rotacional-Prismático (PRP),
+da Figura~\ref{fig::prp_turbina}. Note-se que estes conceitos de base podem ser
+modelados exatamente como o sistema macro-micro manipulador, a base (macro) para
+posicionamento, ignorando-se a atuação das juntas do sistema macro, e o braço
+robótico (micro) para realizar a tarefa, como é exposto em
+\cite{sharon1993macro} e \cite{lew1994bracing}.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.85\textwidth]{figs/base_telesc_turbina}
+ 	\includegraphics[width=0.65\textwidth]{figs/base_telesc_turbina}
  	\caption{Base telescópica PRPP para manutenção de revestimento
  	\textit{in-situ}}
  	\label{fig::base_telesc_turbina}
 \end{figure}
 
+O sistema de base PRPP consite em um mecanismo telescópico com atuadores
+lineares para os braços prismáticos e uma junta rotacional. A estrutura é fixada
+na entrada da escotilha de acesso superior da unidade geradora e o robô é fixado
+na extremidade do último braço da estrutura telescópica. Isto permite que o
+manipulador seja posicionado diversas vezes para cobrir toda a face da pá. No
+entanto, o dimensionamento estrutural verificou que apesar de a estrutura
+suportar com boa margem as tensões a que seria submetida, os deslocamentos
+devido à baixa rigidez, prejudicariam a precisão requerida da tarefa de
+revestimento.
+
+O conceito PRP utiliza o acesso da escotilha inferior para transportar uma base
+modular para o interior da unidade geradora. Esta base é composta por uma
+estrutura de alumínio equipada com trilhos paralelos, que concedem ao sistema o
+movimento linear ao longo da esturutra. Uma plataforma de rotação funciona como
+uma junta entre os trilhos, o que permite que estes formem qualquer ângulo entre
+si e fornecendo 3 graus de liberdade à base. Pela limitação do acesso, a
+estrutura de base deve ser modular e leve, porque sofrerá diversas montagens e
+desmontagens manuais. Por isso, como resultado, obtém-se uma estrutura leve e
+versátil, porém não superdimensionada para rigidez. No entanto, a vantagem deste
+conceito é a versatilidade de configurações e a possibilidade adicionar suportes
+e contraventamentos à estrutura, para aumentar sua rigidez.
+
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.85\textwidth]{figs/prp_turbina}
+ 	\includegraphics[width=0.70\textwidth]{figs/prp_turbina}
  	\caption{Base modular PRP para manutenção de revestimento \textit{in-situ}}
  	\label{fig::prp_turbina}
 \end{figure}
 
-
+A presente pesquisa trata estes conceitos e a tarefa de revestimento do projeto
+EMMA como os estudos de caso para verificação a utilização do método proposto,
+que consiste em quantificar os erros causados pelos deslocamentos elásticos da
+base e investigar se são toleráveis ou não para garantir a qualidade da tarefa.
 
 
 

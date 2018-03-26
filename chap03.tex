@@ -19,21 +19,22 @@ Os modelos MBS -- robô, base e  acoplado -- são apresentados nas
 seções~\ref{sec::robo},~\ref{sec::base} e ~\ref{sec::acoplado}, onde
 demonstra-se o desenvolvimento da cinemática e dinâmica destes sistemas
 multicorpos.
-Com o auxílio do \textit{software} de álgebra computacional Maple, utilizando as
-rotinas do Sophia, revela-se uma forma prática e sistemática de modelar o
-sistema multicorpos de qualquer número de graus de liberdade e, pelo método de
-Kane, deduzir-se rapidamente as equações de movimento dos sistemas.
 
-O MBS Robô configura o manipulador como sobre uma base ideal, ou perfeitamente
-rígida, já que em sua origem não se oferece nenhum grau de liberdade. Com este
-modelo realiza-se, portanto, as simulações dinâmicas das trajetórias ``ideais'',
-ou seja, que seriam obtidas numa base perfeitamente rígida. Este resultado
-fornecere as posições, velocidades e orientações que serão referência para
+% Com o auxílio do \textit{software} de álgebra computacional Maple, utilizando as
+% rotinas do Sophia, revela-se uma forma prática e sistemática de modelar o
+% sistema multicorpos de qualquer número de graus de liberdade e, pelo método de
+% Kane, deduzir-se rapidamente as equações de movimento dos sistemas.
+
+O MBS Robô considera o manipulador como sobre uma base ideal, ou perfeitamente
+rígida, já que sua origem não permite nenhum grau de liberdade.
+Com este modelo realiza-se, portanto, as simulações dinâmicas das trajetórias
+``ideais'', ou seja, que seriam obtidas numa base perfeitamente rígida. Este
+resultado fornece as posições, velocidades e orientações de referência para
 comparação destes mesmos parâmetros resultantes do modelo acoplado.
 
-Para modelagem da base, é necessário fornecer as matrizes que representam sua
+Para modelagem da base, é necessário calcular as matrizes que representam sua
 rigidez e amortecimento. Na seção~\ref{sec::base} é demonstrado um método de se
-obter a matriz de rigidez por meio de Análise por Elementos Finitos (AEF).
+obter a matriz de rigidez pela Análise por Elementos Finitos (AEF).
 
 Na seção~\ref{sec::experimento} apresenta-se como obter os parâmetros modais da
 base por meio de ensaio de vibrações. Os dados são tratados para obter as
@@ -41,13 +42,13 @@ Funções de Resposta em Frequência (FRF's) e então estimar seus parâmetros
 modais. O resultado fornece a matriz de amortecimento da base de teste que será
 utilizada no modelo MBS acoplado.
 
-O MBS Robô-Base considera os 6 graus de liberdade da base (3 tranlações e 3
-rotações) e os 5 graus de liberdade do robô, formando um sistema único acoplado
-de 11 gdl. É simulada a mesma trajetória fornecida no modelo rígido, com o
-objetivo de comparar os resultados quando o robô opera sobre uma base rígida em
-relação a mesma operação do robô sobre base flexível. São então verificados os
-efeitos da elasticidade da base sobre os parâmetros controlados do processo
-sendo executado.
+Na seção~\ref{sec::acoplado}, é modelado o MBS Robô-Base, que considera os 6
+graus de liberdade da base (3 tranlações e 3 rotações) mais os 5 graus de
+liberdade do robô, formando um sistema único acoplado de 11 gdl. Os resultados
+são obtidos pela simulação do sistema acoplado utilizando a mesma trajetória do
+sistema de base ideal. A comparação dos resultados é feita na
+seção~\ref{sec::resultados} em que verifica-se os erros de posição, velocidade e
+orientação devido aos efeitos da elasticidade da base.
 
 A Figura~\ref{fig::visgeral} resume a visão geral
 do método proposto facilitando a visualização das relações entre os modelos.
@@ -77,16 +78,15 @@ do método proposto facilitando a visualização das relações entre os modelos
 
 \subsection{Descrição do braço robótico} \label{sec::descricao_mh12}
 
-O manipulador escolhido para estudo é o mesmo que será utilizado no projeto EMMA
-para revestimento de superfícies metálicas por HVOF. Trata-se de um robô
-comercial da série MOTOMAN, modelo MH12, fabricado pela Yaskawa Motoman
-apresentado na Figura~\ref{fig::mh12_foto}.
+O manipulador escolhido para estudo é o mesmo que será utilizado no projeto
+EMMA. Trata-se de um robô comercial da série MOTOMAN, modelo MH12, fabricado
+pela Yaskawa Motoman e é apresentado na Figura~\ref{fig::mh12_foto}.
 
 \begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.3\textwidth}
         \includegraphics[width=\textwidth]{figs/mh12_foto}
-        \caption{MOTOMAN MH12. \\Fonte: adaptada de~\cite{manualmh12}}
+        \caption{MOTOMAN MH12}
         \label{fig::mh12_foto}
     \end{subfigure}
     \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
@@ -94,10 +94,12 @@ apresentado na Figura~\ref{fig::mh12_foto}.
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.5\textwidth}
         \includegraphics[width=\textwidth]{figs/mh12_diagram}
-        \caption{Diagrama dos elos e juntas. \\Fonte: adaptada de~\cite{manualmh12}}
+        \caption{Diagrama dos elos e juntas}
         \label{fig::mh12_diagram}
     \end{subfigure}
-    \caption{Manipulador robótico para modelo}\label{fig::resumo_mh12}
+    \caption[Manipulador robótico para modelo]{Manipulador robótico para modelo.
+    \\Fonte: adaptada de~\cite{manualmh12}}
+    \label{fig::resumo_mh12}
 \end{figure}
 
 \begin{table}[h]
@@ -117,16 +119,16 @@ T  & Efetuador        & q6                                        \\ \bottomrule
 \end{tabular}
 \end{table}
 
-Este robô é do tipo braço antropomórfico de 6 juntas rotacionais e portanto 6
+Este robô é do tipo braço antropomórfico de 6 juntas rotacionais, e portanto 6
 graus de liberdade (6 gdl), contendo o último elo um porta-ferramentas que
 suporta uma carga útil de até 12 kg. A Figura~\ref{fig::mh12_diagram} apresenta
 os nomes dos elos e coordenadas generalizadas associados a cada um dos sistemas
 de coordenadas e são resumidos na Tabela~\ref{tab::resumo_mh12}.
 
-O alcance horizontal deste manipulador chega a 1,440~m, e vertical a
-2,511~m. Estão representados no diagrama do espaço de trabalho na
-Figura~\ref{fig::workspace} em que a área sombreada é formada por todos os
-pontos alcançáveis pelo manipulador, dentro dos limites de cada junta.
+O espaço de trabalho é apresentado na Figura~\ref{fig::workspace} em que a área
+sombreada é formada por todos os pontos alcançáveis pelo manipulador, dentro dos
+limites de cada junta. O alcance horizontal deste manipulador chega a 1,440~m, e
+vertical a 2,511~m.
 
 \begin{figure}[h]
 	\centering 
@@ -136,17 +138,17 @@ pontos alcançáveis pelo manipulador, dentro dos limites de cada junta.
  	\label{fig::workspace}
 \end{figure}
 
-Conforme discutido na seção~\ref{sec::manind}, este tipo de braço robótico
-permite desacoplar o sistema em 2 sub-problemas: posicionamento e orientação.
-Logo, para simplificar o modelo e o cálculo da cinemática inversa, serão consideradas
-as 3 primeiras juntas para posicionamento e 3 últimas (pulso esférico) para
-orientação da ferramenta.
+% Conforme demonstrado na seção~\ref{sec::ikin}, este tipo de braço robótico
+% permite desacoplar o sistema em 2 sub-problemas: posicionamento e orientação.
+% Logo, para simplificar o modelo e o cálculo da cinemática inversa, serão consideradas
+% as 3 primeiras juntas para posicionamento e 3 últimas (pulso esférico) para
+% orientação da ferramenta.
 
 A última junta, no efetuador, tem a finalidade de orientar a ferramenta em torno
 do seu eixo axial. Como o processo de revestimento por HVOF independe desta
-orientação, esta junta \emph{não será incluída}, mantendo este acoplamento
-rígido, o que transforma os dois últimos elos em apenas um corpo.
-Como resultado, tem-se um sistema de 5 gdl.
+orientação, esta junta \emph{não será incluída} no modelo MBS do robô, mantendo
+este acoplamento rígido, o que transforma os dois últimos elos e a ferramenta
+acoplada em um único um corpo. Como resultado, tem-se um sistema de 5 gdl.
 
 
 \subsection{Cinemática Direta}\label{sec::dkin}
@@ -154,22 +156,23 @@ Como resultado, tem-se um sistema de 5 gdl.
 Como foi discutido na seção~\ref{sec::cinematica}, o procedimento mais utilizado
 para a modelagem cinemática de manipuladores robóticos é o método dos parâmetros
 de Denavit-Hartenberg. Apesar de sua popularidade e vasta utilização na
-modelagem cinemética de manipuladores variados, o pacote Sophia-Maple será
-utilizado, uma vez que já fornece praticidade e flexibilidade para derivar as
-equações cinemáticas de sistemas multicorpos, sem nenhum aumento de
-complexidade. Pode-se dizer inclusive que este método é vantajoso em relação ao
-DH, por não restringir a escolha dos referenciais, permitindo investigar
-configurações que melhorem a eficiência das manipulações algébricas.
+modelagem cinemética de manipuladores variados, as rotinas de modelagem da
+cadeia cinemática do Sophia-Maple será utilizado, uma vez que já fornece
+praticidade e flexibilidade para derivar as equações cinemáticas de sistemas
+multicorpos com mais liberdade que o método DH. Uma vantagem é não ficar
+preso às restrições sobre a escolha dos referenciais por exemplo, permitindo
+investigar outras configurações que inclusive possam melhorar a eficiência das
+manipulações algébricas dadas as particularidades de cada sistema.
 
 Demonstra-se portanto os procedimentos para modelagem de um manipulador robótico
 pelas rotinas do Sophia-Maple. A cada etapa são apresentadas as linhas de código
-correspondentes, a fim de ilustrar a praticidade do método.
+correspondentes, a fim de ilustrar a sistematicidade e praticidade do método.
 
 \subsubsection{Sistemas de Coordenadas}
 
-A primeira etapa para obter-se as equações cinemáticas será definir o sistema de
-coordenadas fixo em cada elo do robô. A Figura~\ref{fig::scs} é um modelo CAD do
-manipulador e apresenta a posição de cada SC, na sua configuração inicial.
+A primeira etapa para é definir o sistema de coordenadas local de cada elo do
+manipulador. A Figura~\ref{fig::scs} é um modelo CAD do braço robótico e
+apresenta a posição de cada SC, na sua configuração inicial.
 
 \begin{figure}[h]
     \centering
@@ -189,29 +192,29 @@ manipulador e apresenta a posição de cada SC, na sua configuração inicial.
     \caption{Sistemas de coordenadas do robô}\label{fig::scs}
 \end{figure}
 
-Na vista frontal (Figura~\ref{fig::sc_front}) nota-se que foi escolhida uma
-configuração em que todos os SC's estivessem no mesmo plano xz. Outra observação
-é que os SC's R, B e T estão fixados no mesmo ponto. que representa a origem do
-``pulso'' do braço robótico. Estas considerações reduzem a quantidade de termos
-das equações cinemáticas. Também terão grande impacto no cálculo da cinemática
-inversa, como será visto na seção~\ref{sec::ikin_mh12}.
+Na Figura~\ref{fig::sc_front} nota-se que foi escolhida uma configuração em que
+todos os SC's estão no mesmo plano $xz$. Outra observação é que os SC's R,
+B e T estão fixados no mesmo ponto. que representa a origem do ``pulso'' do
+braço robótico. Estas considerações reduzem a quantidade de termos das equações
+cinemáticas. Também terão grande impacto no cálculo da cinemática inversa, como
+será visto na seção~\ref{sec::ikin_mh12}.
 
 Logo, pode-se escrever as relações entre estes referenciais em termos das
-coordenadas generalizadas do sistema, para obter as transformações entre cada
-SC. No Sophia-Maple isto é feito com o uso da função \texttt{chainSimpRot}, da
-seguinte forma:
+coordenadas generalizadas do sistema, e obter as transformações homogêneas entre
+cada SC. No Sophia-Maple isto é feito com o uso da função \texttt{chainSimpRot},
+da seguinte forma:
 
 \bigskip \noindent {\tt > chainSimpRot( [Z,S,1,q1], [S,L,3,q2], [L,U,3,q3],
 [U,R,2,q4], [R,B,3,q5], [B,T,2,q6] )} \bigskip 
 
 Esta função cria as matrizes de rotação entre os referenciais do sistema,
 informando a cada transformação, o eixo de rotação
-(onde 1=X, 2=Y e 3=Z) e a coordenada generalizada associada
-(q1,~\ldots~,q6). Foi utilizada a forma de coordenadas relativas entre cada SC.
+(onde $1 \equiv x$, $2 \equiv y$ e $3 \equiv z$) e a coordenada generalizada
+associada (q1,~\ldots~,q6).
 
 Como exemplo, considere o termo {\tt [L,U,3,q3]}. Representa uma rotação de um
 ângulo q3, do SC-U em relação ao SC-L, em torno do eixo Z.
-Logo, a matriz Transformação Homogênea entre o referencial inercial Z e o braço
+Logo, a matriz rotação entre o referencial inercial Z e o braço
 superior U seria:
 %
 $$ R_{Z}^{U} = R_{Z}^{S} R_{S}^{L} R_{L}^{U} $$

@@ -260,31 +260,33 @@ seguinte relação:
 Onde $^{Z}\mathbf{p}^{k}$ é o vetor posição do referencial $k$ em relação ao
 referencial inercial $Z$ e analogamente $^{Z}\mathbf{pcm}^{k}$ é o vetor
 posição do centro de massa do corpo $k$, tal que $k$ varia em \{S,L,U,B,T\},
-sistemas de coordenadas do robô.
+os sistemas de coordenadas do robô.
 No Sophia-Maple é utilizada a notação de Lesser, por meio dos \texttt{Evectors},
-para representar esses vetores, como descrito na seção~\ref{sec::sophia-kane}.
+para representar esses vetores, como descrito na seção~\ref{sec::lesser}. Logo,
+as equações~\ref{eq::posjnutas} são definidas pela seguinte
+estrutura:
 
-\bigskip \noindent {\tt > pZ:= Evector(0,0,0,Z)} \\
+\bigskip \noindent {\tt > pZ:= Evector(0,0,0,Z);} \\
 \noindent {\tt > for k from corpo[1] to corpo[6] do \\
 \indent p||k:= p||{k-1} \&++ Evector(p||{k-1}||{k}||x, p||{k-1}||{k}||y,
 \indent p||{k-1}||{k}||z, k-1) \\
 end do:} \bigskip 
 
-E para os centros de massa:
+E para as equações~\ref{eq::pcm}, os centros de massa:
 
 \bigskip \noindent {\tt > for k from corpo[1] to corpo[6] do \\
 \indent pcm||k:= p||{k} \&++ Evector(pcm||{k}||x, pcm||{k}||y, pcm||{k}||z, k)
 \\ end do:} \bigskip 
 
-A Figura~\ref{fig::amb3D} apresenta o ambiente de simulação 3D, que é utilizado
-para facilitar a visualização do posicionamento e movimento das juntas e elos do
+A Figura~\ref{fig::amb3D} apresenta o ambiente de simulação 3D, criado para
+facilitar a visualização do posicionamento e movimento das juntas e elos do
 robô. Definidos os pontos de origem de cada referencial, representa-se os elos
 do manipulador por uma linha colorida entre os SC's. A ferramenta acoplada é
 representada por uma linha que se estende desde a origem do pulso até sua
-extremidade.
+extremidade. 
 
-Neste ambiente 3D é possível fornecer qualquer configuração de juntas e
-obter-se um resultado visual de posicionamento e orientação dos elos. A
+Neste ambiente 3D é possível fornecer qualquer configuração de juntas e obter-se
+um resultado visual de posicionamento e orientação dos elos. A
 Figura~\ref{fig::amb3D_posA} ilustra o resultado para a configuração inicial do
 do robô, $q1 = \ldots = q6 = 0$; e a Figura~\ref{fig::amb3D_posB} para a
 configuração $q1 = \ldots = q6 = {-}^{\pi}/_2$.
@@ -319,22 +321,19 @@ equação~\ref{eq::pcm} em Z:
 \end{equation}
 %
 
-O Sophia-Maple possui um conjunto de rotinas para diferenciação dos
-\texttt{Evectors} com relação ao referencial inercial, por meio da função
-\texttt{cdft}, que reconhece automaticamente o referencial em que cada vetor
-está descrito e realiza o cálculo diferencial vetorial. Logo, pode-se escrever o
-seguinte comando para definir as velocidades de acordo com a
+A função \texttt{cdft}, do Sophia realiza a diferenciação vetorial dos
+\texttt{Evectors} com relação ao referencial inercial. Logo, pode-se escrever o
+seguinte comando para definir as velocidades de cada corpo de acordo com a
 equação~\ref{eq::veloc}:
 
 \bigskip \noindent {\tt > for k from corpo[1] to corpo[6] do \\
 \indent v||k:= cdft(pcm||{k}, Z) \\
 end do:} \bigskip 
 
-As velocidades angulares serão a taxa de variação angular das matrizes de
-rotação entre os referenciais. Serão definidas as velocidades angulares de cada
-corpo em relação ao referencial inercial. Conforme apresentado na
-seção~\ref{sec::cinematica} pode-se escrever a velocidade angular de uma matriz
-rotação $R(t)$ como:
+As velocidades angulares são a taxa de variação angular das matrizes de rotação
+entre os referenciais. São definidas as velocidades angulares de cada corpo em
+relação ao referencial inercial. Pode-se escrever a velocidade angular de uma
+matriz rotação $R(t)$ como:
 %
 \begin{equation} \label{eq::velang}
 	\frac{\mathrm{d} R}{\mathrm{d} t} = S \cdot R(t)
@@ -350,10 +349,10 @@ Onde $S$ é o tensor velocidade angular associado a $\omega$.
 -\omega_{y}(t)	& \omega_{x}(t)		& 0
 \end{pmatrix} \\
 % eq2
-& \boldsymbol{\omega} = [\omega_{x}, \omega_{y}, \omega_{z}]^{T}
+& \boldsymbol{\omega} = [\omega_{x}, \omega_{y}, \omega_{z}]
 \end{align}
 %
-No Sophia-Maple o tensor $S$ pode ser calculado através da função
+No Sophia-Maple o tensor $S$ é calculado através da função
 \&\texttt{VtoD}. Por exemplo, o tensor entre os referenciais SC-L e SC-S seria:
 %
 $$
@@ -364,9 +363,9 @@ q2} \right) {\it q1t}\\ \noalign{\medskip}\sin \left( {\it q2}
 \end {array} \right)
 $$
 %
-Porém, pode-se ainda fazer o uso da função \texttt{aV} que
+Pode-se ainda fazer o uso da função \texttt{aV} que
 calcula diretamente o vetor velocidade angular $^{A}\omega^{B}$ entre dois
-referenciais. O que retornaria o seguinte vetor:
+referenciais. O que retornaria, para o exemplo proposto, o seguinte vetor:
 %
 $$
 ^{Z}\boldsymbol{\omega}^{L} = [-{\it q1t},\sin \left( {\it q1} \right) {\it q2t},-\cos
@@ -374,83 +373,80 @@ $$
 $$
 %
 No caso do manipulador, são calculadas as velocidades de cada corpo em relação
-ao referencial Z. São definidos da seguinte forma:
+ao referencial Z. São definidas da seguinte forma:
 
 \bigskip \noindent {\tt > for k from corpo[1] to corpo[6] do \\
 \indent w||k:= aV(Z, corpo[k]) \\
 end do:} \bigskip 
 
-Podemos finalmente escrever o vetor Velocidades Generalizadas, que nada mais é
-que um \texttt{Kvector} que fornece a lista de \texttt{Evectors} referente às
+Finalmente, escreve-se o vetor Velocidades Generalizadas, que nada mais é
+que um \texttt{Kvector} formado pela lista de \texttt{Evectors} referente às
 velocidades lineares e angulares calculadas. Logo, o vetor velocidades
 generalizadas tem a seguinte forma:
 %
 \begin{equation}
 	\mathbf{v}_{g} = [ \mathbf{v}^{S},\ldots, \mathbf{v}^{T}, \boldsymbol{\omega}^{S},\ldots,
-	\boldsymbol{\omega}^{T}, 12]
+	\boldsymbol{\omega}^{T}]
 \end{equation}
 %
 Onde cada termo do \texttt{Kvector} é um \texttt{Evector} da velocidade
 generalizada.
-Por fim, o último termo representa a quantidade de \texttt{Evectors} que formam o
-\texttt{Kvector}.
 
 \subsubsection{Hiperplano tangente}
 
 Uma vez que as velocidades generalizadas foram definidas pode-se obter o
 conjunto de vetores tangentes, pelo cálculo das velocidades parciais, que formam
-o chamado hiperplano tangente.
+o chamado hiperplano tangente, $\tau$, conforme demonstrado na
+seção~\ref{sec::sophia_kane}.
 
 A função \texttt{KMtangents} do Sophia-Maple obtém os termos que formam os
 vetores tangentes em \texttt{Kvectors} para cada coordenada generalizada. O
 conjunto que forma o hiperplano tangente introduz uma estrutura do Sophia, dos
 super \texttt{Kvectors}, ou \texttt{SKVector}. Esta estrutura facilitará a
 projeção das equações dinâmicas no hiperplano tangente. Logo, para o manipulador
-escreve-se:
+escreve-se simplesmente:
 
-\bigskip \noindent {\tt > tau:= KMtangents(vK,u,6):} \bigskip 
+\bigskip \noindent {\tt > tau:= KMtangents(vK,u,6):} \bigskip
 
 
 \subsection{Dinâmica}
 
 Definida a cinemática direta do manipulador, deseja-se obter as forças de
 inércia e externas generalizadas que fornecerão as equações de movimento do
-sistema. Nesta seção primeiramente são introduzidos os parâmetros de inércia de
-cada corpo do manipulador e como foram obtidos.
+sistema.
 
 \subsubsection{Parâmetros de inércia do manipulador robótico}
 
 Os parâmetros de inércia são a massa e o momento de inércia de cada corpo do
 sistema. É importante notar que não é possível obter um modelo dinâmico preciso
-apenas com as informações contidas nos manuais e fichas técnicas do manipulador
-robótico. Infelizmente os parâmetros de inércia individuais de cada corpo não
-são fornecidos pelos fabricantes e, portanto, serão estimados pelo método a
-seguir.
+apenas com as informações contidas nos manuais e fichas técnicas do robô.
+Infelizmente os parâmetros de inércia individuais de cada corpo não são
+fornecidos pelos fabricantes e, portanto, serão estimados pelo método a seguir.
 
 Do manual do MOTOMAN MH12~\cite{manualmh12}, informa-se a massa total do robô,
 de 130~kg. Também é disponibilizado, diretamente pelo fabricante, um modelo CAD
 com ótimo detalhamento de cada corpo individualmente.
 
-O programa SolidWorks foi utilizado para obter informações importantes para a
-estimativa dos parâmetros de inércia. Nele é possível obter o volume de cada elo
-em separado. Com isso, pode-se calcular uma massa específica média do robô, de
+Pelo modelo CAD no programa SolidWorks é possível obter o volume $V_k$ de cada
+elo $k$ em separado. Com isso, calcula-se a massa específica média do robô, de
 acordo com a equação~\ref{eq::rho}.
+%
 \begin{align}
-	\rho_{m} = M_{total}\sum_{corpo[i]}^{corpo[n]} V_{i} \label{eq::rho} \qquad & ,
-	i = Z,S,L,U,R,B,T
+	\rho_{m} = M_{total}\sum_{k = Z}^{T} V_{k} \label{eq::rho} \qquad & ,
+	k = Z,S,L,U,R,B,T
 \end{align}
 %
 Em seguida, estima-se a massa de cada corpo, calculada pelo produto da massa
-específica média $\rho_{m}$ e o volume, de acordo com a
+específica média $\rho_{m}$ e o seu volume, de acordo com a
 equação~\ref{eq::massai}.
 %
 \begin{align}
-	m_{i} = \rho_{m} \cdot V_{i} \label{eq::massai} \qquad &, i =
+	m_{k} = \rho_{m} \cdot V_{k} \label{eq::massai} \qquad &, k =
 	Z,S,L,U,R,B,T
 \end{align}
 %
 A massa da ferramenta acoplada ao efetuador foi obtida de forma precisa,
-pelo projeto CAD do suporte, e informação do fabricante do dispositivo
+pelo projeto do suporte, e informação do fabricante do dispositivo
 HVOF.
 A Tabela~\ref{tab::massa_mh12} apresenta os resultados da massa estimada em cada
 corpo:
@@ -486,17 +482,16 @@ descrição.
 A partir daqui, estes 3 últimos corpos serão tratadaos como um único corpo e
 será utilizada a denominação do corpo B para representar esse conjunto.
 
-Do CAD do MH12 também é possível extrair as as posições do centro de massa e
-momentos de inércia de cada elo.
-Como se considerou que a massa de cada elo é distribuida homogeneamente no seu
-volume, isto resulta numa posição estimada do centro de massa. A
-Tabela~\ref{tab::resumo_cm} resume os valores encontrados para a posição do
-centro de massa com respeito ao referencial de cada elo e a
-Figura~\ref{fig::pcm_mh12} ilustra no modelo CAD a posição aproximada.
+Do modelo CAD do MH12 também é possível extrair as posições do centro de massa e
+momentos de inércia de cada elo. Como foi considerado que a massa é distribuida
+homogeneamente no seu volume de cada corpo, resulta-se numa posição estimada do
+centro de massa. A Tabela~\ref{tab::resumo_cm} resume os valores encontrados
+para a posição do centro de massa com respeito ao referencial de cada elo e a
+Figura~\ref{fig::pcm_mh12} ilustra a posição aproximada.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.7\textwidth]{figs/pcm_mh12}
+ 	\includegraphics[width=0.5\textwidth]{figs/pcm_mh12}
  	\caption{Posição aproximada dos centros de massa}
  	\label{fig::pcm_mh12}
 \end{figure}
@@ -518,10 +513,9 @@ B              & -0,011     & 0,146      & 0,000      \\ \bottomrule
 \end{table}
 %
 
-O modelo CAD também calcula os momentos de inércia de cada elo obtidos no
-centro de massa e alinhados ao sistema de coordenadas de referência daquele elo.
-O resultado do cálculo dos momentos de inércia de cada elo são apresentados a
-seguir.
+O SolidWorks calcula os momentos de inércia obtidos no centro de massa e
+alinhados ao sistema de coordenadas local de cada elo.
+O resultado do cálculo dos momentos de inércia são apresentados a seguir.
 %
 \begin{align*}
 InZ &=& \left( \begin {array}{ccc}  0,811& 0,293& 0,091\\ \noalign{\medskip}
@@ -584,20 +578,21 @@ equações~\ref{eq::finG} e \ref{eq::finH}.
 \end{align}
 %
 No Sophia-Maple, obtém-se primeiro os vetores quantidade de movimento e, em
-seguida, constrói-se o \texttt{Kvector} das quantidades de movimento com a
-função \texttt{KM} armazendado na variável \texttt{KMG}. Um função especial para
-diferenciação de \texttt{Kvectors}, \texttt{Kfdt} é aplicada em \texttt{KMG} para
-calcular os vetores das forças de inércia.
+seguida. Constrói-se o \texttt{Kvector} das quantidades de movimento
+generalizadas através da função \texttt{KM}, e armazena este na variável
+\texttt{KMG}. Por fim, é usada a função \texttt{Kfdt} para diferenciação
+temporal das quantidades de movimento generalizadas e obtenção do vetor das
+Forças de Inércia, \texttt{FIN}.
 
-Vale notar que o Sophia-Maple adiciona um sufixo t aos termos que foram
-derivados com respeito ao tempo.
-Logo, as coordenadas generalizadas, q1,\ldots,qn, quando derivadas no tempo
-resultam em q1t,\ldots,qnt. Este formato auxilirá a substituição destes termos
-para solução das \textit{kinematic differential equations} (kde), conforme visto
-na seção~\ref{sec::sophia-kane}.
+% Vale notar que o Sophia-Maple adiciona um sufixo t aos termos que foram
+% derivados com respeito ao tempo.
+% Logo, as coordenadas generalizadas, q1,\ldots,qn, quando derivadas no tempo
+% resultam em q1t,\ldots,qnt. Este formato auxilirá a substituição destes termos
+% para solução das \textit{kinematic differential equations} (kde), conforme visto
+% na seção~\ref{sec::sophia-kane}.
 
-O algoritmo para definir as Forças de Inércia do sistema no Sophia-Maple é o
-seguinte:
+% O algoritmo para definir as Forças de Inércia do sistema no Sophia-Maple é o
+% seguinte:
 
 \bigskip \noindent {\tt > for i from 1 to 6 do \\
 \indent G||corpo[i]:= m||corpo[i] \&** v||corpo[i] \\
@@ -618,8 +613,8 @@ end do: \# Define as Quantidades de Movimento Angular}
 
 Uma das vantagens do método de Kane é não ser necessário avaliar as forças
 internas, ou de restrição entre os corpos dos sistema. O motivo é que, ao se
-projetarem as equações de equilíbrio dinâmico no hiperplano tangente, essas
-forças desaparecem.
+projetarem as equações de equilíbrio dinâmico no hiperplano tangente, $\tau$,
+essas forças desaparecem.
 
 Logo, apenas as forças externas precisam ser modeladas para obter as equações de
 movimento. No modelo do braço robótico, estas forças são o peso, os torques das
@@ -633,7 +628,7 @@ pela equação~\ref{eq::peso}:
 \end{equation}
 %
 Onde $\mathbf{g}$ refere-se ao vetor da aceleração da gravidade, que atua sempre
-no sentido de $-X$ no referencial inercial Z. É definido como:
+no sentido de $-x$ no referencial inercial Z. É definido como:
 %
 \begin{equation}
 	\mathbf{g} = [-9,81,~0,~0]^{Z}
@@ -648,7 +643,7 @@ explicação rápida sobre a modelagem do controlador PID.
 Para que o robô realize uma tarefa, é necessário seguir uma trajetória
 previamente planejada. Uma trajetória pode ser simplesmente um conjunto de
 posições de referência de cada junta, que varia no tempo, como foi abordado na
-seção~\ref{sec::ikin_traj}. A variação das posição se dá pelo acionamento dos
+seção~\ref{sec::plan_traj}. A variação das posição se dá pelo acionamento dos
 torques em cada junta, que deve ser controlado para seguir a trajetória
 planejada. 
 
@@ -658,7 +653,7 @@ Com o propósito de simular o controle do manipulador decidiu-se pela
 simplicidade do método de controle PID.
 
 Os parâmetros de controle PID são formados pelas variáveis proporcional,
-integral e derivativa, ou $Kp$, $Td$ e $Ti$ respectivamente. Esses parâmetros
+integral e derivativa, $Kp$, $Td$ e $Ti$ respectivamente. Esses parâmetros
 foram sintonizados para cada junta individualmente, fazendo-se simulações de
 resposta para uma função degrau de referência. Os resultados mostraram que este
 método é suficiente para seguir a trajetória e manter os erros dentro de uma
@@ -723,7 +718,7 @@ junta.
 As equações~\ref{eq::mexi} a \ref{eq::mexf} calculam o somatório dos momentos
 externos em cada corpo. Nota-se que o torque aplicado em qualquer junta causa
 um par de torques de ação e reação nos elos adjacentes. As variáveis $Mex_k$ são
-grandezas vetoriais que representam o momentos externos resultante em cada
+vetores que representam o momentos externos resultante em cada
 corpo.
 %
 \begin{align}
@@ -736,31 +731,10 @@ corpo.
 \end{align}
 %
 
-A Figura~\ref{fig::sisfex} ilustra, em vista explodida, o equilíbrio das forças e
-momentos externos em cada elo do manipulador.
-
-\begin{figure}[h]
-    \centering
-    \begin{subfigure}[b]{0.6\textwidth}
-        \includegraphics[width=\textwidth]{figs/forcas_ext}
-        \caption{Forças externas em cada elo}
-        \label{fig::fex}
-    \end{subfigure}
-    \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
-    % etc.
-      %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.6\textwidth}
-        \includegraphics[width=\textwidth]{figs/mom_ext}
-        \caption{Momentos externos em cada elo}
-        \label{fig::mex}
-    \end{subfigure}
-    \caption{Sistema de forças externas}\label{fig::sisfex}
-\end{figure}
-
-Note-se novamente que, pelo método de Kane, não é preciso introduzir as forças
-internas, de restrição ou de contato entre os corpos, porque estas não
-contribuem para as equações de movimento e desaparecem quando o sistema de
-equações de equilíbrio dinâmico são projetads no hiperplano tangente, $\tau$.
+% Note-se novamente que, pelo método de Kane, não é preciso introduzir as forças
+% internas, de restrição ou de contato entre os corpos, porque estas não
+% contribuem para as equações de movimento e desaparecem quando o sistema de
+% equações de equilíbrio dinâmico são projetads no hiperplano tangente, $\tau$.
 
 No Sophia-Maple os vetores dos momentos externos resultantes são armazenadas em
 \texttt{Evectors}. A sequência de equações~\ref{eq::tjuntasi} a \ref{eq::mexf}
@@ -785,7 +759,28 @@ auxiliar a projeção destas em $\tau$. Novamente, faz-se uso da função
 \texttt{KM}, o que retorna um \texttt{Kvector} contendo todas as forças e
 momentos, descritos em cada sistema de referência.
 
-\bigskip \noindent {\tt > FEX:= KM[Fex||corpo,~Mex||corpo]:}
+\bigskip \noindent {\tt > FEX:= KM[Fex||corpo,~Mex||corpo]:} \bigskip
+
+A Figura~\ref{fig::sisfex} ilustra, em vista explodida, o equilíbrio das forças e
+momentos externos em cada elo do manipulador.
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{figs/forcas_ext}
+        \caption{Forças externas em cada elo}
+        \label{fig::fex}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
+    % etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{figs/mom_ext}
+        \caption{Momentos externos em cada elo}
+        \label{fig::mex}
+    \end{subfigure}
+    \caption{Sistema de forças externas}\label{fig::sisfex}
+\end{figure}
 
 		 
 \subsubsection{Forças de Inércia e  Forças Externas Generalizadas}
@@ -827,11 +822,13 @@ equações~\ref{eq::kde5i} a \ref{eq::kde5f} descrevem o kde:
 \begin{align}
 	u_{1}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{1}(t) \label{eq::kde5i} \\
 	u_{2}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{2}(t) \\
-	u_{3}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{3}(t) \\
+	u_{3}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{3}(t)
+\end{align}
+%
+\begin{align}	
 	u_{4}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{4}(t) \\
 	u_{5}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{5}(t) \label{eq::kde5f}	
 \end{align}
-%
 Somando-se esse sistema às equações de movimento e atribuindo à variável
 \texttt{eq\_mov}, no Sophia-Maple:
 
@@ -849,18 +846,18 @@ não traria nenhum valor à discussão deste tópico. Por isso, limita-se a
 representação do sistema à equação~\ref{eq::eqdin}.
 
 A função \texttt{cost} do Maple retorna o número de operações algébricas e de
-funções de uma determinada equação ou sistema de equações fornecendo um
-parâmetro para o usuário avaliar o tamanho das expressões e o custo
-computacional do modelo.
+funções de uma determinada equação ou sistema de equações e dá ao usuário um
+parâmetro para avaliar o tamanho das expressões e o custo computacional do
+modelo.
 Para se ter uma ideia, o custo do sistema de equações de movimento, representado
 na forma puramente simbólica em \ref{eq::eqdin}, tem  a seguinte estrutura:
 %
 	$$ 18171\,{\it additions}+59804\,{\it multiplications}+39998\,{\it 
 functions} $$
 %
-Porém, lembra-se que o sistema é puramente simbólico, porque até então não foram
+Porém, lembra-se que o sistema é puramente simbólico, e até então não foram
 substituidos os parâmetros numéricos do robô.
-Este procedimento simplifica o sistema, porque muitos termos zerados
+Este procedimento simplifica o sistema, porque muitos termos são zerados e
 desaparecem.
 Além disso, é possível fazer uso da função \texttt{simplify} do Maple, que é um
 poderoso conjunto de rotinas para simplificação algébrica de expressões. Fazendo
@@ -923,16 +920,15 @@ Inversa.
 
 \subsection{Cinemática Inversa}\label{sec::ikin_mh12}
 
-A solução da cinemática inversa se resume em encontrar os parâmetros das juntas
-resume-se a encontrar os valores de $q_{1}, q_{2}, q_{3}$ que satisfazem a
-posição do pulso e $q_{4}, q_{5}, q_{6}$ que satisfazem a orientação da
-ferramenta. Na seção~\ref{sec::ikin} detalhou-se como encontrar uma solução
-elegante pelo método geométrico, compatível para o manipulador MH12.
+Conforme visto na seção~\ref{sec::ikin}, a solução da cinemática inversa para
+este tipo de manipulador pode ser resolvida pelo método geométrico considerando
+o modelo desacoplado para posição e orientação.
+Logo, resume-se em encontrar os parâmetros das juntas $q_{1}, q_{2}, q_{3}$ que
+satisfazem a posição do pulso e $q_{4}, q_{5}, q_{6}$ que satisfazem a
+orientação da ferramenta.
 
 A pose final da ferramenta pode ser expressa em termos dos parâmetros
 de posição e de orientação, de acordo com a equação~\ref{eq::posf}.
-
-\todo{Incluir figura representando a posição e orientação final da ferramenta}
 %
 \begin{equation}
 	\mathbf{x}_{f} = \begin{bmatrix}
@@ -944,8 +940,8 @@ de posição e de orientação, de acordo com a equação~\ref{eq::posf}.
 Onde:
 %
 \begin{align}
-\mathbf{p}_{f}^Z &= [x_f,y_f,z_f]^Z \\
-\boldsymbol{\Phi}_{f}^Z &= [\phi,\theta,\psi]^Z
+^Z\mathbf{p}_{f} &= [x_f,y_f,z_f]^Z \\
+^Z\boldsymbol{\Phi}_{f} &= [\phi,\theta,\psi]^Z
 \end{align}
 %
 
@@ -953,9 +949,9 @@ Onde:
 
 \subsubsection{Cálculo da posição do pulso}
 
-A primeira tarefa será calcular a posição da ferramenta em termos das
+A primeira tarefa é calcular a posição da ferramenta em termos das
 coordenadas generalizadas.
-Como visto na seção~\ref{sec::ikin_traj}, pode-se expressá-la convenientemente
+Como visto na seção~\ref{sec::ikin}, pode-se expressá-la convenientemente
 pela posição da origem do pulso, porque esta só depende das coordenadas $q_1,
 q_2$ e $q_3$.
 
@@ -964,9 +960,19 @@ $p_{w}$ em SC-R, somada ao vetor das dimensões da ferramenta, no referencial
 SC-B:
 %
 \begin{equation}
-	\mathbf{p}_{f}^Z = \mathbf{p}_{w} + [d_{x}, d_{y}, d_{z}]^B \label{eq::posf}
+	^Z\mathbf{p}_{f} = \mathbf{p}_{w} + [d_{x}, d_{y}, d_{z}]^B \label{eq::posf}
 \end{equation}
 %
+A Figura~\ref{fig::pwpf} ilustra os vetores posição do pulso e posição da
+ferramenta do manipulador MH12.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.45\textwidth]{figs/pwpf}
+ 	\caption{Posições do pulso e da ferramenta}
+ 	\label{fig::pwpf}
+\end{figure}
+
 Pelo desenvolvimento da cinemática direta, na seção~\ref{sec::dkin}, pode-se
 expressar a posição de qualquer ponto da cadeia cinemática em um dado
 referencial. Como o pulso tem origem no sistema de coordenadas SC-R, então:
@@ -975,10 +981,8 @@ referencial. Como o pulso tem origem no sistema de coordenadas SC-R, então:
 	\mathbf{p}_{w} =~^Z{\mathbf{p}}^R 
 \end{equation}
 %
-Recorrendo às equações~\ref{eq::ikinq1} a \ref{eq::ikinq6}\todo{Incluir as
-referências das equações}, desenvolvidas na seção~\ref{sec::ikin_traj}, pelo
-método geométrico para a solução da cinemática inversa deste tipo de
-manipulador, tem-se:
+Recorrendo às equações~\ref{eq::theta1} a \ref{eq::theta3}, desenvolvidas na
+seção~\ref{sec::ikin}, pelo método geométrico, tem-se:
 %
 \begin{align*}
 	q1 &= \atantwo (z_w,y_w) - \atantwo (d, \pm \sqrt{y_w^2 + z_w^2 - d^2}) \\
@@ -1032,11 +1036,11 @@ Onde:
  		\right]^{1/2}}}}
 \end{align}
 %
-Determina-se portanto, pelo método geométrico, as coordenadas $q_1, q_2$ e
-$q_3$ em função da posição do pulso e dos parâmetros geométricos do robô. Note que $x_w,
-y_w, z_w$ são as coordenadas da posição do pulso, no referencial inercial e que
-para calcular a posição da ferramenta, pela equação~\ref{eq::pwpr} precisa-se
-ainda definir sua orientação.
+Determina-se, portanto, as coordenadas $q_1, q_2$ e $q_3$ em função da posição
+do pulso e dos parâmetros geométricos do robô.
+Note-se que $x_w, y_w, z_w$ são as coordenadas da posição do pulso, no
+referencial inercial e que para calcular a posição da ferramenta, pela
+equação~\ref{eq::pwpr} precisa-se ainda definir sua orientação.
 
 Note-se também que existem 4 soluções para cada posição do pulso. Se
 considerar-se os limites dos ângulos das juntas do robô, pode-se limitar o
@@ -1060,7 +1064,7 @@ para reresentar os ângulos de Euler das 3 rotações que orientam o referencial
 pulso na direção desejada.
 
 Recorrendo novamente ao desenvolvimento da cinemática inversa geral para este
-tipo de manipulador, da seção~\ref{sec::ikin_traj}, obteve-se da
+tipo de manipulador, da seção~\ref{sec::ikin}, obteve-se da
 equação~\ref{eq::rut} a relação:
 %
 \begin{equation*}
@@ -1072,7 +1076,7 @@ $\phi,\theta,\psi$, em torno dos eixos $Y,Z,Y$ respectivamente.
 
 As matrizes de rotação $(R_{Z}^{U})^T$ e $R_{U}^{T}$ são calculadas para os
 valores de $q_1, q_2$ e $q_3$ das equações~\ref{eq::q1ik} a \ref{eq::q3ik}.
-Assim, a equação~\ref{eq::rutik} fornece um sistema de 9 equações e 6
+Assim, a equação~\ref{eq::rut} fornece um sistema de 9 equações e 6
 incógnitas, se consideradas as funções senos e cossenos de $q_4, q_5$ e $q_6$ a serem
 determinadas.
 %
@@ -1103,8 +1107,8 @@ s\theta &-s\phi \,c\theta \,s\psi +c\phi \,c\psi \end {array} \right)
 
 Analisando o lado esquerdo da equação~\ref{eq::rut} pode-se determinar
 facilmente a solução para $\cos(q5)$, porque este será diretamente o resultado
-alocado no termo $[2,2]$ da matriz 3x3 resultante do lado direito da equação, ou
-seja:
+alocado no termo $[2,2]$ da matriz $3 \times 3$ resultante do lado direito da
+equação, ou seja:
 %
 \begin{multline}
 \cos(q5) = {\it c2}\,{\it c3}\,s\phi \,{\it s1}\,s\theta -s\phi \,{\it s1}\,{\it 
@@ -1176,7 +1180,7 @@ posição da ponta da ferramenta, pela equação~\ref{eq::posf}.
 Como este ponto está alinhado ao eixo do efetuador, faz-se $dx = dz = 0$ e $dy
 = pBTy$.
 Reescrevendo a equação no referencial inercial, as componentes do vetor
-$\mathbf{p}_{f}^{Z}$ são:\todo{Pensar em mudar estas eqs de lugar}
+$^{Z}\mathbf{p}_{f}$ são:
 %
 \begin{multline}
 	x_f =  \left[  \left( -{\it c4}\,{\it s5}\,{\it pBTy}+{\it pURx} \right) {
@@ -1222,23 +1226,23 @@ As trajetórias para representar este processo serão simplificadas neste
 trabalho, pela consideração de que as superfícies são planas e que pode-se
 representar a trajetória totalmente naquele plano.
 
-A trajetória será modelada pelo conjunto de funções das posições de referência
+A trajetória será modelada por um conjunto de funções de referência no tempo,
 para cada coordenada generalizada. Como o planejamento é feito pela função da
 posição da ferramenta no tempo, são utilizadas as soluções da cinemática
-inversa, desenvolvidadas na seção~\ref{sec::ikin_mh12}.
+inversa, desenvolvidadas na seção anterior.
 
 É claro que dependendo da posição e orientação da superfície a ser coberta pelo
 robô, este assumirá diferentes configurações, que causam excitações diferentes
-em sua base. Na seção~\ref{sec::casos}, diversos casos de trajetória e bases
-serão analisados, com o objetivo de verificar os efeitos também da trajetória
-nos erros devido a dinâmica do sistema robô-base. 
+em sua base. Na seção~\ref{sec::casos}, dois casos de trajetória para
+revestimento são analisados, com o objetivo de verificar os efeitos também da
+trajetória nos erros devido a dinâmica do sistema robô-base. 
 
 Para exemplificar os conceitos abordados nesta seção, considere-se a seguinte
 tarefa para cálculo da trajetória:
 %
 \newline
 \begin{tcolorbox}
-[colframe=black!75!white, colback=white, title = Trajetória -Exemplo] 
+[colframe=black!75!white, colback=white, title = Trajetória -- Exemplo] 
   \textbf{Tarefa:} Revestimento por HVOF \\
   \textbf{Área:} $(600 \times 300)~mm^2$ \\
   \textbf{Ponto inicial:} $\mathbf{p}_f = [0,700,~1,238,~-0,600]^Z$ \\
@@ -1249,13 +1253,13 @@ tarefa para cálculo da trajetória:
 \end{tcolorbox}
 %
 De acordo com o exemplo, a orientação do plano da superfície,
-está alinhado ao sistema de coordenadas inercial e paralelo ao plano xz. A
+está alinhado ao sistema de coordenadas inercial e paralelo ao plano $xz$. A
 Figura~\ref{fig::trajec_600x500x10} apresenta os 50 paralelos da trajetória ao
 longo desta região.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.70\textwidth]{figs/trajec_600x500x10}
+ 	\includegraphics[width=0.60\textwidth]{figs/trajec_600x500x10}
  	\caption{Exemplo da trajetória de revestimento de uma região}
  	\label{fig::trajec_600x500x10}
 \end{figure}
@@ -1376,9 +1380,9 @@ p4 & otherwise
 %
 
 Pelas equações~\ref{eq::q3ik} a \ref{eq::q6ik} foram definidas as coordenadas
-generalizadas $q1$ a $q6$ em funcão da posição da ferramenta, $\mathbf{p}_f^Z$.
+generalizadas $q1$ a $q6$ em funcão da posição da ferramenta, $^Z\mathbf{p}_f$.
 Logo, basta substituir a função \textit{piecewise} de cada termo de
-$\mathbf{p}_f^Z$ em $q1$ a $q6$ para obter o resultado da cinemática inversa por
+$^Z\mathbf{p}_f$ em $q1$ a $q6$ para obter o resultado da cinemática inversa por
 partes, ou intervalos de tempo.
 
 Esta nova função será utilizada como parâmetro de entrada no modelo dinâmico,
@@ -1391,7 +1395,7 @@ ferramenta durante os primeiros 8 paralelos da tarefa.
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[b]{0.40\textwidth}
+    \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{figs/qxt_exemplo}
         \caption{Resultado dos ângulos de referência cinemáticos}
         \label{fig::qxt_exemplo}
@@ -1399,7 +1403,7 @@ ferramenta durante os primeiros 8 paralelos da tarefa.
     \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
     % etc.
       %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{figs/uxt_exemplo}
         \caption{Resultado das velocidades de referência cinemáticos}
         \label{fig::uxt_exemplo}
@@ -1428,7 +1432,7 @@ listadas as seguintes etapas:
   \item Definir os pontos do caminho a ser percorrido pela ferramenta;
   \item Calcular a trajetória e fornecer as coordenadas de referência no
   modelo dinâmico;
-  \item Rodar a simulação da tarefa. 
+  \item Executar a simulação da tarefa. 
 \end{enumerate}
 
 Utiliza-se novamente o exemplo abordado na seção~\ref{sec::tarefa_traj} para

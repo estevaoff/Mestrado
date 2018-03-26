@@ -516,7 +516,7 @@ e \ref{fig::geom_pos_lat}, verifica-se as seguintes relações:
 	\theta_{1} &= \atantwo(x_c, y_c) \pm \atantwo(-\sqrt{r^2-d^2}, -d)
 	\label{eq::theta1}\\
 	\theta_{2} &= \atantwo(\sqrt{x_c^2+y_c^2-d^2}, z_c-d_1) - \atantwo(a_2+a_3
-	c_3,a_3 s_3) \\
+	c_3,a_3 s_3) \label{eq::theta2} \\
 	\theta_{3} &= \atantwo(D, \pm \sqrt{1-D^2}) \label{eq::theta3}
 \end{align}
 %
@@ -622,7 +622,7 @@ Resolvendo-se o sistema, obtém-se:
 	\theta_4 &= \atantwo(c_1 c_{23} r_{13} + s_1 c_{23} r_{23} + s_{23} r_{33},
 	-c_1 c_{23} r_{13} - s_1 c_{23} r_{23} + c_{23} r_{33} ) \label{eq::theta4} \\
 	\theta_5 &= \atantwo(s_1 r_{13} - c_1 r{23}, \pm \sqrt{1- (s_1 r_{13} - c_1
-	r_{23})^2}) \\
+	r_{23})^2}) \label{eq::theta5} \\
 	\theta_6 &= \atantwo(-s_1 r{11} + c_1 r_{21}, s_1 r{12} - c_1 r_{22})
 	\label{eq::theta6}
 \end{align}
@@ -939,7 +939,7 @@ equações de diferenciais ordinárias não-lineares de primeira ordem, que
 representam as equações de movimento do sistema MBS.
 
 
-\subsubsection{Sophia e notação de Lesser}
+\subsubsection{Sophia e notação de Lesser} \label{sec::lesser}
 
 Sophia é um conjunto de rotinas implementado para Maple. O programa foi
 desenvolvido pelo professor Martin Lesser do KTH Royal Institute of Technology,

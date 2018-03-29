@@ -1423,29 +1423,28 @@ listadas as seguintes etapas:
 
 \begin{enumerate}
   \item Definir os sistemas de coordenadas locais dos elos do manipulador;
-  \item Definir as coordenadas generalizadas;
+  \item Definir as coordenadas generalizadas do sistema;
   \item Fornecer os parâmetros de geometria e inércia do robô;
-  \item Definir a configuração inicial do robô;
   \item Definir os parâmetros do controlador PID;
   \item Fornecer os requisitos da tarefa (no caso do revestimento: orientação,
   velocidade, passo);
-  \item Definir os pontos do caminho a ser percorrido pela ferramenta;
+  \item Definir os pontos do caminho a ser percorrido pela ferramenta, pela
+  cinemática inversa;
   \item Calcular a trajetória e fornecer as coordenadas de referência no
-  modelo dinâmico;
+  modelo dinâmico direto;
   \item Executar a simulação da tarefa. 
 \end{enumerate}
 
-Utiliza-se novamente o exemplo abordado na seção~\ref{sec::tarefa_traj} para
+Utiliza-se novamente o exemplo dado na seção~\ref{sec::tarefa_traj} para
 demonstrar os resultados obtidos pelo modelo MBS. Dada a tarefa de revestimento
 do exemplo, realiza-se a simulação do modelo dinâmico com os valores de
-referência para o PID fornecido pela cinemática inversa.  Os resultados serão
-apresentados para os primeiros 4 paralelos, a fim de facilitar sua visualização.
+referência calculados pela cinemática inversa.  Os resultados apresentados
+resumem-se apenas aos 4 primeiros paralelos, a fim de facilitar a visualização.
 
-Este modelo MBS conta com uma animação do movimento
-do robô realizando a trajetória, onde a posição da ferramenta deixa um rastro a
-partir do início da trajetória planejada. A sequência de
-Figuras~\ref{fig::mbs3D_exemplo} fornece uma visulização simplificada da
-animação, ``fotografada'' em vários instantes de tempo.
+Este modelo MBS conta com uma animação do movimento do robô realizando a
+trajetória, onde a posição da ferramenta deixa um rastro a partir do início da
+trajetória planejada. A sequência de Figuras~\ref{fig::mbs3D_exemplo} fornece
+alguns quadros da animação, em 4 instantes de tempo.
 
 \begin{figure}[h]
     \centering
@@ -1481,25 +1480,25 @@ animação, ``fotografada'' em vários instantes de tempo.
     \caption{Animação da trajetória no ambiente 3D} \label{fig::mbs3D_exemplo}
 \end{figure}
 
-O próximo resultado compara a variação angular das juntas ideal, pelo cálculo da
-cinemática inversa, e o efetivo, resultado da trajetória no modelo dinâmico.
+O resultado seguinte compara a variação angular de referência das juntas, pela
+cinemática inversa, e o efetivo, resultado do modelo dinâmico.
 A Figura~\ref{fig::qxt_ex_realxideal} apresenta em linha pontilhada o valor dos
-ângulos ideais, e em linha cheia, os efetivos.
+ângulos de referência, e em linha cheia, os efetivos.
 
 \begin{figure}[h]
 	\centering 
  	\includegraphics[width=0.95\textwidth]{figs/qxt_ex_realxideal}
- 	\caption{Comparação ideal x efetivo dos ângulos das juntas}
+ 	\caption{Comparação referência e efetivo dos ângulos das juntas}
  	\label{fig::qxt_ex_realxideal}
 \end{figure}
 
-Outro resultado analisado é a posição efetiva da ponta da ferramenta, em
-comparação com a idealizada na cinemática inversa. Esse resultado será
-extremamente importante para avaliar os casos de diferentes bases do modelo
-acoplado robô-base e permitirá verificar o critério de erros máximos admissíveis
-para o processo. A Figura~\ref{fig::errop_exemplo} apresenta o resultado
-comparativo entre as posições ideais e efetivas. Cada linha do gráfico
-representa uma coordenada (x, y, z) do vetor posição da ferramenta.
+Compara-se também a posição efetiva da ferramenta, resultado da dinâmica, em
+comparação com a posição esperada, do cálculo da cinemática inversa. Este
+resultado é interessante porque fornece um parâmetro direto para avaliar o
+efeito total da dinâmica do robô na posição final da ponta da ferramenta.
+A Figura~\ref{fig::errop_exemplo} apresenta o resultado comparativo entre as
+posições de referência e efetivas de cada coordenada $(x, y, z)$ do vetor
+posição da ferramenta.
 
 \begin{figure}[h]
 	\centering 
@@ -1522,9 +1521,9 @@ absoluto, ou seja, a norma do erro em cada direção.
 \end{figure}
 
 Observa-se por este resultado que o erro de posicionamento, a partir do início
-da região a ser revestida ($t>1s$), é da ordem de $10^{-1}~mm$ durante
+da região a ser revestida (em $t>1s$), é da ordem de $10^{-1}~mm$ durante
 apriximadamente $70\%$ do caminho de um paralelo. Próximo ao início e fim dos
-paralelos, esse erro cresce, devido ao transitório de direção e sentido do
+paralelos esse erro cresce devido ao transitório de direção e sentido do
 deslocamento, que não são acompanhados perfeitamente pela dinâmica do robô.
 Estes erros chegam a uma ordem de $10~mm$ nestas regiões.
 
@@ -1541,25 +1540,27 @@ Figura~\ref{fig::errovel_exemplo}.
  	\label{fig::errovel_exemplo}
 \end{figure}
 
-Os erros tolerados variam de acordo com os critérios definidos na
-seção~\ref{sec::requisitos}\todo{Incluir seção com os requisitos do
-revestimento} e serão analisados mais detalhadamente na
-seção~\ref{sec::casos}.
+% Os erros tolerados variam de acordo com os critérios definidos na
+% seção~\ref{sec::requisitos}\todo{Incluir seção com os requisitos do
+% revestimento} e serão analisados mais detalhadamente na
+% seção~\ref{sec::casos}.
 
-Por último, calcula-se o erro de orientação, definido como a diferença
-entre a orientação da superfície dada pela tarefa e obtida pela cinemática
-inversa, e a orientação resultante da dinâmica.
-
+Por último, calcula-se o erro de orientação, definido como a diferença entre a
+orientação da superfície dada pela cinemática inversa, e a orientação resultante
+da simulação dinâmica. 
 É representada por uma matriz, determinada pela transformação homogênea entre o
 referencial inercial, SC-Z, e o referencial localizado no pulso, SC-B, já que a
 ferramenta é fixada neste último. Logo, pode-se comparar as duas matrizes, ideal
 e efetiva, para cálculo do erro.
 
-Uma maneira mais prática de representar o erro de orientação é por meio de um
-escalar, que represente o ângulo de desvio da ferramenta entre o caso ideal e o
-efetivo. Isto pode ser feito levando em consideração que estas matrizes são
-formadas por vetores unitários dispostos nas colunas da matriz e formam uma
-base ortonormal.\todo{Incluir teorema que calcula o angulo entre as bases}.
+Como apresentado na seção~\ref{sec::cinematica} uma maneira mais prática de
+representar o erro de orientação é por meio de um escalar, que representa o
+ângulo de desvio da ferramenta entre o caso ideal e o efetivo, de acordo com a
+equação~\ref{eq::ang_erro}.
+
+% Isto pode ser feito levando em consideração que estas matrizes são
+% formadas por vetores unitários dispostos nas colunas da matriz e formam uma
+% base ortonormal.\todo{Incluir teorema que calcula o angulo entre as bases}.
 
 Seja a orientação ideal representada pela matriz $Mi$, que é função dos 3
 ângulos de Euler $\phi,~\theta$ e $\psi$, e a matriz resultante da dinâmica por
@@ -1569,13 +1570,8 @@ $Me$, função do resultado de $q1(t),\ldots,q5(t)$, calcula-se:
 	R = Me(q(t))~Mi(\phi,\theta,\psi)^{-1}
 \end{equation}
 %
-Aplicando $R$ à equação~\ref{eq::angdesvio}, calcula-se o ângulo de desvio entre
+Aplicando $R$ à equação~\ref{eq::ang_erro}, calcula-se o ângulo de desvio entre
 as duas matrizes.
-%
-\begin{equation} \label{eq::angdesvio}
-	\theta_{erro} = \arccos\left(\frac{tr(R)-1}{2}\right)
-\end{equation}
-%
 Para a tarefa do exemplo, as matrizes $Me$ e $Mi$ e $R$ em, por exemplo,
 $t=2~s$ são:
 %
@@ -1594,14 +1590,13 @@ R =  \left( \begin {array}{ccc}  1.0&- 0.00000058757&- 0.0021389
  \right)
 \end{gather*}
 %
-Aplicando $R$ na equação~\ref{eq::angdesvio}, obtém-se o erro de orientação
-neste instante de tempo.
+Logo, o erro de orientação neste instante de tempo do exemplo é:
 %
 \begin{equation*}
 	\theta_{erro}(t=2~s) = 0.0374898~rad
 \end{equation*}
 %
-O resultado do desvio de orientação da ferramenta, ao longo de toda a tarefa é
+O resultado do desvio de orientação da ferramenta, durante toda a tarefa é
 apresentado no gráfico da Figura~\ref{fig::orierro_exemplo}.
 
 \begin{figure}[h]
@@ -1611,18 +1606,21 @@ apresentado no gráfico da Figura~\ref{fig::orierro_exemplo}.
  	\label{fig::orierro_exemplo}
 \end{figure}
 
-Novamente, nesta tarefa do exemplo, não se está interessado no erro antes do
-manipulador iniciar a trajetória dos paralelos do revestimento, ou seja, entre a
-posição inicial e o ponto p1.
+Note-se que não interessa o erro antes do manipulador iniciar a trajetória dos
+paralelos do revestimento, ou seja, entre a posição inicial e o ponto p1
+($t<1~s$), porque neste trecho manipulador não estaria realizando o
+revestimento.
 Analisando, portanto, o gráfico a partir de $1~s$ percebe-se um erro periódico,
-maior devido às variações de direção, com amplitude máxima de aproximadamente
+devido às variações de direção, com amplitude máxima de aproximadamente
 $0,038~rad$, ou $2,18^{\circ}$.
 
-Apesar de não ser possível, apenas por este resultado escalar, afirmar a direção
-onde o erro é maior, pode-se comparar com o gráfico do erro de posicionamento,
-na Figura~\ref{fig::erros_exemplo}. É possível inferir que este erro está mais
-relacionado com o atraso do posicionamento na direção $z$ e portanto, grande
-parte do desvio de orientação está na direção vertical, $x$ de SC-Z.
+% Apesar de não ser possível, apenas por este resultado escalar, afirmar a direção
+% onde o erro é maior, pode-se comparar com o gráfico do erro de posicionamento,
+% na Figura~\ref{fig::erros_exemplo}. É possível inferir que este erro está mais
+% relacionado com o atraso do posicionamento na direção $z$ e portanto, grande
+% parte do desvio de orientação está na direção vertical, $x$ de SC-Z.
+
+\todo[inline]{Incluir direção do erro de orientação}
 
 Nesta seção foram explorados os resultados que simulações utilizando o modelo
 MBS podem fornecer. Para isso, tomou-se como exemplo uma tarefa de cobertura de
@@ -1631,9 +1629,6 @@ velocidade e orientação da extremidade da ferramenta foram demonstrados e ser�
 utilizados para comparação de diferentes casos do modelo acoplado robô-base
 flexível, realizando tarefas de revestimento de superfícies planas, que serão
 propostos na seção~\ref{sec::casos}.
-
-
-
 
 
 
@@ -2695,7 +2690,7 @@ sombreados, apenas como referência.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.45\textwidth]{figs/dcl_interface}
+ 	\includegraphics[width=0.40\textwidth]{figs/dcl_interface}
  	\caption{Diagrama de corpo livre da interface entre o pedestal do robô e a
  	base}
  	\label{fig::dcl_interface}

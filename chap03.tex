@@ -1635,13 +1635,13 @@ propostos na seção~\ref{sec::casos}.
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Modelo da base} \label{sec::base}
 
-A base é definida, neste trabalho, como qualquer estrutura, à qual o manipulador
-robótico é fixado, que forneça flexibilidade, em forma de graus de liberdade,
-passivos das forças dinâmicas exercidas pelo movimento do robô. A flexibilidade
-da estrutura causará desvios do movimento esperado e controlado do robô e cabe
-ao método proposto tentar quantificar esses desvios e verificar se os requisitos
-do processo serão satisfeitos. Para isso, é desenvolvido um modelo teórico da
-base, para ser adicionado ao modelo do robô, formando um sistema MBS acoplado.
+A base é definida, neste trabalho, como qualquer estrutura elástica, à qual o
+manipulador robótico é fixado, que fornece flexibilidade devido às forças
+dinâmicas exercidas pelo movimento do robô. A flexibilidade da estrutura causará
+desvios do movimento esperado e controlado do robô e cabe ao método proposto
+identificar e quantificar esses desvios e verificar se os requisitos do processo
+serão satisfeitos. Para isso, é desenvolvido um modelo teórico da base, para ser
+adicionado ao modelo do robô, formando o sistema MBS acoplado.
 
 Nesta seção é demonstrado como uma estrutura construída com geometria,
 materiais, restrições e infinitos graus de liberdade que seriam muito complexos
@@ -1655,30 +1655,28 @@ formam as coordenadas generalizadas do modelo MBS.
 Portanto, para realizar a simplificação é necessário obter uma matriz de rigidez
 e uma matriz de amortecimento, associadas aos 6 gdl do corpo sobre a base. A
 matriz de rigidez é obtida numericamente pela Análise por Elementos Finitos
-(AEF) e a matriz de amortecimento pelo resultado experimental do ensaio de
-vibrações seguido do tratamento dos resultados, detalhado na
-seção~\ref{sec::experimento}.
+(AEF) e a matriz de amortecimento pelo resultado experimental de análise modal,
+detalhado na seção~\ref{sec::experimento}.
 
-Por fim é demonstrado como são desenvolvidas as equações que regem o
-movimento do corpo acoplado a esse sistema massa-mola-amortecedor.
+Por fim, desenvolve-se as equações que regem o movimento do corpo acoplado a
+esse sistema massa-mola-amortecedor.
 Foi utilizada a mesma metodologia do modelo do robô para desenvolvimento das
 equações de movimento: pelo método de Kane e com uso das rotinas do programa
 Sophia-Maple.
 
 \subsection{Geometria e CAD}
 
-A primeira etapa para modelagem da base é representar sua geometria em um modelo
+A primeira etapa da modelagem da base é representar sua geometria em um modelo
 CAD. Este modelo será utilizado para as simulações pela Análise por Elementos
-Finitos, a fim de se obter a sua matriz de rigidez.
+Finitos, a fim de se obter sua matriz de rigidez.
 
 Para ilustrar o método, será aproveitada a base projetada e construída para
-testes do robô, em laboratório, previstos no projeto EMMA. Consiste em uma
-estrutura metálica, formada por perfis extrudados de alumínio estrutural. Sobre
-a estrutura um par de trilhos paralelos permitem o movimento longitudinal da
-placa onde é fixado o robô. As dimensões principais são 2 metros de comprimento,
-0,8 metros de largura e 0,6 metros de altura. A
-Figura~\ref{fig::estrut_modelo_fisico} apresenta uma fotografia da base de
-testes.
+testes do projeto EMMA. Consiste em uma estrutura metálica, formada por perfis
+extrudados de alumínio estrutural. Sobre a estrutura um par de trilhos paralelos
+permitem o movimento longitudinal da placa onde é fixado o robô. As dimensões
+principais são 2 metros de comprimento, 0,8 metros de largura e 0,6 metros de
+altura. A Figura~\ref{fig::estrut_modelo_fisico} apresenta uma fotografia da
+base de testes.
 
 \begin{figure}[h]
 	\centering 
@@ -1700,11 +1698,11 @@ principais componentes indicados, inclusive o robô.
  	\label{fig::estrutCAD}
 \end{figure}
 
-Este modelo CAD, muito completo, poderia ser diretamente utilizado nas
+O modelo CAD completo poderia ser diretamente utilizado nas
 simulações para obtenção da matriz de rigidez desta estrutura. No entanto, o
-alto nível de detalhamento dos componentes, além da definição dos contatos e
-restrições entre as peças, geraria um modelo de malha muito densa, não linear e
-grande custo computacional. E o resultado teria muito informações irrelevantes
+alto nível de detalhamento dos componentes, além dos diversos contatos e
+restrições entre as peças, requer um modelo de malha muito densa, não linear e
+maior poder computacional. E o resultado teria muito informações irrelevantes
 para esta análise, como por exemplo, tensões em elementos de fixação ou
 deformação do rolamento do trilho.
 
@@ -1716,7 +1714,7 @@ Para o modelo da base de testes, foram utilizados elementos unidimensionais, de
 viga, para formar a estrutura e os trilhos. A união entre esses componentes foi
 feita por elementos rígidos, representando os parafusos de fixação do trilho na
 estrutura. A placa de fixação do robô foi representada também por elementos
-unidimensionais rígidos, assumindo-se que sua rigidez é muito superior a rigidez
+unidimensionais rígidos, assumindo-se que sua rigidez é muito superior à rigidez
 da estrutura, e o ponto de fixação do robô está localizado no centro desta
 placa.
 Os rolamentos do trilho foram substituídos por uma conexão rígida entre a placa
@@ -1759,7 +1757,7 @@ elementos unidimensionais de viga. Isso significa que suas propriedades são
 uniformes ao longo de apenas uma dimensão em todo o elemento, bastando fornecer
 apenas suas propriedades de seção transversal. A
 Figura~\ref{fig::sectrans_bosch} mostra o corte de seção de um elemento da
-estrutura e suas propriedades. O material associado à estrutura é o Alumínio
+estrutura e suas propriedades. O material do perfil da estrutura é o Alumínio
 EN-AW-6060. e as propriedades são incluidas no modelo, de acordo com a
 Tabela~\ref{tab::prop_mat}.
 
@@ -1803,15 +1801,15 @@ se deformam. Ao todo são 40 peças de interface representando os 20 parafusos d
 fixação de cada trilho. Já a placa de fixação é formada por um quadro de
 elementos ligando os dois trilhos e uma ``pirâmide'' convergindo para o ponto de
 fixação do robô. Como este ponto representa a conexão entre a estrutura e o
-robô, aplica-se os esforços na estrutura diretamente por ali. Os elementos
-rígidos transmitem estes esforços ao trilho e à estrtura e obtém-se os resultado
-de forças de reação ou deslocamentos resultantes.
+robô, aplica-se os esforços na estrutura diretamente neste. Os elementos
+rígidos transmitem estes esforços ao trilho e à estrtura, e obtém-se os
+resultado de forças de reação e deslocamentos resultantes.
 
 
 \subsubsection{Restrições e conexões}
 
-Esta base é originalmente fixa no piso por meio de parafusos chumbadores. Cada
-perna da estrurura posssui 3 parafusos. No modelo AEF, esta restrição será
+A base de testes é originalmente fixa no piso por meio de parafusos chumbadores.
+Cada perna da estrurtura posssui 3 parafusos. No modelo AEF, esta restrição é
 modelada como fixa, ou seja, não permite-se nenhuma translação ou rotação, e
 é aplicada à extremidade inferior de cada perna.
 
@@ -1821,20 +1819,20 @@ permitem nenhum grau de liberdade na extremidade do elemento onde há a conexão
 
 \subsubsection{Casos de Carregamento}
 
-Para obter a matriz de rigidez, deve-se realizar ao todo 6 casos de carregamento
-e restrições. Cada caso obtém 6 dos 36 termos, que correspondem a uma linha
-da matriz 6x6. Os carregamentos e restrições são todos aplicados ao ponto de
+Para obter a matriz de rigidez, deve-se realiza-se ao todo 6 casos de
+carregamento e restrições. Cada caso obtém 6 dos 36 termos, que correspondem a uma linha
+da matriz 6x6. Os carregamentos e restrições são aplicados ao ponto virtual de
 fixação do robô.
 
-A cada caso será aplicado um deslocamento prescrito unitário em uma direção. Às
-outras direções é aplicada restrição à translação e à rotação. Logo, um
+A cada caso é aplicado um deslocamento prescrito em uma direção. Às outras
+direções são aplicadas restrições à translação e à rotação. Logo, um
 deslocamento unitário na direção $x$ ($ux = 1~mm$), por exemplo, provoca uma
-força ou momento de reação em todas as direções. A força de reação
-correspondente à direção x produz o termo de rigidez $k_{11}$, à direção y, $k_{12}$,
-à direção z, $k_{13}$, e assim por diante.
-
-A Tabela~\ref{tab::casoscarreg} resume os casos e restrições
-simulados.
+força ou momento de reação em todas as direções, no ponto virtual. A força de
+reação correspondente à direção $x$ produz o termo de rigidez $k_{11}$, à
+direção $y$, $k_{12}$, à direção $z$, $k_{13}$, e assim por diante. Este método
+é uma versão para AEF do método analítico apresentado na
+seção~\ref{sec::rigidez}. A Tabela~\ref{tab::casoscarreg} resume os casos e
+restrições simulados.
 
 \begin{table}[h]
 \centering
@@ -1868,11 +1866,10 @@ numéricos da solução. O processo de refinamento da malha, consiste em realiza
 simulações iterativamente, com malha cada vez mais discretizada. A comparação
 dos resultados a cada iteração permite julgar uma convergência da solução. Logo,
 é realizado este procedimento,, até que a diferença do resultado seja
-insignificante.
-
-O resultado deste processo de refinamento gerou a seguinte malha:
+insignificante. O resultado do processo de refinamento gerou a seguinte
+malha:
 %
-$$ 49~parts,~ 620~nodes,~ 670~elements $$
+$$ 49~partes,~ 620~n\acute{o}s,~ 670~elementos $$
 %
 
 \subsubsection{Resultados por AEF}
@@ -1884,7 +1881,7 @@ para o caso de carregamento 6.
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[b]{0.8\textwidth}
+    \begin{subfigure}[b]{0.90\textwidth}
         \includegraphics[width=\textwidth]{figs/res_FEA_tensoes}
         \caption{Resultado AEF das tensões máximas resultantes}
         \label{fig::res_FEA_tensoes}
@@ -1892,7 +1889,7 @@ para o caso de carregamento 6.
     \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
     % etc.
       %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.8\textwidth}
+    \begin{subfigure}[b]{0.90\textwidth}
         \includegraphics[width=\textwidth]{figs/res_FEA_desloc}
         \caption{Resultado AEF dos deslocamentos resultantes}
         \label{fig::res_FEA_desloc}
@@ -1910,25 +1907,26 @@ apresentado na Tabela~\ref{tab::res_FEA_forcas}.
 \label{tab::res_FEA_forcas}
 \begin{tabular}{@{}ccccccc@{}}
 \toprule
-\textbf{Caso} & \textbf{Fx [N]} & \textbf{Fy [N]} & \textbf{Fz [N]} &
-\textbf{Mx [Nm]} & \textbf{My [Nm]} & \textbf{Mz [Nm]} \\ \midrule \textbf{6}   
-& -3,00E-6 & 2,50E+3    & 1,67E-7    & 1,12E-6    & -7,16E-7   & -9,76E+3   \\ \bottomrule
+\textbf{Caso} & \textbf{Fx [kN]} & \textbf{Fy [kN]} & \textbf{Fz [kN]} &
+\textbf{Mx [kNm]} & \textbf{My [kNm]} & \textbf{Mz [kNm]} \\ \midrule \textbf{6}   
+& -3,00E-9 & 2,50    & 1,67E-10    & 1,12E-9    & -7,16E-10   & -9,76   \\
+\bottomrule
 \end{tabular}
 \end{table}
 
 
 \subsection{Matriz de Rigidez}
 
-Deseja-se que a base seja simplificada como um sistema massa-mola-amortecedor de
-6 gdl e introduzida no modelo MBS como uma matriz 6x6, que promove deslocamentos
-ao robô, em função do carregamento resultante dos seus movimentos.
+A base é simplificada como um sistema massa-mola-amortecedor de
+6 gdl e rigidez $K$ introduzida no modelo MBS como uma matriz $6 \times 6$, que
+relaciona os deslocamentos com o carregamento resultante da dinâmica do robô.
 
-A matriz de rigidez possui 36 termos, chamados de coeficientes de influência.
-A nomenclatura e posição de cada termo na matriz, está relacionado à direção da
-força ou momento aplicado. Assim, o termo $k_{32}$ por exemplo refere-se a
-rigidez na direção $y$, devido a uma força na direção $z$.
-
-A matriz de rigidez tem a seguinte forma:
+A matriz de rigidez possui portanto 36 termos, chamados de coeficientes de
+influência. Cada termo na matriz está relacionado à direção da força e do
+momento aplicado. Assim, o termo $k_{32}$ por exemplo refere-se a rigidez na
+direção $y$, devido a uma força na direção $z$. A matriz de rigidez tem a
+seguinte forma:
+%
 \begin{equation}
 K = \begin{pmatrix} 
     k_{11} & \dots 	& k_{16} \\
@@ -1937,23 +1935,20 @@ K = \begin{pmatrix}
     \end{pmatrix}
 \end{equation}
 %
-Com o resultado das análises por AEF de cada caso, pode-se então calcular termo
-a termo da matriz de rigidez da base. Como os deslocamentos prescritos são
-arbitrários, faz-se o seguinte cálculo para converter a força de reação no
-coeficiente de influência da matriz de rigidez:
+Com o resultado das análises por AEF de cada caso, calcula-se os coeficientes de
+influência da matriz de rigidez. Faz-se o
+seguinte cálculo para normalizar o coeficiente de influência para valores
+unitários de deslocamento:
 %
 \begin{align} \label{eq::kij}
 	k_{ij} = \frac{F_j}{u_{i}} \qquad &  i,j = 1,\ldots,6
 \end{align}
 %
 Onde $u_i$ representa o valor do deslocamento prescrito e $F_j$ o valor da força
-ou momento de reação em cada caso de carregamento. A equação~\ref{eq::kij}
-normaliza, portanto, o coeficiente de influência para um valor unitário de
-deslocamento.
-
-Note-se que, por definição, a matriz de rigidez é sempre positiva
-definida\todo{Incluir referência para esta citação}, ou seja, simétrica e com
-todos os autovalores positivos.
+ou momento de reação em cada caso de carregamento.
+A matriz de rigidez é sempre positiva
+definida~\cite{adhikari2004rayleigh}, ou seja, simétrica e com
+seus autovalores positivos.
 Isso faz com que não seja necessário calcular todos os 36 coeficientes de influências, mas apenas 21. 
 
 Utilizando os resultados das simulações AEF e a equação~\ref{eq::kij}, a matriz
@@ -1974,14 +1969,14 @@ de rigidez para a base de testes é:
 Os valores da matriz são expressos em $kN/m$ para os termos relacionados à
 rigidez de translação e $kNm/rad$ para os termos relacionados à rigidez
 torsional.
-Os termos que aparecem zerados não são exatamente zero, mas valores menores que 1 e, por
-simplificação, foram considerados nulos.
+Os termos que aparecem zerados não são exatamente zero, mas valores muito
+pequenos e, por simplificação, foram considerados nulos.
 
 
 \subsection{Matriz de Amortecimento}
 
-O amortecimento será modelado como proporcional, ou de Rayleigh, como foi
-explicado na seção~\ref{sec::amortecimento}. A matriz de amortecimento é
+O amortecimento será modelado como proporcional, ou de Rayleigh, como
+apresentado na seção~\ref{sec::amortecimento}. A matriz de amortecimento é
 definida, pela equação~\ref{eq::amort_prop}, repetida a seguir:
 %
 \begin{equation*}
@@ -1991,39 +1986,35 @@ definida, pela equação~\ref{eq::amort_prop}, repetida a seguir:
 Logo, para definir totalmente a matriz de amortecimento da base, basta fornecer
 os dois parâmetros, $\alpha$ e $\beta$.
 
-Na seção~\ref{sec::param_mod} apresentou-se um método para, a partir dos dados
+Na seção~\ref{sec::amortecimento_revbib} apresentou-se um método para, a partir dos dados
 experimentais de amortecimento modal, obter os parâmetros $\alpha$ e $\beta$ que
-melhor se ajustam ao modelo. Na seção~\ref{sec::experimento} é detalhado o
-procedimento para se obter os valores experimentais de amortecimento e, a partir
-do resultado, são calculados os parâmetros para obter a matriz de amortecimento.
+melhor se ajustam ao modelo. Na seção~\ref{sec::experimento} é
+detalhado o procedimento para se obter os valores experimentais de amortecimento
+e, a partir do resultado, calcular os os coeficientes de Rayleigh e obter a
+matriz de amortecimento.
 
 
 
 \subsection{Modelo teórico MBS -- Base}
 
-Equivalentemente ao realizado para o robô, a base será modelada como um
-sistema dinâmico, cujas equações de movimento são desenvolvidas pelo método de
-Kane.
-
-O Sophia-Maple é novamente utilizado desde a construção do modelo cinemático até
-a determinação das equações de movimento, exatamente como foi realizado o modelo
-do robô. Como já foram apresentados os comandos e sintaxe do programa na
-seção~\ref{sec::dkin}, não será repetido nesta seção, ciente de que os comandos
-são equivalentes. No Anexo~\todo{Incluir código anexo} é fornecido o código
-completo do modelo.
+O Sophia-Maple é utilizado para a construção do modelo cinemático e
+cálculo das equações de movimento do sistema MBS da base, assim como foi
+realizado o modelo do robô. Por isso, os comandos e sintaxe do Sophia,
+apresentados na seção~\ref{sec::dkin}, não serão repetidos nesta seção, ciente
+da equivalência do procedimento. No Anexo~\todo{Incluir código anexo} é
+fornecido o código completo do modelo.
 
 Para se chegar às equações de movimento, primeiramente, define-se os sistemas de
 coordenadas e as coordenadas generalizadas do sistema.
-As variáveis $q1, q2$ e $q3$ representam as 3 translações do ponto de fixação do
-manipulador, em $x,y$ e $z$, respectivamente, em relação ao sistema de
-coordenadas inercial, SC-R. As 3 rotações serão representadas pelas variáveis
-$q4, q5$ e $q6$ e serão descritos nos sistemas de coordenadas SC-R1, SC-R2,
+As variáveis $q1, q2$ e $q3$ representam as 3 translações do ponto virtual de
+fixação do manipulador, em $x,y$ e $z$, respectivamente, em relação ao sistema de
+coordenadas inercial, SC-R. As 3 rotações são representadas pelas variáveis
+$q4, q5$ e $q6$ e são descritos nos sistemas de coordenadas SC-R1, SC-R2,
 SC-R3, respectivamente.
-A coordenada $q4$ representa um ângulo de rotacão do sistema de referência SC-R1
+A coordenada $q4$ representa o ângulo de rotacão do sistema SC-R1
 em relação ao sistema SC-R; $q5$ o ângulo entre SC-R2 e SC-R1; e $q6$ o ângulo
-entre SC-R3 e SC-R2, formando uma cadeia cinemática de ângulos relativos. A
-Figura~\ref{fig::schem_scbase} ilustra o sistema inercial SC-R e o sistema SC-R3
-acoplado ao corpo sobre a base.
+entre SC-R3 e SC-R2. A Figura~\ref{fig::schem_scbase} ilustra o sistema inercial
+SC-R e o sistema SC-R3 acoplado ao corpo sobre a base.
 
 \begin{figure}[h]
 	\centering 
@@ -2065,8 +2056,8 @@ Em seguida é composto o vetor das Velocidades Generalizadas e calculado o
 Hiperplano Tangente.
 %
 \begin{gather}
-	\mathbf{v}_{gen} = [ \mathbf{v}^{M},~ \boldsymbol{\omega}^{M},~ 2] \\
-	\boldsymbol{\tau} = [\boldsymbol{\tau}_1,~ \boldsymbol{\tau}_2,~ 2]
+	\mathbf{v}_{gen} = [ \mathbf{v}^{M},~ \boldsymbol{\omega}^{M}] \\
+	\boldsymbol{\tau} = [\boldsymbol{\tau}_1,~ \boldsymbol{\tau}_2]
 \end{gather}
 %
 
@@ -2076,21 +2067,22 @@ seguida, projetá-los no hiperplano tangente e obter as equações de movimento.
 
 As forças externas são formadas pela força peso, do corpo $M$ e
 pelas forças conservativas e não conservativas da base, provenientes da rigidez
-e do amortecimento, respectivamente. Portanto:
+e do amortecimento. Portanto:
 %
 \begin{equation}
 	\mathbf{Peso}_M = m_M \cdot \mathbf{g}
 \end{equation}
 %
-Onde, desta vez o vetor gravidade está descrito no referncial SC-R. 
+O termo $m_M$ representa o valor da massa ``suspensa'' pela base. O vetor
+gravidade é descrito no referncial inercial SC-R.
 %
 \begin{equation}
 	\mathbf{g} = [-9,81,~0,~0]^{R}
 \end{equation}
 %
-O termo $m_M$ representa o valor da massa ``suspensa'' pela base. Neste tópico
-de apresentação do modelo desacoplado da base, o valor desta massa será a massa
-total do robô, $130~kg$.
+
+% Neste tópico de apresentação do modelo desacoplado da base, o valor desta massa
+% será a massa total do robô, $130~kg$.
 
 As forças conservativas são calculadas pela matriz de rigidez da base. Esta
 matriz, multiplicada pelo vetor das coordenadas generalizadas, fornece um
@@ -2120,25 +2112,23 @@ Logo, a equação~\ref{eq::fki} calcula a força elástica $Fk$ na direção $i$
 associada a cada coordenada generalizada $qi$:
 %
 \begin{equation} \label{eq::fki}
-	Fk_i = \sum_{j=1}^{6} [K]_{i,j} \cdot q_j
+	Fk_i = \sum_{j=1}^{6} k_{ij} \cdot q_j
 \end{equation}
 %
-Onde $[K]_{i,j}$ é o elemento $i,j$ da matriz de rigidez $K$. Note-se que os
-termos a partir da 4ª linha da matriz, na verdade calculam os momentos,
-associados às rotações $q4, q5$ e $q6$ da base.
-Porém, não será feita essa distinção, sendo considerados tanto as forças quanto
-momentos, como forças generalizadas.
+Note-se que é utilizado o termo forças de forma generalizada para designar tanto
+as forças lineares quanto momentos.
 
 Equivalentemente, obtém-se as expressões para as forças não conservativas, mas
 desta vez, multiplica-se a matriz de amortecimento $C$ pelo vetor $u$ das
 velocidades. Logo:
 %
 \begin{equation} \label{eq::fci}
-	Fc_i = \sum_{j=1}^{6} [C]_{i,j} \cdot u_j
+	Fc_i = \sum_{j=1}^{6} c_{i,j} \cdot u_j
 \end{equation}
 %
+Onde o termo $c_{ij}$ refere-se aos coeficientes da matriz de amortecimento.
 
-Então, pelo equilíbrio, as forças que agem sobre o corpo suspenso pela base são:
+O equilíbrio das forças que agem sobre o corpo suspenso pela base são:
 %
 \begin{equation} \label{eq::fexm}
 	\mathbf{Fex}_M = \mathbf{Peso}_M - \mathbf{Fk} - \mathbf{Fc}
@@ -2174,11 +2164,10 @@ O sistema \textit{kinematic differential equation} (kde) fornece mais 6
 equações, relacionando $q$ e $u$. As condições iniciais $q1(0),\ldots,q6(0)$ e
 $u1(0),\ldots,u6(0)$ completam o problema.
 
-Assim como no modelo do robô, o problema consiste em solucionar um sistema de
+Assim como no MBS do robô, o problema consiste em solucionar um sistema de
 equações diferenciais ordinárias, não-lineares, cujas incógnitas são as
 coordenadas generalzadas $q1(t),\ldots,q6(t)$ e as velocidades
-$u1(t),\ldots,u6(t)$. A solução portanto será numérica, assim como no modelo do
-robô.
+$u1(t),\ldots,u6(t)$. 
 
 Para demonstrar o modelo, considere-se os seguintes parâmetros de rigidez,
 amortecimento e condição incial do sistema:
@@ -2247,16 +2236,17 @@ obtidos por meio de análise modal por ensaio de vibrações.
 A estrutura de testes (Figura~\ref{fig::estrut_modelo_fisico}) é instrumentada
 com acelerômetros a fim de se obter a dinâmica da base. Para o modelo
 experimental foram selecionados 6 graus de liberdade para medição: as 3
-translações e 3 rotações no sistema de coordenadas cartesiano. Para isso, foi
-idealizado um ponto para origem do sistema de coordenadas da base, que é
-coincidente com o ponto teórico de fixação do robô. Logo, os 6 graus de
+translações e 3 rotações ortogonais do sistema de coordenadas cartesiano. Para
+isso, foi idealizado um ponto para origem do sistema de coordenadas da base, que
+é coincidente com o ponto teórico de fixação do robô. Logo, os 6 graus de
 liberdade estão associados às translações e rotações em relação ao sistema de
 coordenadas fixo neste ponto.
-Um martelo instrumentado é utilizado para excitar a base e obter as Funções de Resposta em Frequência (FRF's) de cada grau de liberdade.
+Um martelo instrumentado é utilizado para excitar a base e obter as Funções de
+Resposta em Frequência (FRF's) de cada grau de liberdade.
 Estes dados são utilizados para estimar os parâmetros modais:
-modos de vibração, frequências naturais e amortecimentos.
-
-Os resultados experimentais serão então utilizados para calcular os parâmetros
+modos de vibração, frequências naturais e amortecimentos, pelo procedimento
+chamado Ajuste de Curva (\textit{Cuve Fitting}).
+Os resultados experimentais são então utilizados para calcular os parâmetros
 $\alpha$ e $\beta$ da matriz de amortecimento proporcional.
 
 
@@ -2267,14 +2257,11 @@ acelerômetros. Para ter consistência entre os modelos teórico e experimental,
 deseja-se obter as acelerações de um ponto virtual, localizado no centro da
 placa de fixação do robô. Este ponto representa a conexão teórica entre a base e
 o manipulador, que restringe qualquer translação ou rotação relativa entre eles.
-Definindo-se um referencial fixo a este ponto, qualquer deslocamento e rotação
-deste referencial transfere o mesmo movimento para o manipulador. Logo, este
+Definindo-se um referencial local neste ponto, qualquer deslocamento e rotação
+é transferido diretamente para o manipulador. Logo, este
 ponto está para o modelo experimental assim como $\mathbf{p}^M$ está para o
 modelo teórico da base. Da mesma forma, o referencial local da placa é
 equivalente ao referencial SC-R3 do modelo teórico.
-
-Levando isto em consideração, é preciso que as medidas coletadas do experimento
-reflitam os deslocamentos deste ponto.
 
 \subsubsection{Acelerômetros}
 
@@ -2293,11 +2280,9 @@ sentido positivo sempre para fora da placa.
 
 Assim como foi assumido no modelo para AEF da base, a placa de fixação do robô é
 muito rígida em relação à estrutura de perfis de alumínio. Ou seja, as
-deformações desta peça serão despezíveis e portanto a distância entre quaisquer
-dois pontos sobre a placa permanecerá fixa no referencial local.
-Isto permite a distribuição dos acelerômetros em qualquer ponto da placa
-assumindo as acelerações são consideradas devido a movimento de corpo rígido e
-não deformações elásticas da peça. 
+deformações desta peça são relativamente despezíveis e portanto a distância
+entre quaisquer dois pontos sobre a placa permanecerá fixa no referencial local.
+Isto permite a distribuição dos acelerômetros em qualquer ponto da placa.
 
 Isto implica, que pode-se calcular a aceleração, em cada uma das 6 direções do
 ponto virtual, a partir de relações aritméticas simples entre os sensores $a1$ a
@@ -2316,9 +2301,9 @@ rotacionais por $\alpha$ seguidas de subíndice indicando sua orientação. Logo
 Onde $r1$ é a distância entre os acelerômetros $a1$ e $a2$, na direção $z$; e
 $r2$ a distância entre os acelerômetros $a6$ e $a7$, na direção $y$.
 
-Note-se que que as acelerações lineares são calculadas pela média entre dois
+Note-se que as acelerações lineares são calculadas pela média entre dois
 acelerômetros na mesma direção.
-Já as acelerações angulares pela diferença entre os dois acelerômetros na mesma
+Já as acelerações angulares, pela diferença entre os dois acelerômetros na mesma
 direção, dividida pela distância, $r1$ ou $r2$ entre eles. Considere-se agora
 que cada equação crie um sensor virtual, localizado no centro entre o par
 calculado. Se a placa é rígida, pode-se considerar então que tais acelerações
@@ -2336,10 +2321,10 @@ local da placa, em que cada termo representa uma direção dos 6 gdl da base.
 \subsubsection{Martelo Instrumentado}
 
 A excitação da estrutura é feita com um martelo instrumentado com sensor de
-força, da fabricante PCB. Pelo tamanho e peso da estrutura a ser testada, é
-recomendável um impacto com energia suficiente para excitar toda a estrutura, a
-fim de obter os modos de vibração em uma faixa larga de frequência. A energia do
-impacto pode ser calculada por:
+força piezoelétrico, da fabricante PCB. Pelo tamanho e peso da estrutura a ser
+testada, é recomendável um impacto com energia suficiente para excitar toda a
+estrutura, a fim de obter os modos de vibração em uma faixa suficientemente
+larga de frequência. A energia do impacto pode ser calculada por:
 %
 \begin{equation}
 	E = m \cdot v
@@ -2351,12 +2336,12 @@ impacto, ou a massa do martelo. Como os modelos de martelo com massa baixa
 um martelo de massa elevada. O modelo PCB-086D50 foi escolhido para o ensaio.
 Este martelo possui massa de $5,5~kg$ e faixa de medição de $\pm 25~kN$.
 
-A faixa de frequência excitada também é função do material da ponta do martelo.
+A faixa de frequência excitada é função do material da ponta do martelo.
 A Figura~\ref{fig::carta_badwidth} apresenta a força do impacto no espectro das
 frequências, obtida pela \textit{Fast Fourier Transform} (FFT) a partir do sinal
 no tempo.
 Percebe-se que para uma mesma força de pico do impacto, uma ponta mais dura
-fornece uma faixa mais larga que quando usada uma ponta macia.
+resulta em uma faixa mais larga de frequência.
 
 \begin{figure}[h]
 	\centering 
@@ -2378,19 +2363,19 @@ de aquisição controla a temporização, sincronização e transferência dos d
 para o computador, via USB. 
 
 O programa SignalExpress fornece uma interface para registro, leitura gráfica,
-análise e pós processamento dos dados adquiridos. Será utilizado para realizar
+análise e pós processamento dos dados adquiridos. É utilizado para realizar
 a média das aquisições, cálculo das acelerações em cada direção, FFT do impacto
 do martelo e a Função Resposta em Frequência (FRF) das acelerações.
 
 Obtidas as FRF's das acelerações em cada direção, os resultados de
 magnitude e fase das FRF's são importados no programa ME'Scope VES, que oferece
 ferramentas prontas para análise modal e obtenção dos modos, frequências
-naturais e amortecimentos, de forma bastante prática.
+naturais e amortecimentos.
 
 A Figura~\ref{fig::foto_bancada} apresenta uma fotografia da bancada
 experimental, montada no Laboratório de Acústica e Vibrações (LAVI/COPPE-UFRJ) e
 a Figura~\ref{fig::diagrama_bancada} um diagrama esquemático, indicando os
-sensores, a base e os módulos de aquisição, assim como as conexões entre eles..
+sensores, a base e os módulos de aquisição, assim como as conexões entre eles.
 
 \begin{figure}[h]
 	\centering 
@@ -2427,9 +2412,9 @@ de cada sensor, fornecidos os tipos de sensores e os valores de sensibilidade,
 faixas de trabalho, taxa de aquisição e número de amostras.
 
 Para evitar os fenômenos de \textit{aliasing}, a taxa de aquisição foi definida
-em $50~kHz$\todo{Revisar valores}, longe o suficiente da frequência de
+em $20~kHz$\todo{Revisar valores}, longe o suficiente da frequência de
 ressonância esperada da base, e para evitar o vazamento espectral (ou
-\textit{leakage}), o número de amostras como o dobro da taxa, neste caso, $100$
+\textit{leakage}), o número de amostras como o dobro da taxa, neste caso, $40$
 mil. Isto garante uma janela de tempo de cada amostragem de 2 segundos. Como o
 sinal é quase totalmente amortecido neste intervalo de tempo, não há necessidade
 de utilizar uma função de janelamento (ou \textit{window}) neste sinal.
@@ -2446,7 +2431,7 @@ funções que calculam as acelerações do ponto virtual central da base.
 
 Por fim, é utilizada a função \textit{Frequency Response} do pacote NI Sound and
 Vibration Assistant do SignalExpress. Esta função recebe  os sinais do
-martelo e as acelerações em uma direção, e calcula as Funções de Transferência
+martelo e as acelerações em uma direção, e calcula as FRF's
 entre as acelerações (saída) e a força de impacto (entrada).
 
 \subsubsection{Função de Transferência}
@@ -2455,9 +2440,8 @@ Seja a Função de Transferência definida por uma matriz $H_{n \times n}$, form
 pelos termos $h_{ij}$. Cada termo representa uma FRF da aceleração de cada
 direção $i$ como resposta do impulso do martelo na direção $j$. Logo, para este
 modelo de base, $n$ é igual ao número de graus de liberdade, 6. Portanto 36
-termos definem a Função de Transferência. Como a matriz é
-simétrica,\todo{Incluir referência da matriz simétrica}, podem ser deteminados
-apenas 21 termos.
+termos definem a Função de Transferência deste modelo. Como a matriz é
+simétrica, podem ser deteminados apenas 21 dos 36 termos.
 %
 \begin{equation}
 H =
@@ -2474,16 +2458,15 @@ H =
 
 Note-se que para calcular os termos devido a rotação da base $h_{i4}$ a
 $h_{i6}$, então seria necessário excitar um momento em cada direção angular
-($r_x,r_y,r_z$) e obter . Entretanto, é impossível excitar, com o martelo, um
+($r_x,r_y,r_z$). Entretanto, é inviável excitar, com o martelo, um
 momento puro na base. Logo, estes termos não podem ser calculados diretamente.
 Em compensação, o ensaio conta com aquisição simultânea de 6 sinais de saída
 (acelerações) para cada sinal de entrada (impacto) e portanto classifica-se como
 SIMO (\textit{Single Input Multiple Outputs}). A vantagem deste tipo de ensaio é
 que para o caso em que o número de sinais é igual ao número de graus de
 liberdade, obtem-se exatamente uma coluna inteira da matriz de Transferência. De
-uma linha ou uma coluna completa, já há informação suficiente para  se
-determinar os parâmetros modais. Este conceito é útil, pela incapacidade de
-estimular os momentos puros na estrutura.
+uma linha ou uma coluna completa, fornecendo informação suficiente para se
+determinar os parâmetros modais.
 
 \subsubsection{Resultados da aquisição}
 
@@ -2519,35 +2502,32 @@ resultados para o ensaio de impacto na direção $y$ da base.
 
 \missingfigure{FRF: Coerência}
 
-A análise modal é realizada no programa ME'Scope. Para isso, os resultados devem
-ser exportados em arquivo ASCII na forma numérica, tal que a amostragem de dados
-estjeda disposta em colunas, na seguinte ordem:
-%
-\begin{equation*}
-\begin{matrix}
-Frequencia & Magnitude~\#1  & Fase~\#1  & \ldots & Magnitude~\#6 & Fase~\#6 \\ 
- \vdots & \vdots & \vdots &  & \vdots & \vdots
-\end{matrix}
-\end{equation*}
-%
-As colunas de Magnitude e Fase correspondem aos
-resultados das 6 FRF's relativas aos 6 graus de liberdade coletados.
+% A análise modal é realizada no programa ME'Scope. Para isso, os resultados devem
+% ser exportados em arquivo ASCII na forma numérica, tal que a amostragem de dados
+% estjeda disposta em colunas, na seguinte ordem:
+% %
+% \begin{equation*}
+% \begin{matrix}
+% Frequencia & Magnitude~\#1  & Fase~\#1  & \ldots & Magnitude~\#6 & Fase~\#6 \\ 
+%  \vdots & \vdots & \vdots &  & \vdots & \vdots
+% \end{matrix}
+% \end{equation*}
+% %
+% As colunas de Magnitude e Fase correspondem aos
+% resultados das 6 FRF's relativas aos 6 graus de liberdade coletados.
 
 \subsubsection{Análise modal no ME'Scope}
 
 O programa ME'SCope é utilizado para identificar os parâmetros modais a partir
-dos dados importados. A interface de importação do programa ajuda a identificar
-os dados e relacionar às direções de medição e excitação correspondentes. 
+das FRF's importadas. A interface de importação do programa ajuda a
+identificar os dados e relacionar às direções de medição e excitação correspondentes. 
 
-A opção \textit{Modal Analysis} no ME'Scope é utilizada para caracterizar as
-ressonâncias do sistema e estimar, por uma lista de FRF's fornecidas, os
-parâmetros como frequências naturais, amortecimentos modais e modos de vibração.
-
-O programa então faz um ajuste de curva (\textit{curve fitting}) das FRF's para
-estimar os parâmetros modais. A primeira etapa é identificar a faixa de
-frequência que se deseja analisar. Em seguida, informar quantos modos ou picos
-há naquela faixa. O programa ainda permite a contagem automática, se fornecido um
-valor mínimo para caracterizar o modo.
+A opção \textit{Modal Analysis} no ME'Scope é utilizada para identificar as
+frequências de ressonância do sistema e estimar os parâmetros modaispela função
+de ajuste de curva (\textit{curve fitting}). A primeira etapa é identificar a
+faixa de frequência que se deseja analisar. Em seguida, apontar os modos
+ou picos naquela faixa. O programa ainda permite a contagem automática, se
+fornecido um valor mínimo de mangnitude para caracterizar o modo.
 
 \missingfigure{Inlcluir imagem da contagem de picos}
 
@@ -2563,12 +2543,11 @@ Os resultados da análise modal encontram-se na Tabela
 
 
 
-O programa também permite construir o modelo experimental 3D com uma ferramenta
-de modelagem interativa. Pontos específicos da malha que representa o modelo 3D
-são relacionado aos dados fornecidos. Então é possível visualizar como a
-estrutura se comporta dinamicamente por meio da animação do modelo, que de forma
-interativa pode-se selecionar qualquer ponto na faixa de frequência e obter-se
-uma animação do modo de vibração naquela frequência.
+O programa também permite construir o modelo 3D representando a estrutura com
+uma ferramenta de modelagem interativa. Pontos da malha que
+representa o modelo 3D são associados aos dados experimentais. Então é
+possível visualizar como a estrutura se comporta dinamicamente e, de forma
+interativa, visualizar uma animação dos modos de vibração.
 
 \missingfigure{Modelo 3D da base ME'Scope}
 
@@ -2577,7 +2556,7 @@ uma animação do modo de vibração naquela frequência.
 \subsection{Cálculo da Matriz de Amortecimento}
 
 A matriz de amortecimento tem dimensão $6 \times 6$, que corresponde aos 6 graus
-de liberdade (3 translações e 3 rotações) associados às 6 coordenadas
+de liberdade (3 translações e 3 rotações) associados às coordenadas
 generalizadas do modelo teórico. Para facilitar seu uso e generalização é
 utilizado o modelo de amortecimento proporcional, em que assume-se
 que o amortecimento depende apenas de dois parâmetros, $\alpha$
@@ -2591,13 +2570,13 @@ acordo com a expressão:
 
 Como demonstrado na seção~\ref{sec::amortecimento}, os parâmetros $\alpha$
 e $\beta$ se baseiam no resultado do amortecimento modal ao longo de uma
-faixa de frequência de interesse. Repetindo a expressão:
+faixa de frequência de interesse. Repetindo aqui a equação~\ref{eq::xir}:
 %
-\begin{equation*} \label{eq::alpha_beta}
-	\xi_j = \frac{\alpha}{2 \omega_j} + \frac{\beta \omega_j}{2}
+\begin{equation*}
+	\xi_r = \frac{1}{2}\left(\frac{\alpha}{\omega_r} + \beta \omega_r\right )
 \end{equation*}
 %
-Onde $\xi_j$ é o amortecimento modal na frequência $ \omega_j$. Esses valores
+Onde $\xi_r$ é o amortecimento modal na frequência $ \omega_r$. Esses valores
 são os obtidos experimentalmente, e estão na
 Tabela~\ref{tab::resultado_modal}.
 %
@@ -2650,14 +2629,15 @@ E finalmente, a matriz de amortecimento resultante, obtida experimentalmente é:
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Modelo acoplado robô e base} \label{sec::acoplado}
 
-Demonstrado como forma construídos os modelos dinâmicos em separado, este
-consiste em acoplar os dois modelos MBS. Isto é feito considerando que o sistema
-de coordenadas SC-Z, inercial no modelo do robô, agora coincide com o sistema de
-coordenadas final do modelo da base, SC-R3.
+Demonstrou-se nas seções~\ref{sec::robo} e \ref{sec::base} como forma
+construídos modelos dinâmicos do robô e da base em separado. Esta seção consiste
+em unir os dois sistemas MBS em um modelo acoplado.
+Isto é feito considerando que o sistema de coordenadas SC-Z, inercial no modelo
+do robô, agora coincide com o sistema de coordenadas final do modelo da base,
+SC-R3.
 
 Note-se que no modelo da base, era considerado um único corpo, fixado no
-``topo'' da cadeia cinemática de 6 graus de liberdade devido a elasticidade da
-base.
+``topo'' da cadeia cinemática de 6 graus de liberdade da base.
 Agora, este corpo é representado pelo pedestal do robô, corpo Z, seguido dos 5
 elos consecutivamente conectados, tornando-o um MBS de 11 graus de liberdade. A
 Figura~\ref{fig::esq_acoplado} ilustra o sistema acoplado, indicando as novas
@@ -2674,13 +2654,12 @@ indicado por SC-R.
  	Fonte: adaptado de}
  	\label{fig::esq_acoplado}
 \end{figure}
-\todo[inline]{Incluir fonte nesta figura}
 
 Para este sistema acoplado, é empregado o mesmo procedimento das
 seções~\ref{sec::robo} e \ref{sec::base} para se deduzir as equações de
-movimento, pelo Método de Kane, utilizando as rotinas do Sophia-Maple. A
+movimento, pelo Método de Kane e utilizando as rotinas do Sophia-Maple. A
 principal diferença está na interface entre o robô e a base, em SC-R3/SC-Z.
-Do ponto de vista do modelo do manipulador, o pedestal -- ou corpo Z -- que
+Do ponto de vista do modelo do manipulador, o pedestal (ou corpo Z) que
 antes não era considerado na dinâmica do sistema por estar fixo no referencial
 inercial, agora irá sofrer os esforços externos, oriundos da conexão com a base
 e também forças de inércia. O equilíbrio das forças externas na interface entre
@@ -2733,8 +2712,8 @@ $$ 72220~\textit{additions} + 617367~\textit{multiplications} + 409552~
 
 \subsection{Robô sobre base rígida}
 
-A base é considerada rígida quando seus deslocamentos devido a elasticidade de
-sua estrutura causa erros desprezíveis de trajetória do robô. Ou seja erros
+A base é considerada rígida quando os deslocamentos devido a elasticidade de
+sua estrutura causam erros desprezíveis de trajetória do robô. Ou seja erros
 muito pequenos de posição, velocidade e orientação do seu efetuador. Uma base
 rígida portanto seria um caso especial do modelo acoplado robô e base, tal que a
 matriz de rigidez apresentasse valores muito elevados. No entanto, a medida que
@@ -2748,12 +2727,12 @@ deseja realizar.
 Porém, a cinemática inversa fornece apenas um dado de entrada ao modelo
 dinâmico, tal que a trajetória real será consequência da inércia do sistema e da
 eficácia do controlador PID. A diferença entre a trajetória resultante e a
-fornecida é a denominada erro de trajetória, onde os erros são apresentados em
-termos de posição, velocidade e orientação. Logo, é de se esperar que, se o robô
+fornecida é classificada como erro de trajetória, onde os erros são apresentados
+em termos de posição, velocidade e orientação. Logo, é de se esperar que, se o robô
 é bem projetado e seu controle bem determinado, os erros apresentados estarão
-dentro de uma faixa de erro aceitável. Na seção~\ref{sec::hvof} foram
-apresentados erros tolerados para o processo de revestimento por asperção
-térmica. Este processo será utilizado para exemplificar a utilização do método
+dentro de uma faixa de erro aceitável. Na seção~\ref{sec::insitu} foram
+apresentados os requisitos para o processo de revestimento por asperção
+térmica. Este processo é utilizado para exemplificar a utilização do método
 para alguns casos de bases flexíveis, na seção~\ref{sec::casos}.
 
 O modelo do robô sobre base rígida será portanto utilizado para descrever uma
@@ -2775,13 +2754,21 @@ outro modelo.
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Casos aplicados}\label{sec::casos}
 
-Será apresentada a aplicação do método para alguns casos propostos. Primeiro,
-são definidas 2 trajetórias, diferentes em requisitos de velocidade, passo e
-orientação. Em seguida, estas trajetórias são aplicadas ao modelo de base
-rígida, que fornece os resultados de referência, e simuladas no modelo acoplado
-à base flexível. Os casos de base são analisados para 3 versões, da mais rígida
-à mais flexível, cujos modelos são detalhados a seguir. Os resultados são
-analisados e discutidos no Capítulo~\ref{cap::resultados}.
+É apresentada a aplicação do método para alguns casos propostos. São definidas 2
+trajetórias, diferentes em requisitos de velocidade, passo e orientação. Estas
+trajetórias são aplicadas ao modelo de base rígida, que fornece os resultados de
+referência, e depois aplicadas no modelo acoplado com base flexível. Os casos de
+base são analisados para 4 versões, da mais rígida à mais flexível, cujos modelos são:
+%
+\begin{enumerate*}[label=\emph{\roman*})]
+	\item base rígida;
+	\item base de testes;
+	\item base modular PRP;
+	\item base telescópica PRPP.
+\end{enumerate*}
+%
+Os resultados são analisados e discutidos no
+Capítulo~\ref{cap::resultados}.
 
 De maneira geral, o método para análise de casos segue o seguiunte fluxo de
 tarefas:
@@ -2790,9 +2777,9 @@ tarefas:
   \item Definir a cinemática direta do manipulador robótico utilizado;
   \item Definir a trajetória, e calcular sua função pela cinemática inversa;
   \item Calcular a matriz de rigidez da base por Análise por Elementos Finitos;
-  \item Calcular a matriz de amortecimento da base;
-  \item Fornecer a função da trajetória ao MBS acoplado;
-  \item Simular e verificar os resultados.
+  \item Fornecer a matriz de amortecimento da base;
+  \item Simular a função calculada da trajetória no MBS acoplado;
+  \item Calcular os erros de trajetória.
 \end{enumerate}
 
 Em todos os casos, o manipulador utilizado é o MOTOMAN MH12, que foi definido
@@ -2818,7 +2805,7 @@ representação no ambiente 3D com o robô no início do primeiro paralelo.
 %
 \newline
 \begin{tcolorbox}
-[colframe=black!75!white, colback=white, title = Tarefa 1] 
+[colframe=black!75!white, colback=white, title = Tarefa 1 -- Plano xz] 
   \textbf{Área:} $(600 \times 12)~mm^2$ \\
   \textbf{Ponto inicial:} $\mathbf{p}_f = [0,700,~1,238,~-0,600]$ \\
   \textbf{Orientação:} $\boldsymbol{\Phi}_{f} = [0,~0,~0]$ \\
@@ -2848,7 +2835,7 @@ representação no ambiente 3D com o robô no início do primeiro paralelo.
 
 %
 \begin{tcolorbox}
-[colframe=black!75!white, colback=white, title = Tarefa 2]
+[colframe=black!75!white, colback=white, title = Tarefa 2 -- Plano yz]
   \textbf{Área:} $(500 \times 40)~mm^2$ \\
   \textbf{Ponto inicial:} $\mathbf{p}_f = [-0,342,~0,900,~-0,300]$ \\
   \textbf{Orientação:} $\boldsymbol{\Phi}_{f} = [0,~\pi/2,~0]$ \\
@@ -2884,13 +2871,13 @@ apenas do robô. O sistema tem apenas os 5 graus de liberdade associados às jun
 manipulador.
 
 Os resultados da simulação para o caso da base rígida é apresentado na
-seção~\ref{sec::res_rigida} e serão utilizados como referência para comparação
+seção~\ref{sec::res_rigida} e são utilizados como referência para comparação
 com os outros modelos de base.
 
 
 \subsection{Base de testes}
 
-Esta base foi construída para testes do projeto EMMA e consiste em uma
+Esta é a base foi construída para testes do projeto EMMA e consiste em uma
 plataforma metálica e modular, com trilho e placa para fixação do robô a uma
 altura de aproximadamente $600~mm$ do piso.
 A estrutura é formada por perfis leves de alumínio estrutural. O trilho é
@@ -2947,19 +2934,17 @@ seção~\ref{sec::res_testes}.
 
 \subsection{Base modular PRP}
 
-Esta base, como foi explicado na seção~\ref{sec::insitu}, consiste em um trilho
-primário e um trilho secundário sobreposto, que será utilizada para posicionar o
-manipulador dentro do ambiente de uma turbina.
+Esta base consiste em um trilho primário e um trilho secundário sobreposto, que
+será utilizada para posicionar o manipulador dentro do ambiente de uma turbina.
 Uma plataforma de rotação permite que o trilho secundário forme qualquer ângulo
 em relação ao primário. Sobre o trilho secundário corre a placa de fixação do
-robô.
-Portanto, esta base é classificada como Prismática-Rotacional-Prismática ou PRP,
-por fornecer estes graus de liberdade ao posicionamento do robô. 
+robô. Portanto, esta base é classificada como Prismática-Rotacional-Prismática
+ou PRP, por fornecer tais graus de liberdade para o posicionamento do robô.
 
 Na seção~\ref{sec::insitu} apresentou-se esta base no ambiente da turbina.
 A Figura~\ref{fig::prp_cad} isola o modelo CAD da base com o robô. Na
-configuração que será analisada, o trilho secundário está a $90^\circ$ em
-relação ao primário e a placa de fixação do robô a $1100~mm$ de distância da
+configuração específica analisada, o trilho secundário forma $90^\circ$
+em relação ao primário e a placa de fixação do robô a $1100~mm$ de distância da
 plataforma de rotação.
 
 \begin{figure}[h]
@@ -2969,9 +2954,9 @@ plataforma de rotação.
  	\label{fig::prp_cad}
 \end{figure}
 
-Para determinação da rigidez, é então modelada esta versão da base para análise
-AEF, sendo representada pela Figura~\ref{fig::prp_fea}, com os prinicipais
-componentes indicados.
+Para determinação da matriz de rigidez, esta base é modelada para análise AEF. O
+modelo é apresentado na Figura~\ref{fig::prp_fea}, onde os prinicipais
+componentes são indicados.
 
 \begin{figure}[h]
 	\centering 
@@ -2981,12 +2966,14 @@ componentes indicados.
 \end{figure}
 
 Os perfis, materiais e propriedades de seção do trilho e da estrutura são as
-mesmas já descritas no exemplo de aplicação da base de teste. A diferença é a
-introdução dos pés da estrutura e da plataforma de rotação. Os pés são formados
-por tubos de alumínio de $50~mm$ de diâmetro externo e parede $4~mm$, acoplados
-à estrutura por meio de abraçadeiras. O acoplamento será c
+mesmas já descritas nas Figuras~\ref{fig::sectrans_bosch},
+\ref{fig::sectrans_bosch} e na Tabela~\ref{tab::prop_mat} da base de testes. A
+diferença é a introdução dos pés da estrutura e da plataforma de rotação. Os pés
+são formados por tubos de alumínio de $50~mm$ de diâmetro externo e parede
+$4~mm$, acoplados à estrutura por meio de abraçadeiras, podendo ser
+considerados engastados na estrutura principal.
 As propriedades de seção estão descritas na Figura~\ref{fig::sectrans_pes}. O
-material é o Alumínio EN-AW 6060 e suas propriedades foram definidas na
+material é o Alumínio EN-AW 6060 e suas propriedades também foram definidas na
 Tabela~\ref{tab::prop_mat}.
 
 \begin{figure}[h]
@@ -2997,18 +2984,18 @@ Tabela~\ref{tab::prop_mat}.
 \end{figure}
 
 A plataforma de rotação é formada por duas placas de alumínio, uma solidária ao
-trilho primário e a outra ao secundário, unidas por um mancal de rolamento do
-tipo \textit{slewing-ring}. Devido a densidade e robustez, esta peça foi
+trilho primário e a outra ao trilho secundário, unidas por um mancal de
+rolamento do tipo \textit{slewing-ring}. Devido a densidade e robustez, esta peça foi
 construída com elementos rígidos no modelo para AEF. Logo transmitem forças e
-momentos, mas não se deforma. Da mesma forma a placa de fixação foi considerada
+momentos, mas não se deforma. Da mesma forma a placa de fixação é considerada
 rígida e possui um ponto onde virtualmente está acoplado o robô e por onde as
 cargas são aplicadas.
 
 As restrições são do tipo engaste e aplicadas às extremidades do pés de apoio da
 estrutura. Os deslocamentos prescritos são então aplicados em 6 casos,
 exatamente como foi realizado no exemplo da seção~\ref{sec::base}, de acordo com a
-Tabela~\ref{tab::casoscarreg}. A matriz de rigidez é então obtida dos resultados
-da análise AEF:
+Tabela~\ref{tab::casoscarreg}. A matriz de rigidez desta versão da base é então
+obtida dos resultados da análise AEF:
 %
 \begin{equation}
 	K = 
@@ -3026,9 +3013,10 @@ Valores em $kN/m$ e $kNm/rad$.
 
 Para a matriz de amortecimento, seria necessário o ensaio experimental da
 estrutura. Como ainda não existe o modelo físico desta vesão da base, os valores
-de $\alpha$ e $\beta$ serão estimados. Uma estimativa razoável será utilizar os
-mesmos valores obtidos para a base de testes. Portanto, a matriz de
-amortecimento torna-se:
+de $\alpha$ e $\beta$ serão estimados. Uma estimativa razoável, devido à
+semelhança de materiais e peças, é utilizar os mesmos valores obtidos para a
+base de testes.
+Portanto, a matriz de amortecimento torna-se:
 %
 \begin{equation}
 	C = 
@@ -3049,15 +3037,12 @@ seção~\ref{sec::res_prp}.
 
 
 
-\subsection{Base com pouca rigidez}
+\subsection{Base telescópica PRPP}
 
 Um último caso de base a ser analisado busca apresentar uma versão muito
 flexível, isto é, embora capaz de suportar os esforços com boa margem de
 segurança, oferece deslocamentos inaceitáveis para a realização da tarefa.
 
-Na fase de viabilidade técnica do projeto EMMA foi estudada a possibilidade de
-utilizar uma estrutura fixada na escotilha superior, que acessa a turbina
-próximo ao centro do rotor.
 Esta base foi apresentada na seção~\ref{sec::insitu}, na
 Figura~\ref{fig::base_telesc_turbina}. Por decisão conservadora, decidiu-se não
 utilizá-la como solução, devido a um estudo preliminar de rigidez. Na época
@@ -3080,7 +3065,7 @@ esquerda, e estendida à direita.
 Os itens numerados correspondem à: 
 %
 \begin{enumerate*}[label=(\arabic*)]
-  \item atuador linear tipo sem-fim-coroa;
+  \item atuador linear do tipo sem-fim-coroa;
   \item base fixa na escotilha;
   \item braço prismático \#1;
   \item braço prismático \#2;
@@ -3096,7 +3081,7 @@ deste caso para o manipulador MH12.
 
 Para determinar a matriz de rigidez desta base, é criado seu modelo para AEF.
 Será considerada a configuração em que as juntas prismáticas estão totalmente
-estendidas e a rotacional fazendo um ângulo de $90^\circ$. A
+estendidas e a rotacional formando um ângulo de $90^\circ$. A
 Figura~\ref{fig::base_telesc_fea} apresenta este modelo indicando os prinicipais
 componentes.
 
@@ -3107,13 +3092,12 @@ componentes.
  	\label{fig::base_telesc_fea}
 \end{figure}
 
-Os componentes foram modelados como elementos de viga, tal que é necessário
-forecer as propriedades de seção transversal de cada segmento. 
-Os braços prismáticos são formados por tubos de seção circular, padrão Schedule.
+Os componentes foram modelados como elementos de viga onde os braços prismáticos
+são formados por tubos de seção circular, padrão Schedule.
 As propriedades de seção transversal utilizadas na análise são apresentadas na
-Tabela~\ref{tab::sectrans_schedules}.
+Tabela~\ref{tab::sectrans_schedules}. 
 %
-\begin{table}[h]
+\begin{table}[h!]
 \centering
 \caption{Propriedades de seção transversal dos componentes da base PRPP}
 \label{tab::sectrans_schedules}
@@ -3133,10 +3117,10 @@ Módulo de seção, S3    & [$mm^3$]  & 4,90E5             & 2,75E5             
 \end{table}
 %
 
-Os tubos são de aço ASTM A36, e suas propriedades de material são
-apresentadas na Tabela~\ref{tab::astma36}
+Os tubos são de aço ASTM A36, e suas propriedades de material são apresentadas
+na Tabela~\ref{tab::astma36}.
 %
-\begin{table}[h]
+\begin{table}[h!]
 \centering
 \caption{Propriedades de material do aço ASTM A36}
 \label{tab::astma36}

@@ -2470,37 +2470,90 @@ determinar os parâmetros modais.
 
 \subsubsection{Resultados da aquisição}
 
-Para verificar os resultados no SignalExpress, são reservadas áreas para
-plotagem dos seguintes gráficos:
-%
-\begin{itemize}
-  \item Acelerações $a_x, a_y, a_z, \alpha_x, \alpha_y, \alpha_y$ vs.
-  tempo;
-  \item Força do martelo vs. tempo;
-  \item FFT da força do martelo;
-  \item FRF's: $a_x, a_y, a_z, \alpha_x, \alpha_y, \alpha_y$ para $F_x, F_y,
-  F_z$: \\ Tal que em cada FRF fornece: Magnitude; Fase; parte Real; parte
-  Imaginária; e Coerência.
-\end{itemize}
-%
-Como são muitos, ao todo 27 gráficos, serão apresentados apenas os
-resultados para o ensaio de impacto na direção $y$ da base.
+A aquisição dos dados experimentais é feita realizando a média de 5 impactos na
+mesma direção. A direção do impacto em $y$ foi escolhida por praticidade, já
+que é possível acertar a estrutura muito próximo da direção do centro de massa e
+portanto fornecer um estímulo em apenas uma direção.
 
-\missingfigure{Resultado acelerações vs. tempo}
+Selecionou-se os dados tomados e processados em uma iteração da média
+dos 5 impactos para representarem os resultados da aquisição. Na
+Figura~\ref{fig::aceleracoes} apresenta-se as acelerações em cada grau de
+liberdade medido da base e sobrepõe-se também o gráfico do impacto realizado
+pelo martelo instrumentado.
 
-\missingfigure{Resultado Força do martelo vs. tempo}
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/aceleracoes}
+ 	\caption{Dados experimentais das acelerações e magnitude do impacto vs. tempo
+ 	}
+ 	\label{fig::aceleracoes}
+\end{figure}
 
-\missingfigure{FFT da força do martelo}
+A Figura~\ref{fig::martelo_spectrum} apresenta o resultado da transformação FFT
+do impacto do martelo, fornecendo o espectro de frequência estimulado. Este
+gráfico fornece um parâmetro para avaliar a faixa de frequência útil da medição.
+Nota-se que de acordo com o resultado, a faixa útil do impacto é aproximadamente
+de $0$ a $500~Hz$.
 
-\missingfigure{FRF: Magnitude}
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/martelo_spectrum}
+ 	\caption{FFT do impacto do martelo}
+ 	\label{fig::martelo_spectrum}
+\end{figure}
 
-\missingfigure{FRF: Fase}
+Por fim, o SignalExpress fornece a Função de Resposta em Frequência (FRF) de
+cada grau de liberdade medido. O resultado da magnitude da FRF de cada gdl é
+apresentado na Figura~\ref{fig::frfs} assim como sobrepõe o resultado da
+Coerência do na direção $y$.
 
-\missingfigure{FRF: Real}
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/frfs}
+ 	\caption{Magnitude das FRF's para o impacto na direção $y$}
+ 	\label{fig::frfs}
+\end{figure}
 
-\missingfigure{FRF: Imaginário}
+Verifica-se pelo espectro da coerência que a faixa de $0$ a $500~Hz$
+continua uma boa estimativa quanto a qualidade do resultado, e portanto os dados
+experimentais são adequados nesta faixa.
 
-\missingfigure{FRF: Coerência}
+
+
+
+
+% Para verificar os resultados no SignalExpress, são reservadas áreas para
+% plotagem dos seguintes gráficos:
+% %
+% \begin{itemize}
+%   \item Acelerações $a_x, a_y, a_z, \alpha_x, \alpha_y, \alpha_y$ vs.
+%   tempo;
+%   \item Força do martelo vs. tempo;
+%   \item FFT da força do martelo;
+%   \item FRF's: $a_x, a_y, a_z, \alpha_x, \alpha_y, \alpha_y$ para $F_x, F_y,
+%   F_z$: \\ Tal que em cada FRF fornece: Magnitude; Fase; parte Real; parte
+%   Imaginária; e Coerência.
+% \end{itemize}
+% %
+% Como são muitos, ao todo 27 gráficos, serão apresentados apenas os
+% resultados para o ensaio de impacto na direção $y$ da base.
+
+%\missingfigure{Resultado acelerações vs. tempo}
+
+%\missingfigure{Resultado Força do martelo vs. tempo}
+
+%\missingfigure{FFT da força do martelo}
+
+%\missingfigure{FRF: Magnitude}
+
+% \missingfigure{FRF: Fase}
+
+% \missingfigure{FRF: Real}
+
+% \missingfigure{FRF: Imaginário}
+
+% \missingfigure{FRF: Coerência}
+
 
 % A análise modal é realizada no programa ME'Scope. Para isso, os resultados devem
 % ser exportados em arquivo ASCII na forma numérica, tal que a amostragem de dados
@@ -2519,38 +2572,65 @@ resultados para o ensaio de impacto na direção $y$ da base.
 \subsubsection{Análise modal no ME'Scope}
 
 O programa ME'SCope é utilizado para identificar os parâmetros modais a partir
-das FRF's importadas. A interface de importação do programa ajuda a
-identificar os dados e relacionar às direções de medição e excitação correspondentes. 
+das FRF's importadas. A interface de importação do programa ajuda a identificar
+os dados e relacionar às direções de medição e excitação correspondentes.
 
 A opção \textit{Modal Analysis} no ME'Scope é utilizada para identificar as
-frequências de ressonância do sistema e estimar os parâmetros modaispela função
+frequências de ressonância do sistema e estimar os parâmetros modais pela função
 de ajuste de curva (\textit{curve fitting}). A primeira etapa é identificar a
-faixa de frequência que se deseja analisar. Em seguida, apontar os modos
-ou picos naquela faixa. O programa ainda permite a contagem automática, se
-fornecido um valor mínimo de mangnitude para caracterizar o modo.
+faixa de frequência que se deseja analisar. Conforme foi identificado, será
+analisada a faixa de $0$ a $500~Hz$. Em seguida, identifica-se os modos ou picos
+nesta faixa. Ainda há opção da contagem automática, se fornecido um valor
+mínimo de mangnitude para caracterizar o modo.
 
 \missingfigure{Inlcluir imagem da contagem de picos}
 
-Com isso o programa realiza uma estimativa dos coeficientes de um polinômio
-do modelo FRF analítico, pelo ajuste de curva ao modelo experimental. Os
-coeficientes são então processados para obter os parâmetros modais.
+Com isso o programa realiza uma estimativa dos coeficientes de um polinômio do
+modelo FRF analítico, pelo ajuste de curva ao modelo experimental, apresentado
+na Figura~\ref{fig::curve_fitting}. 
 
-\missingfigure{Resultados da análise modal}
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/curve_fitting}
+ 	\caption{Resultado do ajuste de curva das FRF's pela análise modal}
+ 	\label{fig::curve_fitting}
+\end{figure}
 
-Os resultados da análise modal encontram-se na Tabela
+Os coeficientes são então processados para obter os parâmetros modais. Os
+resultados da análise modal encontram-se na
+Tabela~\ref{tab::resultado_modal}.
+%
+\begin{table}[h]
+\centering
+\caption{Resultado do amortecimento modal}
+\label{tab::resultado_modal}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+Modo & Frequência & Amortecimento {[}Hz{]} & Amortecimento {[}\%{]} \\ \hline
+1    & 11,6       & 0,11                   & 0,947                  \\
+2    & 156        & 1,06                   & 0,679                  \\
+3    & 230        & 0,35                   & 0,151                  \\
+4    & 309        & 1,61                   & 0,519                  \\
+5    & 375        & 3,94                   & 1,050                  \\
+6    & 432        & 8,45                   & 1,960                  \\ \hline
+\end{tabular}
+\end{table}
+%
 
-\todo[inline]{Incluir tabela dos resultados da análise modal}.
-
-
-
-O programa também permite construir o modelo 3D representando a estrutura com
-uma ferramenta de modelagem interativa. Pontos da malha que
-representa o modelo 3D são associados aos dados experimentais. Então é
-possível visualizar como a estrutura se comporta dinamicamente e, de forma
-interativa, visualizar uma animação dos modos de vibração.
-
-\missingfigure{Modelo 3D da base ME'Scope}
-
+% O programa também permite construir o modelo 3D representando a estrutura com
+% uma ferramenta de modelagem interativa. Pontos da malha que
+% representa o modelo 3D são associados aos dados experimentais. Então é
+% possível visualizar como a estrutura se comporta dinamicamente e, de forma
+% interativa, visualizar uma animação dos modos de vibração. A
+% Figura~\ref{fig::animacao_base} apresenta o modelo 3D da animação oscilando no
+% primeiro modo de vibração.
+% 
+% \begin{figure}[h]
+% 	\centering 
+%  	\includegraphics[width=0.95\textwidth]{figs/animacao_base}
+%  	\caption{Animação do primeiro modo de vibração}
+%  	\label{fig::animacao_base}
+% \end{figure}
 
 
 \subsection{Cálculo da Matriz de Amortecimento}
@@ -2579,48 +2659,41 @@ faixa de frequência de interesse. Repetindo aqui a equação~\ref{eq::xir}:
 Onde $\xi_r$ é o amortecimento modal na frequência $ \omega_r$. Esses valores
 são os obtidos experimentalmente, e estão na
 Tabela~\ref{tab::resultado_modal}.
-%
-\begin{table}[h]
-\centering
-\caption{Resultado do amortecimento modal}
-\label{tab::resultado_modal}
-\begin{tabular}{@{}cccc@{}}
-\toprule
-Modo & Frequência & Amortecimento {[}Hz{]} & Amortecimento {[}\%{]} \\ \midrule
-1    &            &                        &                        \\
-2    &            &                        &                        \\
-3    &            &                        &                        \\
-4    &            &                        &                        \\
-5    &            &                        &                        \\
-6    &            &                        &                        \\ \bottomrule
-\end{tabular}
-\end{table}
-%
+
 
 Dos 6 modos de ressonância, tem-se o seguinte gráfico, na
-Figura~\ref{fig::amort_x_freq}, do amortecimento em função da frequência, :
+Figura~\ref{fig::ajuste_rayleigh}, do amortecimento em função da frequência, :
 
-\missingfigure{Gráfico do amortecimento vs frequência}
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.50\textwidth]{figs/ajuste_rayleigh}
+ 	\caption[Ajuste de curva do amortecimento experimental]{Ajuste de curva do
+ 	amortecimento experimental. Linha cheia: ajuste de curva; ponto: resultados
+ 	do amortecimento experimental}
+ 	\label{fig::ajuste_rayleigh}
+\end{figure}
 
-Fazendo o ajuste do gráfico, em termos da equação~\ref{eq::alpha_beta},
+%\missingfigure{Gráfico do amortecimento vs frequência}
+
+Fazendo o ajuste do gráfico, em termos da equação~\ref{eq::xir},
 obtém-se:
 %
 \begin{equation}
-	\xi = \frac{48651518}{\omega} + 123546 ~\omega
+	\xi = \frac{7.956372}{\omega} + 0.011667 ~\omega
 \end{equation}
 %
 Logo, pode-se concluir que:
 %
 \begin{align}
-	\frac{\alpha}{2} &= 48651518 \Rightarrow  \alpha = 8584654 \\
-	\frac{\beta}{2} &= 123546 \Rightarrow  \beta = 213145
-\end{align} \todo{Corrigir valores}
+	\frac{\alpha}{2} &= 7.9564 \Rightarrow  \alpha = 15.9127 \\
+	\frac{\beta}{2} &= 0.0116 \Rightarrow  \beta = 0.0233
+\end{align}
 %
 
 E finalmente, a matriz de amortecimento resultante, obtida experimentalmente é:
 %
 \begin{equation}
-	C = 8584654~M + 213145~K
+	C = 15.9127~M + 0.0233~K
 \end{equation}
 %
 
@@ -2910,8 +2983,8 @@ Tal que os valores são expressos em $kN/m$ e $kNm/rad$.
 O resultado experimental forneceu os parâmetros:
 %
 \begin{align*}
-	\alpha &= 8584654 \\
-	\beta &= 213145
+	\alpha &= 15.9127 \\
+	\beta &= 0.0233
 \end{align*} \todo{Corrigir valores}
 %
 Que calcula a seguinte matriz de amortecimento:
@@ -2919,12 +2992,12 @@ Que calcula a seguinte matriz de amortecimento:
 \begin{equation*}
 	C =
 \begin{pmatrix}
-24687 &	0 &	0 &	0 &	0 &	0 \\
-0 &	13586 &	0 &	0 &	0 &	-3001 \\
-0 &	0 &	22710 &	0 &	795 &	0 \\
-0 &	0 &	0 &	5400 &	0 &	0 \\
-0 &	0 &	795 & 0 & 3746 & 0 \\
-0 &	-3001 &	0 &	0 &	0 &	3265
+11500	&	0		&	0		&	0		&	0		&	0		\\
+0		&	6326	&	0		&	0		&	0		&	-1399	\\
+0		&	0		&	10579	&	0		&	371	 	&	0		\\
+0		&	0		&	0		&	2516 	&	0		&	0		\\
+0		&	0		&	370		&	0		&	1746 	& 	0		\\
+0		&	-1399	&	0		&	0		&	0		&	1518
 \end{pmatrix}
 \end{equation*}
 %

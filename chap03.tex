@@ -253,7 +253,7 @@ seguinte relação:
 \begin{align}
 	^{Z}\mathbf{p}^{k} &= ~^{Z}\mathbf{p}^{k-1} + ~^{k-1}\mathbf{p}^{k}
 	\label{eq::posjnutas} \\
-	^{Z}\mathbf{pcm}^{k} &= ~^{Z}\mathbf{pcm}^{k-1} + ~^{k}\mathbf{pcm}^k
+	^{Z}\mathbf{pcm}^{k} &= ~^{Z}\mathbf{pcm}^{k-1} + ~^{k}\mathbf{pcm}
 	\label{eq::pcm}
 \end{align}
 %
@@ -640,45 +640,17 @@ explicação rápida sobre a modelagem do controlador PID.
 
 \subsubsection{Parâmetros de controle PID}
 
-Para que o robô realize uma tarefa, é necessário seguir uma trajetória
-previamente planejada. Uma trajetória pode ser simplesmente um conjunto de
-posições de referência de cada junta, que varia no tempo, como foi abordado na
-seção~\ref{sec::plan_traj}. A variação das posição se dá pelo acionamento dos
-torques em cada junta, que deve ser controlado para seguir a trajetória
-planejada. 
+Para que o robô realize a tarefa, é necessário seguir a trajetória previamente
+planejada. Uma trajetória pode ser simplesmente um conjunto de posições e
+velocidades de referência de cada junta, que variam no tempo, como foi abordado
+na seção~\ref{sec::plan_traj}. A variação das posições se dá pelo acionamento
+dos torques em cada junta, que deve ser controlado para seguir a trajetória
+planejada.
 
 Os fabricantes de robôs comerciais infelizmente não fornecem detalhes sobre o
 método nem os parâmetros de controle utilizados.
 Com o propósito de simular o controle do manipulador decidiu-se pela
 simplicidade do método de controle PID.
-
-Os parâmetros de controle PID são formados pelas variáveis proporcional,
-integral e derivativa, $Kp$, $Td$ e $Ti$ respectivamente. Esses parâmetros
-foram sintonizados para cada junta individualmente, fazendo-se simulações de
-resposta para uma função degrau de referência. Os resultados mostraram que este
-método é suficiente para seguir a trajetória e manter os erros dentro de uma
-margem de tolerância aceitável. 
-\todo[inline]{Incluir resultados da investigação dos parâmetros PID?}.
-
-Como resultado da análise, encontrou-se os melhores resultados
-para o conjunto de parâmetros apresentados na\todo{atualizar parâmetros PID}
-Tabela~\ref{tab::pid}:
-%
-\begin{table}[h]
-\centering
-\caption{Parâmetros de controle PID em cada junta}
-\label{tab::pid}
-\begin{tabular}{@{}clll@{}}
-\toprule
-\textbf{Junta} & \textbf{Kp [Nm]} & \textbf{Ti [Nm]} & \textbf{Td [Nm]} \\ \midrule 
-S              & 400         & 80000       & 3000        \\
-L              & 2000        & 500000      & 15000       \\
-U              & 1200        & 400000      & 12000       \\
-R              & 100         & 100000      & 1000        \\
-B              & 250         & 100000      & 1000        \\ \bottomrule
-\end{tabular}
-\end{table}
-%
 
 Logo, define-se as equações dos torques de controle para cada junta, em função
 da diferença entre os parâmetros instantâneos e os de referência em cada junta.
@@ -691,6 +663,42 @@ subíndice $i$ o número da coordenada generalizada associada.
 	Td(u_i-u_i{ref}) \label{eq::pid}
 \end{equation}
 %
+
+Os parâmetros de controle PID são formados pelas variáveis proporcional,
+integral e derivativa, $Kp$, $Td$ e $Ti$ respectivamente. Esses parâmetros
+foram sintonizados para cada junta individualmente, fazendo-se simulações de
+resposta para uma função degrau de referência. 
+
+Como resultado da análise, encontrou-se os melhores resultados para o conjunto
+de parâmetros apresentados na Tabela~\ref{tab::pid}:
+%
+\begin{table}[h]
+\centering
+\caption{Parâmetros de controle PID em cada junta}
+\label{tab::pid}
+\begin{tabular}{@{}clll@{}}
+\toprule
+\textbf{Junta} & \textbf{Kp [kNm]} & \textbf{Ti [kNm]} & \textbf{Td [kNm]} \\ \midrule 
+S              & 2		& 8		& 1		\\
+L              & 500	& 100	& 60	\\
+U              & 200	& 100	& 22	\\
+R              & 5		& 2		& 0,5	\\
+B              & 5		& 2		& 0,5	\\ \bottomrule
+\end{tabular}
+\end{table}
+%
+
+A Figura~\ref{fig::pid_pi_sobre_2} apresenta o resultado dinâmico para os
+valores encontrados considerando uma função degrau de referência de $\pi/2$, em
+$t=0~s$, para todas as juntas.
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.90\textwidth]{figs/pid_pi_sobre_2}
+ 	\caption{Resposta a uma função degrau de $\pi/2$}
+ 	\label{fig::pid_pi_sobre_2}
+\end{figure}
+
 No Sophia-Maple declara-se os torques de controle representados na
 equação~\ref{eq::pid} da seguinte forma:
 
@@ -852,8 +860,8 @@ modelo.
 Para se ter uma ideia, o custo do sistema de equações de movimento, representado
 na forma puramente simbólica em \ref{eq::eqdin}, tem  a seguinte estrutura:
 %
-	$$ 18171\,{\it additions}+59804\,{\it multiplications}+39998\,{\it 
-functions} $$
+	$$ 18171\,{\it somas}+59804\,{\it multiplica\c{c}\tilde{o}es}+39998\,{\it 
+fun\c{c}\tilde{o}es} $$
 %
 Porém, lembra-se que o sistema é puramente simbólico, e até então não foram
 substituidos os parâmetros numéricos do robô.
@@ -864,7 +872,7 @@ poderoso conjunto de rotinas para simplificação algébrica de expressões. Faz
 uso desta função e da substituição dos parâmetros numéricos nas equações de
 movimento, obtemos o novo custo algébrico das equações:
 %
-	$$ 5676\,{\it additions}+6992\,{\it multiplications}+1835\,{\it functions} $$
+	$$ 5676\,{\it somas}+6992\,{\it multiplica\c{c}\tilde{o}es}+1835\,{\it fun\c{c}\tilde{o}es} $$
 %
 Nota-se a grande vantagem de realizar este procedimento, porque ao reduzir-se
 drasticamente o número de termos e funções, reduz-se também o custo
@@ -1050,7 +1058,7 @@ cima em linha cheia e cotovelo para baixo em linha pontilhada.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.75\textwidth]{figs/elbowupdown}
+ 	\includegraphics[width=0.80\textwidth]{figs/elbowupdown}
  	\caption{Exemplo de duas soluções possíveis para o mesmo ponto}
  	\label{fig::elbowupdown}
 \end{figure}
@@ -1487,7 +1495,7 @@ A Figura~\ref{fig::qxt_ex_realxideal} apresenta em linha pontilhada o valor dos
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.95\textwidth]{figs/qxt_ex_realxideal}
+ 	\includegraphics[width=0.75\textwidth]{figs/qxt_ex_realxideal}
  	\caption{Comparação referência e efetivo dos ângulos das juntas}
  	\label{fig::qxt_ex_realxideal}
 \end{figure}
@@ -1502,7 +1510,7 @@ posição da ferramenta.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.95\textwidth]{figs/errop_exemplo}
+ 	\includegraphics[width=0.75\textwidth]{figs/errop_exemplo}
  	\caption{Comparação ideal x efetivo da posição da ferramenta}
  	\label{fig::errop_exemplo}
 \end{figure}
@@ -1515,7 +1523,7 @@ absoluto, ou seja, a norma do erro em cada direção.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.95\textwidth]{figs/erros_exemplo}
+ 	\includegraphics[width=0.90\textwidth]{figs/erros_exemplo}
  	\caption{Erro de posição da ferramante em cada direção}
  	\label{fig::erros_exemplo}
 \end{figure}
@@ -1535,7 +1543,7 @@ Figura~\ref{fig::errovel_exemplo}.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.95\textwidth]{figs/errovel_exemplo}
+ 	\includegraphics[width=0.90\textwidth]{figs/errovel_exemplo}
  	\caption{Erro de velocidade da ferramenta em cada direção}
  	\label{fig::errovel_exemplo}
 \end{figure}
@@ -1593,15 +1601,22 @@ R =  \left( \begin {array}{ccc}  1.0&- 0.00000058757&- 0.0021389
 Logo, o erro de orientação neste instante de tempo do exemplo é:
 %
 \begin{equation*}
-	\theta_{erro}(t=2~s) = 0.0374898~rad
+	\theta_{erro}(t=2~s) = 0,0374898~rad
 \end{equation*}
+%
+E aplicando-se o erro angular na equação~\ref{eq::eixo_erro}, obtém-se o eixo de
+revolução do desvio. O resultado para o erro em $t=2~s$ é:
+%
+\begin{equation}
+	\omega_{erro}(t=2~s) = [0,6312,~-0,1755,~-0,4278]^Z
+\end{equation}
 %
 O resultado do desvio de orientação da ferramenta, durante toda a tarefa é
 apresentado no gráfico da Figura~\ref{fig::orierro_exemplo}.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.95\textwidth]{figs/orierro_exemplo}
+ 	\includegraphics[width=0.85\textwidth]{figs/orierro_exemplo}
  	\caption{Erro de orientação da ferramenta}
  	\label{fig::orierro_exemplo}
 \end{figure}
@@ -1612,15 +1627,12 @@ paralelos do revestimento, ou seja, entre a posição inicial e o ponto p1
 revestimento.
 Analisando, portanto, o gráfico a partir de $1~s$ percebe-se um erro periódico,
 devido às variações de direção, com amplitude máxima de aproximadamente
-$0,038~rad$, ou $2,18^{\circ}$.
-
+$0,038~rad$, ou $2,18^{\circ}$. 
 % Apesar de não ser possível, apenas por este resultado escalar, afirmar a direção
 % onde o erro é maior, pode-se comparar com o gráfico do erro de posicionamento,
 % na Figura~\ref{fig::erros_exemplo}. É possível inferir que este erro está mais
 % relacionado com o atraso do posicionamento na direção $z$ e portanto, grande
 % parte do desvio de orientação está na direção vertical, $x$ de SC-Z.
-
-\todo[inline]{Incluir direção do erro de orientação}
 
 Nesta seção foram explorados os resultados que simulações utilizando o modelo
 MBS podem fornecer. Para isso, tomou-se como exemplo uma tarefa de cobertura de

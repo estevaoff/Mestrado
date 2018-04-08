@@ -1188,9 +1188,30 @@ Onde $\xi_r$ e $\omega_r$ são respectivamente o amortecimento modal e a
 frequência natural do r-ésimo modo de vibração. Artigos de
 \citet{chen1996estimation}, \citet{adhikari2004rayleigh} e
 \citet{schwarz2013proportional} apresentam metodologias para ajustar os
-coeficientes de Rayleigh aos resultados experimentais de análise modal, o que
-será muito útil para formar a matriz de amortecimento do sistema MBS da base.
-
+coeficientes de Rayleigh aos resultados experimentais de análise modal. Pelo
+desenvolvimento de Schwarz, utilizando-se o método dos erros mínimos quadrados,
+obtém-se a seguinte equação para os coeficientes de Rayleigh:
+%
+\begin{equation} \label{eq::brian}
+	\begin{bmatrix}
+	\alpha \\
+	\beta
+	\end{bmatrix}
+= 2
+	\begin{pmatrix}
+	N & {\sum\limits_{i=1}^{N}\Omega_i^{2}} \\ 
+	{\sum\limits_{i=1}^{N}\Omega_i^{2}} &
+	{\sum\limits_{i=1}^{N}\left(\Omega_i^{2}\right)^2}
+	\end{pmatrix}^{-1}
+	\begin{bmatrix}
+	\sum\limits_{i=1}^{N}\xi_i \\ 
+	\sum\limits_{i=1}^{N}\xi_i \Omega_i^2
+	\end{bmatrix}
+\end{equation}
+%
+Onde $\Omega_i$ são as frequências de ressonância e $\xi_i$ os amortecimentos
+modais obtidos experimentalmente para o i-ésimo modo; e $N$ representa o número
+de ressonâncias na faixa medida.
 
 \subsection{Análise modal experimental} \label{sec::modal_analysis}
 
@@ -1802,12 +1823,19 @@ suportar com boa margem as tensões a que seria submetida, os deslocamentos
 devido à baixa rigidez, prejudicariam a precisão requerida da tarefa de
 revestimento.
 
-\begin{figure}[h]
+\begin{figure}[t]
 	\centering 
  	\includegraphics[width=0.65\textwidth]{figs/base_telesc_turbina}
  	\caption{Base telescópica PRPP para manutenção de revestimento
  	\textit{in-situ}}
  	\label{fig::base_telesc_turbina}
+\end{figure}
+
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.70\textwidth]{figs/prp_turbina}
+ 	\caption{Base modular PRP para manutenção de revestimento \textit{in-situ}}
+ 	\label{fig::prp_turbina}
 \end{figure}
 
 O conceito PRP utiliza o acesso da escotilha inferior para transportar uma base
@@ -1821,13 +1849,6 @@ desmontagens e transportes manuais.Como resultado, obtém-se uma estrutura leve 
 versátil, mas não superdimensionada para rigidez. De toda forma, uma vantagem
 deste conceito encontra-se na possibilidade adicionar suportes e
 contraventamentos à estrutura, o que permite aumentar a sua rigidez.
-
-\begin{figure}[h]
-	\centering 
- 	\includegraphics[width=0.70\textwidth]{figs/prp_turbina}
- 	\caption{Base modular PRP para manutenção de revestimento \textit{in-situ}}
- 	\label{fig::prp_turbina}
-\end{figure}
 
 A presente pesquisa trata estes conceitos e a tarefa de revestimento do projeto
 EMMA como os estudos de caso para demonstração da aplicação do método proposto,

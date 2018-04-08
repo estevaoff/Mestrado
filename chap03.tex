@@ -830,13 +830,12 @@ equações~\ref{eq::kde5i} a \ref{eq::kde5f} descrevem o kde:
 \begin{align}
 	u_{1}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{1}(t) \label{eq::kde5i} \\
 	u_{2}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{2}(t) \\
-	u_{3}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{3}(t)
-\end{align}
-%
-\begin{align}	
+	u_{3}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{3}(t) \\
 	u_{4}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{4}(t) \\
 	u_{5}(t) &= \frac{\mathrm{d} }{\mathrm{d} t}q_{5}(t) \label{eq::kde5f}	
 \end{align}
+%
+
 Somando-se esse sistema às equações de movimento e atribuindo à variável
 \texttt{eq\_mov}, no Sophia-Maple:
 
@@ -2186,8 +2185,8 @@ amortecimento e condição incial do sistema:
 %
 \begin{itemize}
   \item{\textbf{Rigidez:} igual a da base de testes}
-  \item{\textbf{Amortecimento:} $\alpha = 0;~ \beta = 10^{-5}$}
-  \item{\textbf{Condição inicial:} $q1(0) = q2(0) = q3(0) = 0,1~mm$, $q4(0) =
+  \item{\textbf{Amortecimento:} $\alpha = 0;~ \beta = 10^{-4}$}
+  \item{\textbf{Condição inicial:} $q1(0) = q2(0) = q3(0) =1~mm$, $q4(0) =
   0,001~rad$, $q5(0) = q6(0) = 0$}
 \end{itemize}
 %
@@ -2200,7 +2199,7 @@ base, dada a condição incial fora da sua configuração de equilíbrio.
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[b]{0.8\textwidth}
+    \begin{subfigure}[b]{0.85\textwidth}
         \includegraphics[width=\textwidth]{figs/q123_base_exemplo}
         \caption{Resultado MBS da base: translações q1, q2, q3}
         \label{fig::q123_base_exemplo}
@@ -2208,7 +2207,7 @@ base, dada a condição incial fora da sua configuração de equilíbrio.
     \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
     % etc.
       %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.8\textwidth}
+    \begin{subfigure}[b]{0.85\textwidth}
         \includegraphics[width=\textwidth]{figs/q456_base_exemplo}
         \caption{Resultado MBS da base: rotações q4, q5, q6}
         \label{fig::q456_base_exemplo}
@@ -2275,6 +2274,13 @@ ponto está para o modelo experimental assim como $\mathbf{p}^M$ está para o
 modelo teórico da base. Da mesma forma, o referencial local da placa é
 equivalente ao referencial SC-R3 do modelo teórico.
 
+\begin{figure}[h]
+	\centering 
+ 	\includegraphics[width=0.95\textwidth]{figs/acelerometos-base}
+ 	\caption{Dsitribuição dos acelerômetros na base}
+ 	\label{fig::acelerometos-base}
+\end{figure}
+
 \subsubsection{Acelerômetros}
 
 São utilizados no total 7 acelerômetros uni-axiais piezoelétricos, fixados à
@@ -2282,13 +2288,6 @@ placa por bases magnéticas. A Figura~\ref{fig::acelerometos-base} apresenta a
 distribuição dos acelerômetros na estrutura, onde são representados pelos
 pequenos cilindros indicados, cuja direção de medição é a mesma do seu eixo, e o
 sentido positivo sempre para fora da placa.
-
-\begin{figure}[h]
-	\centering 
- 	\includegraphics[width=0.95\textwidth]{figs/acelerometos-base}
- 	\caption{Dsitribuição dos acelerômetros na base}
- 	\label{fig::acelerometos-base}
-\end{figure}
 
 Assim como foi assumido no modelo para AEF da base, a placa de fixação do robô é
 muito rígida em relação à estrutura de perfis de alumínio. Ou seja, as
@@ -2402,9 +2401,6 @@ sensores, a base e os módulos de aquisição, assim como as conexões entre ele
  	\caption{Diagrama da bancada experimental}
  	\label{fig::diagrama_bancada}
 \end{figure}
-
-\todo[inline]{Incluir fontes das figuras dos sensores}
-
 
 
 \subsection{Aquisição e tratamento dos dados}
@@ -2595,7 +2591,7 @@ analisada a faixa de $0$ a $500~Hz$. Em seguida, identifica-se os modos ou picos
 nesta faixa. Ainda há opção da contagem automática, se fornecido um valor
 mínimo de mangnitude para caracterizar o modo.
 
-\missingfigure{Inlcluir imagem da contagem de picos}
+%\missingfigure{Inlcluir imagem da contagem de picos}
 
 Com isso o programa realiza uma estimativa dos coeficientes de um polinômio do
 modelo FRF analítico, pelo ajuste de curva ao modelo experimental, apresentado
@@ -2662,50 +2658,37 @@ acordo com a expressão:
 
 Como demonstrado na seção~\ref{sec::amortecimento}, os parâmetros $\alpha$
 e $\beta$ se baseiam no resultado do amortecimento modal ao longo de uma
-faixa de frequência de interesse. Repetindo aqui a equação~\ref{eq::xir}:
+faixa de frequência de interesse. Aplicando-se a equação~\ref{eq::brian} aos
+resultados experimentais da Tabela~\ref{tab::resultado_modal}, tem-se:
 %
-\begin{equation*}
-	\xi_r = \frac{1}{2}\left(\frac{\alpha}{\omega_r} + \beta \omega_r\right )
-\end{equation*}
-%
-Onde $\xi_r$ é o amortecimento modal na frequência $ \omega_r$. Esses valores
-são os obtidos experimentalmente, e estão na
-Tabela~\ref{tab::resultado_modal}.
-
-
-Dos 6 modos de ressonância, tem-se o seguinte gráfico, na
-Figura~\ref{fig::ajuste_rayleigh}, do amortecimento em função da frequência, :
-
-\begin{figure}[h]
-	\centering 
- 	\includegraphics[width=0.50\textwidth]{figs/ajuste_rayleigh}
- 	\caption[Ajuste de curva do amortecimento experimental]{Ajuste de curva do
- 	amortecimento experimental. Linha cheia: ajuste de curva; ponto: resultados
- 	do amortecimento experimental}
- 	\label{fig::ajuste_rayleigh}
-\end{figure}
-
-%\missingfigure{Gráfico do amortecimento vs frequência}
-
-Fazendo o ajuste do gráfico, em termos da equação~\ref{eq::xir},
-obtém-se:
-%
-\begin{equation}
-	\xi = \frac{7.956372}{\omega} + 0.011667 ~\omega
+\begin{equation} \label{eq::resmatrix_alpha_beta}
+\begin{bmatrix}
+	\alpha \\
+	\beta
+\end{bmatrix}
+= 2
+\begin{pmatrix}
+	6 & 500087 \\ 
+	500087 & 67111 \times 10^9
+\end{pmatrix}^{-1}
+\begin{bmatrix}
+	17.407 \\ 
+	2.32915 \times 10^6
+\end{bmatrix}
 \end{equation}
-%
-Logo, pode-se concluir que:
+
+O resultado da equação~\ref{eq::resmatrix_alpha_beta} fornece:
 %
 \begin{align}
-	\frac{\alpha}{2} &= 7.9564 \Rightarrow  \alpha = 15.9127 \\
-	\frac{\beta}{2} &= 0.0116 \Rightarrow  \beta = 0.0233
+	\alpha &= 0,04489 \\
+	\beta &= 0.00006907
 \end{align}
 %
 
 E finalmente, a matriz de amortecimento resultante, obtida experimentalmente é:
 %
 \begin{equation}
-	C = 15.9127~M + 0.0233~K
+	C = 4,489 \times 10^-2 ~M + 6,907 \times 10^{-5}~K
 \end{equation}
 %
 
@@ -2995,32 +2978,35 @@ Tal que os valores são expressos em $kN/m$ e $kNm/rad$.
 O resultado experimental forneceu os parâmetros:
 %
 \begin{align*}
-	\alpha &= 15.9127 \\
-	\beta &= 0.0233
-\end{align*} \todo{Corrigir valores}
+	\alpha &= 0,04489 \\
+	\beta &= 0.00006907
+\end{align*}
 %
 Que calcula a seguinte matriz de amortecimento:
 %
 \begin{equation*}
 	C =
 \begin{pmatrix}
-11500	&	0		&	0		&	0		&	0		&	0		\\
-0		&	6326	&	0		&	0		&	0		&	-1399	\\
-0		&	0		&	10579	&	0		&	371	 	&	0		\\
-0		&	0		&	0		&	2516 	&	0		&	0		\\
-0		&	0		&	370		&	0		&	1746 	& 	0		\\
-0		&	-1399	&	0		&	0		&	0		&	1518
+65042	&	0		&	0		&	0		&	0		&	0		\\
+0		&	9024	&	0		&	0		&	0		&	-1726	\\
+0		&	0		&	18115	&	0		&	397	 	&	0		\\
+0		&	0		&	0		&	3939 	&	0		&	0		\\
+0		&	0		&	397		&	0		&	8260 	& 	0		\\
+0		&	-1726	&	0		&	0		&	0		&	6744
 \end{pmatrix}
 \end{equation*}
 %
+Valores em $kg/s$ e $kg~m/s$. 
+
 Os resultados das tarefas para esta base são apresentados na
 seção~\ref{sec::res_testes}.
 
 
 \subsection{Base modular PRP}
 
-Esta base consiste em um trilho primário e um trilho secundário sobreposto, que
-será utilizada para posicionar o manipulador dentro do ambiente de uma turbina.
+Esta base consiste em um trilho primário e, sobreposto a este, um trilho
+secundário, utilizados para posicionar o manipulador dentro do ambiente de uma
+turbina.
 Uma plataforma de rotação permite que o trilho secundário forme qualquer ângulo
 em relação ao primário. Sobre o trilho secundário corre a placa de fixação do
 robô. Portanto, esta base é classificada como Prismática-Rotacional-Prismática
@@ -3098,24 +3084,23 @@ Valores em $kN/m$ e $kNm/rad$.
 
 Para a matriz de amortecimento, seria necessário o ensaio experimental da
 estrutura. Como ainda não existe o modelo físico desta vesão da base, os valores
-de $\alpha$ e $\beta$ serão estimados. Uma estimativa razoável, devido à
-semelhança de materiais e peças, é utilizar os mesmos valores obtidos para a
-base de testes.
-Portanto, a matriz de amortecimento torna-se:
+de $\alpha$ e $\beta$ serão estimados. Pode-se considerar uma estimativa
+razoável, devido à semelhança de materiais e peças, $\alpha = 0$ e $\beta = 5
+\times 10^{-5}$. Portanto, a matriz de amortecimento torna-se:
 %
 \begin{equation}
 	C = 
 \begin{pmatrix}
-2150	&	-29	&	-179	&	-8	&	912	&	-4 \\
--29	&	464	&	5	&	-389	&	-12	&	-41 \\
--179	&	5	&	486	&	70	&	-35	&	1 \\
--8	&	-389	&	70	&	446	&	3	&	36 \\
-912	&	-12	&	-35	&	3	&	468	&	-2 \\
--4	&	-41	&	1	&	36	&	-2	&	293 \\
+2136	&	-29		&	-179	&	-8		&	912		&	-4 	\\
+-29		&	450 	&	5		&	-389	&	-12		&	-41 \\
+-179	&	5		&	471		&	70		&	-35		&	1 	\\
+-8		&	-389	&	70		&	446		&	3		&	36	\\
+912		&	-12		&	-35		&	3		&	468		&	-2	\\
+-4		&	-41		&	1		&	36		&	-2		&	293	\\
 \end{pmatrix}
 \end{equation}
 %
-Valores em $kg/s$ e $kg~m/s$. \todo{Corrigir valores}
+Valores em $kg/s$ e $kg~m/s$.
 
 Os resultados das tarefas simuladas nesta base são apresentados na
 seção~\ref{sec::res_prp}.
@@ -3247,14 +3232,8 @@ Valores da matriz em $kN/m$ e $kNm/rad$.
 Novamente, não é disponível esta versão para ensaio experimental, portanto os
 parâmetros $\alpha$ e $\beta$ para formar a matriz de amortecimento são
 estimados.
-Sejam os valores:
-%
-\begin{align*}
-	\alpha &= 0 \\
-	\beta &= 0.00005
-\end{align*}
-%
-A matriz de amortecimento será:
+Sejam os valores $\alpha = 0$ e $\beta = 5 \times 10^{-5}$, a matriz de
+amortecimento será:
 %
 \begin{equation} \label{eq::res_amortecimento_prpp}
 	C = 

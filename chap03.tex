@@ -498,7 +498,7 @@ Figura~\ref{fig::pcm_mh12} ilustra a posição aproximada.
 
 %
 \begin{table}[h] \centering
-\caption{Posição do centro de massa}
+\caption{Posição do centro de massa de cada corpo}
 \label{tab::resumo_cm}
 \begin{tabular}{@{}cccc@{}}
 \toprule
@@ -2594,16 +2594,16 @@ mínimo de mangnitude para caracterizar o modo.
 %\missingfigure{Inlcluir imagem da contagem de picos}
 
 Com isso o programa realiza uma estimativa dos coeficientes de um polinômio do
-modelo FRF analítico, pelo ajuste de curva ao modelo experimental, apresentado
-na Figura~\ref{fig::curve_fitting}. 
-
-\begin{figure}[h]
-	\centering 
- 	\includegraphics[width=0.95\textwidth]{figs/curve_fitting}
- 	\caption{Resultado do ajuste de curva das FRF's pela análise modal}
- 	\label{fig::curve_fitting}
-\end{figure}
-
+modelo FRF analítico, pelo ajuste de curva ao modelo experimental.
+% , apresentado
+% na Figura~\ref{fig::curve_fitting}. 
+% 
+% \begin{figure}[h]
+% 	\centering 
+%  	\includegraphics[width=0.95\textwidth]{figs/curve_fitting}
+%  	\caption{Resultado do ajuste de curva das FRF's pela análise modal}
+%  	\label{fig::curve_fitting}
+% \end{figure}
 Os coeficientes são então processados para obter os parâmetros modais. Os
 resultados da análise modal encontram-se na
 Tabela~\ref{tab::resultado_modal}.
@@ -2680,17 +2680,17 @@ resultados experimentais da Tabela~\ref{tab::resultado_modal}, tem-se:
 O resultado da equação~\ref{eq::resmatrix_alpha_beta} fornece:
 %
 \begin{align}
-	\alpha &= 0,04489 \\
-	\beta &= 0.00006907
+	\alpha &= 4,489 \times 10^-2 \\
+	\beta &= 6,907 \times 10^{-5}
 \end{align}
 %
 
-E finalmente, a matriz de amortecimento resultante, obtida experimentalmente é:
-%
-\begin{equation}
-	C = 4,489 \times 10^-2 ~M + 6,907 \times 10^{-5}~K
-\end{equation}
-%
+% E finalmente, a matriz de amortecimento resultante, obtida experimentalmente é:
+% %
+% \begin{equation}
+% 	C = 4,489 \times 10^-2 ~M + 6,907 \times 10^{-5}~K
+% \end{equation}
+% %
 
 
 
@@ -2947,19 +2947,15 @@ com os outros modelos de base.
 
 Esta é a base foi construída para testes do projeto EMMA e consiste em uma
 plataforma metálica e modular, com trilho e placa para fixação do robô a uma
-altura de aproximadamente $600~mm$ do piso.
-A estrutura é formada por perfis leves de alumínio estrutural. O trilho é
-composto por perfis paralelos de aço inoxidável e patins de rolamentos o acoplam
-à placa de fixação, de alumínio. A Figura~\ref{fig::estrut_modelo_fisico}
-apresentou uma fotografia da base sem o robô.
+altura de aproximadamente $600~mm$ do piso. A
+Figura~\ref{fig::estrut_modelo_fisico} apresentou uma fotografia da base
+construída, sem o robô.
+A estrutura é formada por perfis leves de alumínio estrutural e o trilho é
+composto por perfis de aço inoxidável. Patins de rolamentos
+acoplam a placa de fixação de alumínio aos trilhos paralelos na estrutura.
 
 Na seção~\ref{sec::aef} esta base foi utilizada para apresentar o modelo para
-Análise por Elementos Finitos, que forneceu sua matriz de rigidez. E na
-seção~\ref{sec::experimento} foi detalhado o experimento realizado com o modelo
-físico, a fim de determinar os parâmetros para a matriz de amortecimento
-proporcional.
-
-O resultado da matriz de rigidez encontrada foi:
+Análise por Elementos Finitos, que forneceu sua matriz de rigidez.
 %
 \begin{equation*}
 	K =
@@ -2973,18 +2969,19 @@ O resultado da matriz de rigidez encontrada foi:
 \end{pmatrix}
 \end{equation*}
 %
-Tal que os valores são expressos em $kN/m$ e $kNm/rad$. 
-
-O resultado experimental forneceu os parâmetros:
+E na seção~\ref{sec::experimento} foi detalhado o experimento realizado com o
+modelo físico, a fim de determinar os parâmetros de Rayleigh para a matriz de
+amortecimento. 
 %
 \begin{align*}
 	\alpha &= 0,04489 \\
 	\beta &= 0.00006907
 \end{align*}
 %
-Que calcula a seguinte matriz de amortecimento:
+
+Calcula-se, portanto, a seguinte matriz de amortecimento:
 %
-\begin{equation*}
+\begin{equation}
 	C =
 \begin{pmatrix}
 65042	&	0		&	0		&	0		&	0		&	0		\\
@@ -2994,7 +2991,7 @@ Que calcula a seguinte matriz de amortecimento:
 0		&	0		&	397		&	0		&	8260 	& 	0		\\
 0		&	-1726	&	0		&	0		&	0		&	6744
 \end{pmatrix}
-\end{equation*}
+\end{equation}
 %
 Valores em $kg/s$ e $kg~m/s$. 
 
@@ -3067,6 +3064,7 @@ estrutura. Os deslocamentos prescritos são então aplicados em 6 casos,
 exatamente como foi realizado no exemplo da seção~\ref{sec::base}, de acordo com a
 Tabela~\ref{tab::casoscarreg}. A matriz de rigidez desta versão da base é então
 obtida dos resultados da análise AEF:
+
 %
 \begin{equation}
 	K = 
@@ -3127,7 +3125,7 @@ esquerda, e estendida à direita.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.65\textwidth]{figs/base_telesc}
+ 	\includegraphics[width=0.70\textwidth]{figs/base_telesc}
  	\caption{Base telescópica PRPP para acesso pela escotilha superior}
  	\label{fig::base_telesc}
 \end{figure}

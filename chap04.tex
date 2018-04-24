@@ -30,7 +30,7 @@ A Figura~\ref{fig::anim3D_base_rig} apresenta o resultado da simulação no ambi
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[b]{0.45\textwidth}
+    \begin{subfigure}[b]{0.46	\textwidth}
         \includegraphics[width=\textwidth]{figs/t1_anima3D_base_rig}
         \caption{Tarefa 1}
         \label{fig::t1_anima3D_base_rig}
@@ -38,7 +38,7 @@ A Figura~\ref{fig::anim3D_base_rig} apresenta o resultado da simulação no ambi
     \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
     % etc.
       %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.40\textwidth}
+    \begin{subfigure}[b]{0.44\textwidth}
         \includegraphics[width=\textwidth]{figs/t2_anima3D_base_rig}
         \caption{Tarefa 2}
         \label{fig::t2_anima3D_base_rig}
@@ -54,10 +54,10 @@ resultados obtidos para o modelo MBS acoplado.
 \subsubsection{Posição da ferramenta}
 
 Os resultados de simulação da posição da ponta da ferramenta para Tarefa 1 são
-apresentados a seguir. A Figuras~\ref{fig::t1_posf_base_rig} fornece o valor de
+apresentados a seguir. A Figura~\ref{fig::t1_posf_base_rig} fornece o valor de
 cada coordenada $x, y, z$ no referencial inercial (linha cheia) e também o valor
 de referência (linha tracejada), fornecido pela cinemática inversa. A
-Figura~\ref{fig::t1_posf_base_rig} fornece o erro de posição, ou seja, a
+Figura~\ref{fig::t1_erroposf_base_rig} fornece o erro de posição, ou seja, a
 diferença entre o valor de referência dado pela cinemática inversa e o efetivo,
 de cada coordenada, assim como o erro absoluto (linha tracejada).
 
@@ -127,7 +127,7 @@ erro de cada coordenada, com respeito ao referencial inercial.
 
 \begin{figure}[h!]
 	\centering 
- 	\includegraphics[width=0.80\textwidth]{figs/t2_velf_base_rig}
+ 	\includegraphics[width=0.85\textwidth]{figs/t2_velf_base_rig}
  	\caption{Velocidades das coordenadas da ferramenta para base rígida -- Tarefa
  	2}
  	\label{fig::t2_velf_base_rig}
@@ -135,7 +135,7 @@ erro de cada coordenada, com respeito ao referencial inercial.
 
 \begin{figure}[h!]
 	\centering 
- 	\includegraphics[width=0.80\textwidth]{figs/t2_errovelf_base_rig}
+ 	\includegraphics[width=0.85\textwidth]{figs/t2_errovelf_base_rig}
  	\caption{Erro de velocidade da ferramenta para base rígida -- Tarefa 2}
  	\label{fig::t2_errovelf_base_rig}
 \end{figure}
@@ -159,8 +159,6 @@ Figura~\ref{fig::t2_erroori_base_rig} apresenta o erro de orientação na Tarefa
  	1}
  	\label{fig::t1_erroori_base_rig}
 \end{figure}
-
-
 
 \begin{figure}[h!]
 	\centering 
@@ -194,13 +192,213 @@ Tarefa 2 & 0,07       & 16,5	   & 11,5       & 0,45                & 0,032				& 
 
 \subsection{Base de testes} \label{sec::res_testes}
 
+Apresenta-se os resultados das trajetórias considerando o manipulador montado
+sobre a base de testes.
+
+\subsubsection{Posição do ponto virtual}
+
+O reusltado da Figura~\ref{fig::t1_q123456_base_testes} apresenta a variação das
+coordenadas generalizadas $q1$ a $q3$, referentes às translações, e $q4$ a $q6$,
+referentes às rotações do ponto virtual de acoplamento base e robô para a
+trajetória da Tarefa 1.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{figs/t1_q123_base_testes}
+        \caption{Deslocamentos do ponto virtual}
+        \label{fig::t1_q123_base_testes}
+    \end{subfigure}
+    \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
+    % etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{figs/t1_q456_base_testes}
+        \caption{Rotações do ponto virtual}
+        \label{fig::t1_q456_base_testes}
+    \end{subfigure}
+    \caption{Variações de posição e orientação da base de testes -- Tarefa 1}
+    \label{fig::t1_q123456_base_testes}
+\end{figure}
+
+A Figura~\ref{fig::t1_pvirtural_base_testes} ilustra o rastro da posição do
+ponto virtual (origem do robô) no ambiente 3D, para a trajetória da Tarefa 1.
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.70\textwidth]{figs/t1_pvirtural_base_testes}
+ 	\caption{Rastro da posição do ponto virtual -- Tarefa 1}
+ 	\label{fig::t1_pvirtural_base_testes}
+\end{figure}
+
+As Figuras~\ref{fig::t2_q123456_base_testes} e
+\ref{fig::t2_pvirtural_base_testes} apresentam estes resultados para a
+Tarefa 2.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{figs/t2_q123_base_testes}
+        \caption{Deslocamentos do ponto virtual}
+        \label{fig::t2_q123_base_testes}
+    \end{subfigure}
+    \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
+    % etc.
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{figs/t2_q456_base_testes}
+        \caption{Rotações do ponto virtual}
+        \label{fig::t2_q456_base_testes}
+    \end{subfigure}
+    \caption{Variações de posição e orientação da base de testes -- Tarefa 2}
+    \label{fig::t2_q123456_base_testes}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.70\textwidth]{figs/t2_pvirtural_base_testes}
+ 	\caption{Rastro da posição do ponto virtual -- Tarefa 2}
+ 	\label{fig::t2_pvirtural_base_testes}
+\end{figure}
+
+
 \subsubsection{Posição da ferramenta}
+
+A Figura~\ref{fig::t1_posf_base_testes} fornece as posições efetiva (linhas
+cheias) e ideal (linhas tracejadas) da Tarefa 1. E a
+Figura~\ref{fig::t1_erroposf_base_testes} o erro de cada coordenada, com
+respeito ao referencial inercial, também para a Tarefa 1.
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/t1_posf_base_testes}
+ 	\caption{Posições das coordenadas da ferramenta para base de testes -- Tarefa
+ 	1}
+ 	\label{fig::t1_posf_base_testes}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/t1_erroposf_base_testes}
+ 	\caption{Erro de posição da ferramenta para base de testes -- Tarefa 1}
+ 	\label{fig::t1_erroposf_base_testes}
+\end{figure}
+
+A Figura~\ref{fig::t2_posf_base_testes} fornece as posições efetiva e ideal da
+Tarefa 2, e a Figura~\ref{fig::t2_erroposf_base_testes} o erro de cada
+coordenada, com respeito ao referencial inercial.
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/t2_posf_base_testes}
+ 	\caption{Posições das coordenadas da ferramenta para base de testes -- Tarefa
+ 	2}
+ 	\label{fig::t2_posf_base_testes}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/t2_erroposf_base_testes}
+ 	\caption{Erro de posição da ferramenta para base de testes -- Tarefa 2}
+ 	\label{fig::t2_erroposf_base_testes}
+\end{figure}
+
+
 
 \subsubsection{Velocidade da ferramenta}
 
+São apresentados os gráficos da velocidade da ponta da ferramenta (linhas
+cheias) e as velocidades de referência dadas pela cinemática inversa (linhas
+tracejadas), na Figura~\ref{fig::t1_velf_base_testes} para a Tarefa 1 e na
+Figura~\ref{fig::t1_errovelf_base_testes} os erros em relação a velocidade de
+referência, no referencial inercial.
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/t1_velf_base_testes}
+ 	\caption{Velocidades das coordenadas da ferramenta base de testes --
+ 	Tarefa 1}
+ 	\label{fig::t1_velf_base_testes}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/t1_errovelf_base_testes}
+ 	\caption{Erro de velocidade da ferramenta para base de testes --
+ 	Tarefa 1}
+ 	\label{fig::t1_errovelf_base_testes}
+\end{figure}
+
+Para a Tarefa 2, a Figura~\ref{fig::t2_posf_base_testes} fornece as velocidades
+efetivas e ideais . A Figura~\ref{fig::t2_erroposf_base_testes} o erro de cada
+coordenada, com respeito ao referencial inercial.
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/t2_velf_base_testes}
+ 	\caption{Velocidades das coordenadas da ferramenta base de testes --
+ 	Tarefa 2}
+ 	\label{fig::t2_velf_base_testes}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/t2_errovelf_base_testes}
+ 	\caption{Erro de velocidade da ferramenta para base de testes --
+ 	Tarefa 2}
+ 	\label{fig::t2_errovelf_base_testes}
+\end{figure}
+
+
 \subsubsection{Orientação da ferramenta}
 
+A Figura~\ref{fig::t1_erroori_base_testes} apresenta o erro de orientação,
+representado pelo ângulo $\theta$, para a Tarefa 1. A
+Figura~\ref{fig::t2_erroori_base_testes} apresenta o erro de orientação na
+Tarefa 2.
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/t1_erroori_base_testes}
+ 	\caption{Erro de orientação da ferramenta para base de testes -- Tarefa
+ 	1}
+ 	\label{fig::t1_erroori_base_testes}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.80\textwidth]{figs/t2_erroori_base_testes}
+ 	\caption{Erro de orientação da ferramenta para base de testes -- Tarefa
+ 	2}
+ 	\label{fig::t2_erroori_base_testes}
+\end{figure}
+
+
+\subsubsection{Erros máximos - Base de testes}
+
+A Tabela~\ref{tab::erros_base_testes} resume os erros máximos de posição,
+velocidade e orientação encontrados em cada tarefa. Os erros de
+posição são dados nas 3 coordenadas cartesianas do referencial inercial; o erro
+de velocidade é fornecido na direção tangente da trajetória; e o erro de
+orientação é dado como um ângulo $\theta$ na direção do eixo $\omega$.
+
+\begin{table}[h!]
+\centering
+\caption{Resumo dos erros máximos encontrados -- Base de testes}
+\label{tab::erros_base_testes}
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+         & \multicolumn{3}{c}{\textbf{Posição $[mm]$}} & \textbf{Velocidade $[m/s]$} & \multicolumn{2}{c}{\textbf{Orientação $[rad]$}} 	\\ \midrule
+         & x          & y          & z          & tangente            & $\theta$            & $\omega$         		\\
+Tarefa 1 & 1,5    	  & 9,1        & 13,3       & 0,9                 &	0,021				& [0.989,~-0,098,~0,111]                  	\\
+Tarefa 2 & 26     	  & 2,2 	   & 1,1        & 0,9                 & 0,041				& [-0,130,~-0.830,~0,557] \\ \bottomrule
+\end{tabular}
+\end{table}
+
+
 \subsection{Base modular PRP} \label{sec::res_prp}
+
+\lipsum[1-1]
 
 \subsubsection{Posição da ferramenta}
 

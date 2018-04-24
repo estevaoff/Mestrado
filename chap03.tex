@@ -676,14 +676,14 @@ de parâmetros apresentados na Tabela~\ref{tab::pid}:
 \centering
 \caption{Parâmetros de controle PID em cada junta}
 \label{tab::pid}
-\begin{tabular}{@{}clll@{}}
+\begin{tabular}{@{}cccc@{}}
 \toprule
 \textbf{Junta} & \textbf{Kp [kNm]} & \textbf{Ti [kNm]} & \textbf{Td [kNm]} \\ \midrule 
 S              & 2		& 8		& 1		\\
-L              & 500	& 100	& 60	\\
-U              & 200	& 100	& 22	\\
-R              & 5		& 2		& 0,5	\\
-B              & 5		& 2		& 0,5	\\ \bottomrule
+L              & 4		& 8		& 1		\\
+U              & 4		& 8		& 1		\\
+R              & 2		& 1		& 0,15	\\
+B              & 2		& 1		& 0,15	\\ \bottomrule
 \end{tabular}
 \end{table}
 %
@@ -2861,7 +2861,7 @@ orientação, a fim de garantir a qualidade do revestimento.
 
 A primeira tarefa consiste em cobrir uma superfície no plano $xz$, com
 velocidade constante de $40~m/min$ e passo entre paralelos de $3~mm$. A segunda
-tarefa é cobrir uma superfície no plano $yz$ com velocidade de $30~m/min$ e
+tarefa é cobrir uma superfície no plano $yx$ com velocidade de $30~m/min$ e
 passo de $10~mm$.
 
 Os cartões a seguir resumem as informações referentes às trajetórias de cada
@@ -2903,8 +2903,8 @@ representação no ambiente 3D com o robô no início do primeiro paralelo.
 \begin{tcolorbox}
 [colframe=black!75!white, colback=white, title = Tarefa 2 -- Plano yz]
   \textbf{Área:} $(500 \times 40)~mm^2$ \\
-  \textbf{Ponto inicial:} $\mathbf{p}_f = [-0,342,~0,900,~-0,300]$ \\
-  \textbf{Orientação:} $\boldsymbol{\Phi}_{f} = [0,~\pi/2,~0]$ \\
+  \textbf{Ponto inicial:} $\mathbf{p}_f = [-0,300,~0,600,~-0,500]$ \\
+  \textbf{Orientação:} $\boldsymbol{\Phi}_{f} = [\pi/2,~\pi/2,~0]$ \\
   \textbf{Passo:} $10~mm$ \\
   \textbf{Número de paralelos:} 4 \\
   \textbf{Velocidade da ferramenta:} $30~m/min$
@@ -2920,7 +2920,7 @@ representação no ambiente 3D com o robô no início do primeiro paralelo.
     \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
     % etc.
       %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{figs/traj2_3d}
         \caption{Trajetória 2 no ambiente 3D}
         \label{fig::traj2_3d}

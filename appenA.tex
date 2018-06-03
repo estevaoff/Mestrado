@@ -1,1 +1,79 @@
-\chapter{Algumas Demonstra{\c c}\~oes}
+\appendix
+\chapter{Código Sophia-Maple}\label{apendiceA}
+
+\section{Parâmetros do robô}
+
+\lstset{% general command to set parameter(s)
+basicstyle=\small,          % print whole listing small
+keywordstyle=\color{black}\bfseries\underbar, % underlined bold black keywords
+identifierstyle= ,          % nothing happens
+commentstyle=\color{white}, % white comments
+stringstyle=\ttfamily,      % typewriter type for strings
+showstringspaces=false}     % no special string spaces
+
+\begin{lstlisting}         
+param_mh12:= {
+mZ= 40.5,
+mS= 36.7,
+mL= 14.7,
+mU= 25.3,
+mR= 10.1,
+mB= 18.6,
+InZ11= 0.732, InZ22= 0.335, InZ33= 0.567, 
+InZ12= 0.013, InZ13= 0.000, InZ23= 0.000,
+InS11= 0.811, InS22= 0.695, InS33= 0.923, 
+InS12= 0.293, InS13= 0.091, InS23= 0.064,
+InL11= 0.051, InL22= 0.791, InL33= 0.798, 
+InL12= -0.008, InL13= -0.032, InL23= 0.011,
+InU11= 0.314, InU22= 0.367, InU33= 0.418, 
+InU12= 0.149, InU13= -0.077, InU23= -0.057,
+InR11= 0.173, InR22= 0.052, InR33= 0.148, 
+InR12= -0.014, InR13= 0.001, InR23= 0.004,
+InB11= 0.235, InB22= 0.039, InB33= 0.243, 
+InB12= -0.018, InB13= 0.000, InB23= 0.000,
+pcmZx= 0.079, pcmZy= -0.050, pcmZz= 0,
+pZSx= 0.165, pZSy= 0, pZSz= 0,
+pcmSx= 0.124, pcmSy= 0.027, pcmSz= 0.008,
+pSLx= 0.285, pSLy= 0.155, pSLz= 0,
+pcmLx= 0.281, pcmLy= -0.025, pcmLz= -0.115,
+pLUx= 0.614, pLUy= 0, pLUz= 0,
+pcmUx= 0.123, pcmUy= 0.115, pcmUz= -0.025,
+pURx= 0.200, pURy= 0.640, pURz= 0,
+pcmRx= 0.039, pcmRy= -0.224, pcmRz= 0,
+pRBx= 0, pRBy= 0, pRBz=0,
+pcmBx= 0, pcmBy= 0.146, pcmBz= 0,
+pBTx = 0, pBTy= 0.442, pBTz=0,
+kpS= 2000, tiS= 8000, tdS= 1000,
+kpL= 4000, tiL= 8000, tdL= 1000,
+kpU= 4000, tiU= 8000, tdU= 1000,
+kpR= 2000, tiR= 1000, tdR= 150,
+kpB= 2000, tiB= 1000, tdB= 150
+};
+\end{lstlisting}
+
+\section{Modelo robô em base flexível}
+
+\begin{lstlisting}
+# Inicio das ferramentas do toolbox e do Sophia
+restart;
+with(plottools):
+with(plots):
+with(linalg):
+with(CodeTools):
+with(codegen, cost, optimize, makeproc):
+read "C:\\Sophia\\sophia_V18";
+
+# Numero de graus de liberdade do sistema:
+gdl:= 11;
+&kde gdl;
+
+# Definicao dos referenciais e corpos do sistema
+chainSimpRot([F, Th1, 1, q4],[Th1, Th2, 2, q5],[Th2, Z, 3, q6], 
+[Z, S, 1, q7], [S, L, 3, q8], [L, U, 3, q9], [U, R, 2, q10], 
+[R, B, 3, q11]):
+
+
+
+\end{lstlisting}
+
+

@@ -83,9 +83,9 @@ sistema de referência \emph{global} ou \emph{inercial}. O segundo tipo é
 solidário a cada componente do sistema, representando um SC \emph{local}, que
 translada e gira com o corpo.
 
-A Figura~\ref{fig::sist_refs} apresenta um corpo B, seu referencial local SC-B e
-um referncial inercial SC-R, que descrevem o mesmo ponto $p$ em B, por 2 vetores
-diferentes.
+A Figura~\ref{fig::sist_refs} apresenta um corpo B, seu referencial local SC-B,
+cuja origem está no ponto $o$, fixo em B, e um referncial inercial SC-R, que
+descrevem o mesmo ponto $p$ em B, por 2 vetores diferentes.
 
 \begin{figure}[h]
 	\centering 
@@ -102,18 +102,18 @@ definidos com 3 coordenadas:
 	^{B}\textrm{\textbf{u}}^{p} = [b1, b2, b3]^{B}
 \end{align}
 %
-Note-se que $^{R}\textrm{\textbf{u}}^{p}$ também pode ser escrito como a soma de
+Note-se que $^{R}\textrm{\textbf{v}}^{p}$ também pode ser escrito como a soma de
 2 vetores:
 %
 \begin{equation}
-	^{R}\textrm{\textbf{u}}^{p} = {}^{R}\textrm{\textbf{u}}^{B} + 
+	^{R}\textrm{\textbf{u}}^{p} = {}^{R}\textrm{\textbf{u}}^{o} + 
 	{}^{B}\textrm{\textbf{u}}^{p}
 \end{equation}
 %
 
-Logo, qualquer ponto no do corpo B pode ser descrito como uma soma da posição do
-referencial do corpo, com respeito ao referencial global e o vetor posição do
-ponto com respeito ao refencial local.
+Logo, qualquer ponto $p$ fixo no corpo B pode ser descrito como uma soma da
+posição da origem do referencial do corpo com respeito ao referencial global
+e o vetor posição do ponto $p$ com respeito ao refencial local.
 
 
 \subsubsection{Coordenadas generalizadas}
@@ -143,12 +143,6 @@ q1}{\mathrm{d} t}, ..., \frac{\mathrm{d} qn}{\mathrm{d} t}\right] \rightarrow  \
 \end{equation}
 %
 
-
-
-% A escolha dos SC's impacta substancialmente no tamanho das equações
-% cinemáticas que descrevem os movimentos dos corpos. Uma escolha perspicaz do conjunto de
-% SC's utilizado é importante para a eficiência do código e do cálculo
-% computacional.
 
 \subsubsection{Matrizes de Rotação}
 
@@ -199,26 +193,24 @@ Outros métodos comuns para especificar uma matriz de rotação são ângulos
 \textit{Roll-Pitch-Yaw}, Quaternions~\cite{sciavicco2012modelling} e ângulos de
 Bryan~\cite{wittenburg2013dynamics}.
 
-Também é possível uma representação exponencial da matriz de rotação. É
-demonstrado em~\cite{murray1994mathematical}, utilizando o método dos parâmetros
-de Rodrigues, como representar a rotação $R \in \mathbb{R}^{3\times3}$, na forma
-exponencial em termos de eixo, $\boldsymbol{\omega} \in \mathbb{R}^{3}$, e um
-ângulo, $\theta \in \mathbb{R}$.
+Também é possível uma representação exponencial da matriz de rotação utilizando
+a formulação de Euler-Rodrigues~\cite{dai2015euler}, para representar a
+rotação $R \in \mathbb{R}^{3\times3}$, na forma exponencial em termos de eixo,
+$\boldsymbol{\omega} \in \mathbb{R}^{3}$, e um ângulo, $\theta \in \mathbb{R}$.
 %
 \begin{equation}
 	R(\omega, \theta) = e^{\hat{\omega} \theta}
-\end{equation}
 %
 
-Realizando o devido desenvolvimento matemático é possível chegar-se a uma
-solução fechada para o ângulo e eixo correspondentes a uma matriz de rotação, de acordo com as
-equações:
+Realizando o devido desenvolvimento matemático~\cite{murray1994mathematical} é
+possível chegar-se a uma solução fechada para o ângulo e eixo correspondentes a
+uma matriz de rotação, de acordo com as equações:
 %
 \begin{gather}
 %eq1
 	\theta =  \cos^{-1}\left(\frac{tr(R) - 1}{2}\right) \label{eq::ang_erro} \\
 %eq2	
-	\omega = \frac{1}{2 s_\theta} \begin{bmatrix}
+	\omega = \frac{1}{2 \sin{\theta}} \begin{bmatrix}
 r_{32}-r_{23}\\ 
 r_{13}-r_{31}\\ 
 r_{21}-r_{12}
@@ -352,36 +344,38 @@ B em relação a R e o termo $2{}^{R}\boldsymbol{\omega}^{B} \times
 \subsubsection{Cinemática de Manipuladores Robóticos}
 
 Manipuladores robóticos consistem em um sistema mecânico composto por uma série
-de corpos (elos), conectados por juntas. Cada junta fornece um, e apenas um,
-grau de liberdade, podendo ser translacional (primsático) ou rotacional (juntas de
-revolução). A estrutura de juntas de um robô pode ser descrita por uma sequência
-de caracteres representando os tipos de juntas: ``R'' para rotacional e ``P''
-para prismática. Logo, o manipulador MOTOMAN MH12 pode ser caracterizado por
-RRRRRR, por exemplo, por ser formado por 6 juntas de revolução.
+de corpos (elos), conectados por juntas. Cada junta permite o movimento relativo
+entre os elos, denominados graus de liberdade (gdl), podendo estes serem
+translacionais (primsáticos) ou rotacionais (juntas de revolução). A estrutura de juntas de um
+robô pode ser descrita por uma sequência de caracteres representando os tipos de
+juntas: ``R'' para rotacional e ``P'' para prismática. Logo, o manipulador
+MOTOMAN MH12 pode ser caracterizado por RRRRRR, por exemplo, por ser formado por
+6 juntas de revolução.
 
 A formulação das relações cinemáticas permitem o estudo de um problema chave em
 robótica, da cinemática direta, que consiste na determinação de um método
-sistemático e geral para descrever a pose (posição e orientação) do
-efetuador, $\xi_{E}$, em função do valor das juntas, $\mathbf{q}$. Pode ser
-expresso matematicamente como:
+sistemático e geral para descrever a pose (posição e orientação) do efetuador,
+$\xi_{E}$, em função das coordenadas de posição $\mathbf{q}$ de suas
+juntas.
+Pode ser expresso matematicamente como:
 %
 \begin{equation}
 	\xi_{E} = \mathcal{K}(\mathbf{q})
 \end{equation}
 %
 
-Um método, presente em praticamente todos os livros de introdução a robótica,
-utilizado para sistematização da análise cinemática de manipuladores robóticos,
-é de \emph{Denavit-Hartenberg} (DH)~\cite{denavit1955}.
+Presente em praticamente todos os livros de introdução a robótica, utilizado
+para sistematização da análise cinemática direta de manipuladores robóticos,
+encontra-se o método de \emph{Denavit-Hartenberg} (DH)~\cite{denavit1955}.
 Consiste em uma convenção para fornecer sistematicamente as matrizes de
 transformação homogênea de cada sistema de coordenadas a partir de apenas 4
 parâmetros:
 $a_i, \alpha_i, d_i, \vartheta_i$, que são, respectivamente para cada elo $i$:
 comprimento, torção, \textit{offset} e o ângulo da junta.
-Uma ilustração da utilização do método é apresentada na
-Figura~\ref{fig::tipica_dh}, que representa um manipulador tipo pulso esférico
-de 3 gdl e na Tabela~\ref{tab::param_dh} a estrutura típica de representação dos
-parâmetros DH.
+Uma exemplo da utilização do método é apresentado pelo manipulador do tipo pulso
+esférico de 3 gdl da Figura~\ref{fig::tipica_dh}. Na Tabela~\ref{tab::param_dh}
+apresenta-se a estrutura típica de representação dos parâmetros DH para este
+manipulador.
 
 \begin{figure}[h]
 	\centering 
@@ -393,7 +387,7 @@ parâmetros DH.
 \end{figure}
 
 %
-\begin{table}
+\begin{table}[h!]
 \centering
 \caption{Parâmetros DH do pulso esférico}
 \label{tab::param_dh}
@@ -409,8 +403,9 @@ Elo & $a_i$ & $\alpha_i$ & $d_i$ & $\vartheta_i$ \\ \midrule
 
 \subsection{Cinemática Inversa}\label{sec::ikin}
 
-O problema inverso, ou seja, encontrar o valor das juntas $\mathbf{q}$ que
-satisfazem $\xi_{E}$, é feito pela análise da cinemática inversa. Logo:
+O problema inverso, ou seja, encontrar as coordenadas de posição das juntas
+$\mathbf{q}$, que satisfazem $\xi_{E}$, é feito pela análise da cinemática
+inversa. Logo:
 %
 \begin{equation} \label{eq::invq}
 	\mathbf{q} = \mathcal{K}^{-1}(\xi_{E})
@@ -431,22 +426,23 @@ problema da cinemática inversa é muito mais complexo:
 \end{itemize}
 %
 
-De qualquer forma, para o manipulador de 6 gdl modelo MOTOMAN MH12 que é tratado
-nesta pesquisa, há pelo menos 16 soluções admissíveis. Este número é
-reduzido quando considerados os limites de ângulo das juntas.
+O manipulador de 6 gdl modelo MOTOMAN MH12, que é utilizado para estudo de caso
+nesta pesquisa, fornece dentro de seu espaço de trabalho até 16 soluções
+admissíveis.
+Este número é reduzido quando considerados os limites de ângulo das juntas e
+configuração desejada.
 
 Os manipuladores comerciais evoluiram mantendo uma estrutura cinematicamente
 simples, muito em virtude da dificuldade da solução da cinemática inversa.
-Há hoje diversas
-técnicas para resolver o problema inverso, o que tem permitido explorar
-manipuladores mais complexos. Para citar alguns exemplos:
-método geométrico~\cite{spong2006robot}, 
-subproblemas de Paden-Kahan~\cite{murray1994mathematical}, 
-Jacobiano Transposto, Pseudoinversa e Mínimos Quadrados
-Amortecido~\cite{buss2004introduction}.
+Há hoje diversas técnicas para resolver o problema inverso, o que tem permitido
+explorar manipuladores mais complexos. Para citar alguns exemplos:
+Método Geométrico~\cite{spong2006robot}, Método Geométrico
+Iterativo~\cite{pinto1989solucao}, Subproblemas de
+Paden-Kahan~\cite{murray1994mathematical}, Jacobiano Transposto, Pseudoinversa e
+Mínimos Quadrados Amortecido~\cite{buss2004introduction}.
 
-O método escolhido para resolver a cinemática inversa foi o geométrico, devido à
-sua simplicidade e ao manipulador MH12 possuir uma estrutura cinemática bastante
+Escolheu-se o método geométrico para resolver a cinemática inversa, devido à sua
+simplicidade e ao manipulador MH12 possuir uma estrutura cinemática bastante
 favorável à solução por este método. É demonstrado a seguir a metodologia
 apresentada por \citet{spong2006robot}, utilizando o conceito de desacoplamento
 cinemático, para chegar à solução da equação~\ref{eq::invq} pela abordagem
@@ -455,7 +451,7 @@ geométrica.
 
 \subsubsection{Desacoplamento cinemático}
 
-Para manipuladores que possuem 6 juntas, tal que as 3 últimas se interceptam no
+Para manipuladores que possuem 6 juntas, tais que as 3 últimas se interceptam no
 mesmo ponto, é posível desacoplar a cinemática inversa em dois subproblemas mais
 simples: cinemática inversa de posição e cinemática inversa de orientação. Ou
 seja, para manipuladores de 6 gdl com pulso esférico, o problema torna-se
@@ -1253,8 +1249,8 @@ também nas seguintes propriedades:
   seja conhecida;
   \item \emph{Homogeneidade}. A FRF independe do nível de excitação.
   \item \emph{Reciprocidade}. A FRF medida entre quaisquer 2 gdl's independe
-  de quem é a excitação e quem é a resposta. Isto implica que a matriz
-  $H(\omega)$ é simétrica.
+  de quem é a excitação e quem é a resposta. Isto implica que a matriz Função de
+  Resposta em Frequência é simétrica.
 \end{itemize}
 
 \subsubsection{Teste com martelo instrumentado}
@@ -1274,21 +1270,20 @@ uma análise modal com martelo instrumentado.
 \end{figure}
 
 A forma da resposta em frequência da excitação do impacto depende da massa e
-rigidez do martelo e da estrutura. Segundo~\citet{rao2011mechanical}, a faixa
-útil de frequência da excitação é limitada, de modo que a partir de um certo
-valor a estrutura não recebe energia suficiente para excitar modos de frequência
-mais altas. Normalmente, este valor é limitado a uma queda de amplitude da
-excitação entre $10~dB$ a $20~dB$. A Figura~\ref{fig::range_hammer}
-apresenta um resultado típico da resposta em frequência da excitação por impacto, indicando a
-faixa útil a ser considerada.
+rigidez do martelo e da estrutura. Isto implica que a faixa útil de frequência
+da excitação é limitada~\cite{rao2011mechanical}, de modo que a partir de um
+certo valor a estrutura não recebe energia suficiente para excitar modos de
+frequência mais altas. Normalmente, este valor é limitado a uma queda de
+amplitude da excitação entre $10~dB$ a $20~dB$. A Figura~\ref{fig::range_hammer}
+apresenta um resultado típico da resposta em frequência da excitação por
+impacto, indicando a faixa útil a ser considerada.
 
 \begin{figure}[h]
 	\centering 
  	\includegraphics[width=0.55\textwidth]{figs/range_hammer}
- 	\caption[Resposta em frequência de um impacto por martelo
- 	instrumentado]{Resposta em frequência de um impacto por martelo
- 	instrumentado \\
- 	Fonte: adaptado de \cite{rao2011mechanical}}
+ 	\caption[Espectro em frequência da força exercida por um impacto de um martelo
+ 	instrumentado]{Espectro em frequência da força exercida por um impacto de um martelo
+ 	instrumentado. Fonte: adaptado de \cite{rao2011mechanical}}
  	\label{fig::range_hammer}
 \end{figure}
 
@@ -1317,13 +1312,13 @@ $H(\omega)$ em diagrama de bloco.
 \end{figure}
 
 Normalmente os dados são obtidos em amostras e são computadas as médias, para
-obter-se a FRF e a Coerência. A função de coerência é usada como
-ferramenta para avaliação da qualidade dos dados, identificando o quanto o dado de saída se
+obter-se a FRF e a Coerência. A função de coerência é usada como ferramenta para
+avaliação da qualidade dos dados, identificando o quanto o dado de saída se
 relaciona com o de entrada~\cite{avitabile2001experimental}. A coerência
-$\beta(\omega)$ mede o ruído presente no sinal, sendo portanto $\beta = 0$ ruído
-puro e $\beta \approx 1$ como alta correlação dos sinais de entrada e saída,
-livres de ruído. A Figura~\ref{fig::coerencia} apresenta um resultado típico da
-análise modal, sobrepondo a magnitude da FRF, o espectro de frequência da
+$\beta(\omega)$ quantifica a correlação presente no sinal, sendo portanto $\beta
+\approx 1$ como alta correlação dos sinais de entrada e saída e $\beta = 0$
+nenhuma correlação. A Figura~\ref{fig::coerencia} apresenta um resultado típico
+da análise modal, sobrepondo a magnitude da FRF, o espectro de frequência da
 excitação e a coerência. Note-se que a partir de aproximadamente $400~Hz$, a
 coerência diminiu drasticamente, e portanto, o resultado a partir desta
 frequência é muito ruidoso e não deve ser considerado útil.
@@ -1368,7 +1363,7 @@ representado na Figura~\ref{fig::tipical_frf}
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.85\textwidth]{figs/tipical_frf}
+ 	\includegraphics[width=0.75\textwidth]{figs/tipical_frf}
  	\caption[Resultado para determinação dos parâmetros modais]{Resultado para
  	determinação dos parâmetros modais \\ Fonte: adaptado de
  	\cite{rao2011mechanical}}
@@ -1402,14 +1397,15 @@ verificados em~\cite{rao2011mechanical}.
 O ajuste de curva (\textit{curve fitting}) é o processo analítico que determina
 os parâmetros matemáticos que fornecem o melhor ajuste aos dados
 obtidos experimentalmente~\cite{dossing1988structural}.
+
 Os métodos de ajuste de curva podem ser classificados como: 
 %
-\begin{enumerate}[label=\emph{\alph*})]
+\begin{enumerate*}[label=\emph{\alph*})]
 	\item local SDOF;
 	\item local MDOF;
 	\item Global;
 	\item Multi-referenciado.
-\end{enumerate}
+\end{enumerate*}
 %
 Os métodos locais são aplicados para uma FRF de cada vez e são indicados para
 conjuntos de densidade modal moderada. Os métodos global e multi-referenciado
@@ -1545,19 +1541,19 @@ ilustra cada classe esquematicamente.
 \end{figure}
 
 Como exemplo de manipuladores em flutuação livre são os robôs de serviço
-espaciais, dedicados à manutenção de sistemas em órbita, o que inclui
-o reparo, montagem, reabastecimento e melhorias em espaçonaves, após
-implantação~\cite{flores2014review}. Este sistema é apresentado na
-Figura~\ref{fig::space_robot}, em que um sistema com robô captura uma
-espaçonave  para realizar um seriço em órbita.
+submersíveis, dedicados à manutenção de sistemas subaquáticos, o que inclui o
+reparo, montagem e inspeções nos equipamentos
+instalados~\cite{ridao2015intervention}.
+Na Figura~\ref{fig::girona500} é ilustrado o AUV (veículo subaquático
+autônomo) GIRONA 500 que é equipado com um braço robótico de 4 gdl e realiza
+rotinas de identificação e recuperação de objetos.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.75\textwidth]{figs/space_robot}
- 	\caption[Manipulador sobre base flutuante em órbita]{Manipulador sobre base
- 	flutuante para operação em órbita. \\ Fonte: adaptado de
- 	\cite{flores2014review}}
- 	\label{fig::space_robot}
+ 	\includegraphics[width=0.30\textwidth]{figs/girona500}
+ 	\caption[Manipulador sobre base flutuante submersa]{Manipulador sobre base
+ 	flutuante submersa. \\ Fonte: \citet{ridao2015intervention}}
+ 	\label{fig::girona500}
 \end{figure}
 
 Os macro-micro manipuladores são sistemas robóticos em que é necessário longo
@@ -1578,7 +1574,7 @@ Map}).
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.70\textwidth]{figs/macro_micro}
+ 	\includegraphics[width=0.65\textwidth]{figs/macro_micro}
  	\caption[Macro-micro manipulador]{Macro-micro manipulador para satélite \\
  	Fonte: adaptado de \cite{schubert2000impedance}}
  	\label{fig::macro_micro}
@@ -1603,7 +1599,7 @@ experimentalmente métodos de controle por controle de ponto final inferido.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.50\textwidth]{figs/shaky}
+ 	\includegraphics[width=0.40\textwidth]{figs/shaky}
  	\caption[Estrutura experimental do Shaky II]{Estrutura experimental do Shaky II para validação de
  	controle de ponto final. Fonte: adaptado de \cite{mavroidis1997optimal}}
  	\label{fig::shaky}
@@ -1813,6 +1809,14 @@ posicionamento, ignorando-se a atuação das juntas do sistema macro, e o braço
 robótico (micro) para realizar a tarefa, como é exposto em
 \cite{sharon1993macro} e \cite{lew1994bracing}.
 
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.65\textwidth]{figs/base_telesc_turbina}
+ 	\caption{Base telescópica PRPP para manutenção de revestimento
+ 	\textit{in-situ}}
+ 	\label{fig::base_telesc_turbina}
+\end{figure}
+
 O sistema de base PRPP consite em um mecanismo telescópico com atuadores
 lineares para os braços prismáticos e uma junta rotacional. A estrutura é fixada
 na entrada da escotilha de acesso superior da unidade geradora e o robô é fixado
@@ -1823,15 +1827,7 @@ suportar com boa margem as tensões a que seria submetida, os deslocamentos
 devido à baixa rigidez poderiam reduzir a precisão do robô em realizar a tarefa
 de revestimento.
 
-\begin{figure}[t]
-	\centering 
- 	\includegraphics[width=0.65\textwidth]{figs/base_telesc_turbina}
- 	\caption{Base telescópica PRPP para manutenção de revestimento
- 	\textit{in-situ}}
- 	\label{fig::base_telesc_turbina}
-\end{figure}
-
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering 
  	\includegraphics[width=0.70\textwidth]{figs/prp_turbina}
  	\caption{Base modular PRP para manutenção de revestimento \textit{in-situ}}

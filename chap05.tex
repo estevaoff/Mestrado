@@ -1,20 +1,20 @@
 \chapter{Conclusões}
 
-% Realce dos achados relevantes e originais
+% Realce dos achados relevantes e originais ---------------
 
-A pesquisa oferece um método para verificar se o comportamento dinâmico da base
-de um robô impossibilita a realização adequada de uma tarefa. Novas aplicações
-robóticas, fora do ambiente industrial, os chamados robôs de serviço, requerem a
-instalação de um manipulador robótico para operação \textit{in situ}, muitas
-vezes sendo necessário o projeto de uma base para posicioná-lo, aumentar seu
-alcance ou movimentá-lo em campo. Os requisitos de campo, tais como custo,
-volume, peso, transportabilidade, modularidade e praticidade são incomuns no
-ambiente industrial e representam um desafio conciliá-los com os requisitos
-comuns de um braço robótico projetado para o ambiente bem estruturado. Logo, ser
-capaz de projetar esta base de forma a atender a estes requisitos, é um recurso
-importante e de relevância para o engenheiro projetista.
+% A pesquisa oferece um método para verificar se o comportamento dinâmico da base
+% de um robô impossibilita a realização adequada de uma tarefa. Novas aplicações
+% robóticas, fora do ambiente industrial, os chamados robôs de serviço, requerem a
+% instalação de um manipulador robótico para operação \textit{in situ}, muitas
+% vezes sendo necessário o projeto de uma base para posicioná-lo, aumentar seu
+% alcance ou movimentá-lo em campo. Os requisitos de campo, tais como custo,
+% volume, peso, transportabilidade, modularidade e praticidade são incomuns no
+% ambiente industrial e representam um desafio conciliá-los com os requisitos
+% comuns de um braço robótico projetado para o ambiente bem estruturado. Logo, ser
+% capaz de projetar esta base de forma a atender a estes requisitos, é um recurso
+% importante e de relevância para o engenheiro projetista.
 
-% Avaliação crítica da própria pesquisa: limitações e aspectos positivos
+% Avaliação crítica da própria pesquisa: limitações e aspectos positivos ----
 
 O método de Kane utilizado com o Sophia-Maple, demonstrou uma forma sistemática
 de modelar o sistema multicorpos, permitindo a simplificação das equações de
@@ -24,23 +24,23 @@ prática e direta de se calcular a rigidez da base para qualquer ponto de
 interesse, obtendo-se assim a matriz de rigidez que alimenta o modelo dinâmico
 da base.
 
-Neste ponto, é importante fazer algumas considerações acerca do método
-experimental.
-Hoje, existe uma grande variedade de ferramentas CAD e CAE disponíveis,
-inclusive gratuitas.
-% Alguns exemplos são:
-% % \begin{enumerate*}[label=(\roman*)] \item \emph{Programas CAD gratuitos}:
-% 123D, LibreCAD, FreeCAD, OpenSCAD, QCad; \item \emph{Programas CAE gratuitos}:
-% CONSELF, FreeFem++ e VisualFEA.
-% \end{enumerate*} %
-Assim, obter as matrizes de inércia e de rigidez podem ser uma tarefa
-relativamente simples, econômica e rápida de executar, para qualquer estrutura
-que se deseje analisar. Além disso, no ambiente virtual, é possível realizar
-alterações na estrutura, a fim de se obter os valores da ordem desejada de
-inércia ou rigidez.
+% Neste ponto, é importante fazer algumas considerações acerca do método
+% experimental.
+% Hoje, existe uma grande variedade de ferramentas CAD e CAE disponíveis,
+% inclusive gratuitas.
+% % Alguns exemplos são:
+% % % \begin{enumerate*}[label=(\roman*)] \item \emph{Programas CAD gratuitos}:
+% % 123D, LibreCAD, FreeCAD, OpenSCAD, QCad; \item \emph{Programas CAE gratuitos}:
+% % CONSELF, FreeFem++ e VisualFEA.
+% % \end{enumerate*} %
+% Assim, obter as matrizes de inércia e de rigidez podem ser uma tarefa
+% relativamente simples, econômica e rápida de executar, para qualquer estrutura
+% que se deseje analisar. Além disso, no ambiente virtual, é possível realizar
+% alterações na estrutura, a fim de se obter os valores da ordem desejada de
+% inércia ou rigidez.
 
-Em comparação, obter a matriz de amortecimento é um processo custoso, pelos
-seguintes motivos:
+Pode-se ressaltar que obter a matriz de amortecimento é um processo custoso,
+pelos seguintes motivos:
 %
 \begin{itemize}
   \item Requer o modelo físico construído;
@@ -54,15 +54,25 @@ seguintes motivos:
 \end{itemize}
 %
 
-Assim, antes de se realizar o experimento, sugere-se julgar qual o impacto do
-amortecimento na dinâmica do sistema. É importante ressaltar que o objetivo
-principal do método proposto é oferecer uma forma de estimar se os erros devido
-aos movimentos da base inviabilizam a tarefa que se deve cumprir. Para fazer
-este julgamento, pode-se simplesmente testar, no modelo teórico acoplado, alguns
-coeficientes para a matriz proporcional de amortecimento, e verificar os
-resultados. Se o amortecimento é crítico para uma certa faixa de valores
-possível, então será recomendado realizar o procedimento experimental para obter
-o amortecimento efetivo da estrutura.
+Como esperado, os coeficientes de amortecimento da estrutura metálica da base de
+testes, encontrados experimentalmente, apresentaram valores baixos em relação
+aos coeficientes de rigidez. Isto implica que as forças dissipativas de
+amortecimento são pequenas e influenciam pouco na dinâmica do sistema. Assim,
+para estruturas metálicas, sem dispositivos especiais para amortecimento,
+pode-se estimar os valores dentro de uma faixa razoável e pequena, para obter
+uma solução estimada de simulação e dispensar a necessidade de todo o aparato
+experimental e o modelo físico real da estrutura.
+
+% Assim, antes de se realizar o experimento, sugere-se julgar qual o impacto do
+% amortecimento na dinâmica do sistema.
+% É importante ressaltar que o objetivo principal do método proposto é oferecer
+% uma forma de estimar se os erros devido aos movimentos da base inviabilizam a
+% tarefa que se deve cumprir. Para fazer este julgamento, pode-se simplesmente
+% testar, no modelo teórico acoplado, alguns coeficientes para a matriz
+% proporcional de amortecimento, e verificar os resultados. Se o amortecimento é
+% crítico para uma certa faixa de valores possível, então será recomendado
+% realizar o procedimento experimental para obter o amortecimento efetivo da
+% estrutura.
 
 
 % Comparação crítica com a literatura pertinente
@@ -74,23 +84,24 @@ trajeto, velocidade e orientação da ferramenta acoplada ao efetuador do robô.
 resultados das simulações demonstraram que a base de testes pode ser considerada
 praticamente rígida para realização das tarefas propostas, porque apresentou um
 comportamento dinâmico insignificante com relação às variações de posição e
-velocidade do ponto de acoplamento base e robô. No entanto, um resultado
-inesperado tornou a diferença de trajetória bastante acentuada. A pequena
+velocidade do ponto de acoplamento base e robô. No entanto, uma pequena
 deformação estática da base, após a montagem do robô, propagada até a ponta da
-ferramenta acoplada, evidenciou uma notável diferença para a Tarefa 1 e uma
-pequena mas visível diferença para a Tarefa 2. Ser capaz de prever este aspecto
-da base, permite que sejam realizadas alterações estruturais na base, a fim de
-evitar a deformação estática excessiva. A base modular PRP apresentou resultados
-parecidos com a base de testes.
+ferramenta acoplada, evidenciou uma notável diferença de trajetória para a
+Tarefa 1 e uma pequena mas visível diferença de trajeória para a Tarefa 2.
+Ser capaz de prever este aspecto da base, permite que sejam realizadas
+alterações estruturais, a fim de evitar a deformação estática excessiva.
+A base modular PRP apresentou resultados parecidos, neste sentido, com a base de
+testes.
 
-Para a tarefa que foi proposta, de revestimento, os erros notados nas bases de
-teste e PRP não significam necessariamente a reprovação de sua utilização, porém
-para tarefas de outra natureza, como posicionamento mais preciso, encaixe de
-peças, operações \textit{pick and place}, este tipo de erro pode representar a
-falha da tarefa e reprovação do projeto.
+Para a tarefa que foi proposta, de cobertura de revestimento, os erros
+sistemáticos notados nas bases de teste e PRP não significam necessariamente a
+reprovação de sua utilização, porém para tarefas de outra natureza, como
+posicionamento mais preciso, encaixe de peças, operações \textit{pick and
+place}, este tipo de erro pode representar a falha da tarefa e reprovação do
+projeto.
 
 A base telescópica PRPP apresentou oscilações muito grandes, inclusive
-divergindo da trajetória de referência ao longo das tarefas. Para o caso
+divergindo da trajetória de referência para as duas tarefas. Para o caso
 específico de revestimento, o resultado classifica o projeto desta base como
 impróprio para a aplicação. Da mesma forma que a base PRP, poderia-se propor
 alterações estruturais e verificar-se novos resultados. No entanto, limitações
@@ -105,13 +116,13 @@ Sophia-Maple, com pequenas modifições no código original.
 
 % Conclusão, que pode estar acompanhada de generalização, implicações, perspectivas, recomendações
 
-Espera-se que que o método possa contribuir na comunidade acadêmica como uma
-ferramenta útil para verificação de estratégias de controle associadas a
-sistemas multicorpos flexíveis. Espera-se ainda que este trabalho contribua para
-facilitar e difundir o uso de robôs para o serviço em campo, trazendo mais
-segurança em diversas operações de alto risco para o ser humano. E também, para
-aumentar a produtividade e eficiência de diversos setores que podem se
-beneficiar de soluções robóticas automatizadas e precisas.
+% Espera-se que que o método possa contribuir na comunidade acadêmica como uma
+% ferramenta útil para verificação de estratégias de controle associadas a
+% sistemas multicorpos flexíveis. Espera-se ainda que este trabalho contribua para
+% facilitar e difundir o uso de robôs para o serviço em campo, trazendo mais
+% segurança em diversas operações de alto risco para o ser humano. E também, para
+% aumentar a produtividade e eficiência de diversos setores que podem se
+% beneficiar de soluções robóticas automatizadas e precisas.
 
 
 

@@ -121,9 +121,18 @@ T  & Efetuador        & q6                                        \\ \bottomrule
 
 Este robô é do tipo braço antropomórfico de 6 juntas rotacionais, e portanto 6
 graus de liberdade (6 gdl), contendo o último elo um porta-ferramentas que
-suporta uma carga útil de até 12 kg. A Figura~\ref{fig::mh12_diagram} apresenta
+suporta uma carga útil de até 12 kg. A Figura~\ref{fig::mh12_diagram} define
 os nomes dos elos e coordenadas generalizadas associados a cada um dos sistemas
 de coordenadas e são resumidos na Tabela~\ref{tab::resumo_mh12}.
+
+A última junta, no efetuador, tem a finalidade de orientar a ferramenta em torno
+do seu eixo axial. Como o processo de revestimento por HVOF independe desta
+orientação, esta junta \emph{não será incluída} no modelo MBS do robô, mantendo
+este acoplamento rígido, o que transforma os dois últimos elos e a ferramenta
+acoplada em um único um corpo. Como resultado, tem-se um sistema de 5 gdl. Outra
+observação importante é que o pedestal do robô não realiza movimento em relação
+ao referencial SC-Z, que no modelo de base rígida é o próprio referencial
+inercial.
 
 O espaço de trabalho é apresentado na Figura~\ref{fig::workspace} em que a área
 sombreada é formada por todos os pontos alcançáveis pelo manipulador, dentro dos
@@ -132,23 +141,11 @@ vertical a 2,511~m.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.7\textwidth]{figs/workspace}
+ 	\includegraphics[width=0.65\textwidth]{figs/workspace}
  	\caption[Vistas lateral e superior do espaço de trabalho]{Vistas lateral e
  	superior do espaço de trabalho \\Fonte: adaptada de~\cite{manualmh12}}
  	\label{fig::workspace}
 \end{figure}
-
-% Conforme demonstrado na seção~\ref{sec::ikin}, este tipo de braço robótico
-% permite desacoplar o sistema em 2 sub-problemas: posicionamento e orientação.
-% Logo, para simplificar o modelo e o cálculo da cinemática inversa, serão consideradas
-% as 3 primeiras juntas para posicionamento e 3 últimas (pulso esférico) para
-% orientação da ferramenta.
-
-A última junta, no efetuador, tem a finalidade de orientar a ferramenta em torno
-do seu eixo axial. Como o processo de revestimento por HVOF independe desta
-orientação, esta junta \emph{não será incluída} no modelo MBS do robô, mantendo
-este acoplamento rígido, o que transforma os dois últimos elos e a ferramenta
-acoplada em um único um corpo. Como resultado, tem-se um sistema de 5 gdl.
 
 
 \subsection{Cinemática Direta}\label{sec::dkin}
@@ -474,20 +471,19 @@ Ferramenta                          & -		          & 5,97							   \\ \midrule
 %
 
 Para este modelo dinâmico, não será utilizada a última junta do robô, como foi
-explicado na seção~\ref{sec::descricao_mh12}, de forma que pode-se considerar os
-corpos ``B, T e Ferramenta'' como um único corpo. Assim, as propriedades de
-massa e momento de inércia podem ser somadas e condensadas em uma única
-descrição. 
+explicado na seção~\ref{sec::descricao_mh12}. Assim, para os corpos ``B, T e
+Ferramenta'', as propriedades de massa e momento de inércia podem ser somadas e
+condensadas em uma única descrição.
 
-A partir daqui, estes 3 últimos corpos serão tratadaos como um único corpo e
-será utilizada a denominação do corpo B para representar esse conjunto.
+A partir deste ponto do texto, estes 3 últimos corpos serão tratadaos como um
+único corpo e será utilizada a denominação do corpo B para representar esse conjunto.
 
 Do modelo CAD do MH12 também é possível extrair as posições do centro de massa e
 momentos de inércia de cada elo. Como foi considerado que a massa é distribuida
-homogeneamente no seu volume de cada corpo, resulta-se numa posição estimada do
+homogeneamente no volume de cada corpo, resulta-se numa posição estimada do
 centro de massa. A Tabela~\ref{tab::resumo_cm} resume os valores encontrados
-para a posição do centro de massa com respeito ao referencial de cada elo e a
-Figura~\ref{fig::pcm_mh12} ilustra a posição aproximada.
+para a posição do centro de massa com respeito ao referencial local de cada elo
+e a Figura~\ref{fig::pcm_mh12} ilustra a posição aproximada.
 
 \begin{figure}[h]
 	\centering 
@@ -628,7 +624,7 @@ pela equação~\ref{eq::peso}:
 \end{equation}
 %
 Onde $\mathbf{g}$ refere-se ao vetor da aceleração da gravidade, que atua sempre
-no sentido de $-x$ no referencial inercial Z. É definido como:
+no sentido de $-x$ no referencial inercial SC-Z. É definido como:
 %
 \begin{equation}
 	\mathbf{g} = [-9,81,~0,~0]^{Z}
@@ -1404,7 +1400,7 @@ ferramenta durante os primeiros 8 paralelos da tarefa.
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{figs/qxt_exemplo}
-        \caption{Resultado dos ângulos de referência cinemáticos}
+        \caption{Resultado cinemático dos ângulos de referência }
         \label{fig::qxt_exemplo}
     \end{subfigure}
     \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
@@ -1412,7 +1408,7 @@ ferramenta durante os primeiros 8 paralelos da tarefa.
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{figs/uxt_exemplo}
-        \caption{Resultado das velocidades de referência cinemáticos}
+        \caption{Resultado cinemático das velocidades de referência}
         \label{fig::uxt_exemplo}
     \end{subfigure}
     \caption{Resultados cinemáticos do exemplo de
@@ -1495,7 +1491,7 @@ A Figura~\ref{fig::qxt_ex_realxideal} apresenta em linha pontilhada o valor dos
 \begin{figure}[h]
 	\centering 
  	\includegraphics[width=0.75\textwidth]{figs/qxt_ex_realxideal}
- 	\caption{Comparação referência e efetivo dos ângulos das juntas}
+ 	\caption{Comparação referência x efetivo dos ângulos das juntas}
  	\label{fig::qxt_ex_realxideal}
 \end{figure}
 
@@ -1510,21 +1506,21 @@ posição da ferramenta.
 \begin{figure}[h]
 	\centering 
  	\includegraphics[width=0.75\textwidth]{figs/errop_exemplo}
- 	\caption{Comparação ideal x efetivo da posição da ferramenta}
+ 	\caption{Comparação referência x efetivo da posição da ferramenta}
  	\label{fig::errop_exemplo}
 \end{figure}
 
 Nota-se que neste modelo MBS o robô é capaz de seguir com boa precisão a
 trajetória informada. Para facilitar a visualização, a
-Figura~\ref{fig::erros_exemplo} apresenta um gráfico do erro de cada coordenada
+Figura~\ref{fig::erros_exemplo_z} apresenta um gráfico do erro de cada coordenada
 da posição, ao longo da trajetória. A linha pontilhada representa o erro
 absoluto, ou seja, a norma do erro em cada direção.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.90\textwidth]{figs/erros_exemplo}
+ 	\includegraphics[width=0.90\textwidth]{figs/erros_exemplo_z}
  	\caption{Erro de posição da ferramante em cada direção}
- 	\label{fig::erros_exemplo}
+ 	\label{fig::erros_exemplo_z}
 \end{figure}
 
 Observa-se por este resultado que o erro de posicionamento, a partir do início
@@ -1532,7 +1528,7 @@ da região a ser revestida (em $t>1s$), é da ordem de $10^{-1}~mm$ durante
 apriximadamente $70\%$ do caminho de um paralelo. Próximo ao início e fim dos
 paralelos esse erro cresce devido ao transitório de direção e sentido do
 deslocamento, que não são acompanhados perfeitamente pela dinâmica do robô.
-Estes erros chegam a uma ordem de $10~mm$ nestas regiões.
+Estes erros chegam a uma ordem de $20~mm$ nestas regiões.
 
 Da mesma forma que foi feito para a posição, pode-se verificar os erros de
 velocidade da ferramenta. Para isso, deriva-se a a posição da ferramenta, com
@@ -1600,24 +1596,26 @@ R =  \left( \begin {array}{ccc}  1.0&- 0.00000058757&- 0.0021389
 Logo, o erro de orientação neste instante de tempo do exemplo é:
 %
 \begin{equation*}
-	\theta_{erro}(t=2~s) = 0,0374898~rad
+	\theta_{erro}(t=2~s) = 0,0375~rad
 \end{equation*}
 %
 E aplicando-se o erro angular na equação~\ref{eq::eixo_erro}, obtém-se o eixo de
-revolução do desvio. O resultado para o erro em $t=2~s$ é:
+revolução do desvio. O resultado em $t=2~s$ é:
 %
 \begin{equation}
-	\omega_{erro}(t=2~s) = [0,6312,~-0,1755,~-0,4278]^Z
+	\omega(t=2~s) = [0,6312,~-0,1755,~-0,4278]^Z
 \end{equation}
 %
+
+
 O resultado do desvio de orientação da ferramenta, durante toda a tarefa é
-apresentado no gráfico da Figura~\ref{fig::orierro_exemplo}.
+apresentado no gráfico da Figura~\ref{fig::orierro_exemplo_z}.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.85\textwidth]{figs/orierro_exemplo}
+ 	\includegraphics[width=0.85\textwidth]{figs/orierro_exemplo_z}
  	\caption{Erro de orientação da ferramenta}
- 	\label{fig::orierro_exemplo}
+ 	\label{fig::orierro_exemplo_z}
 \end{figure}
 
 Note-se que não interessa o erro antes do manipulador iniciar a trajetória dos
@@ -1832,8 +1830,8 @@ permitem nenhum grau de liberdade na extremidade do elemento onde há a conexão
 
 Para obter a matriz de rigidez, deve-se realiza-se ao todo 6 casos de
 carregamento e restrições. Cada caso obtém 6 dos 36 termos, que correspondem a uma linha
-da matriz 6x6. Os carregamentos e restrições são aplicados ao ponto virtual de
-fixação do robô.
+da matriz $6 \times 6$. Os carregamentos e restrições são aplicados ao ponto
+virtual de fixação do robô.
 
 A cada caso é aplicado um deslocamento prescrito em uma direção. Às outras
 direções são aplicadas restrições à translação e à rotação. Logo, um
@@ -1924,6 +1922,30 @@ apresentado na Tabela~\ref{tab::res_FEA_forcas}.
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsubsection{Frequências Naturais}
+
+O modelo AEF permite ainda obter as frequências naturais da base. O Autodesk
+Simulation Mechanical efetua esta análise como uma simulação linear. São
+analisados 2 casos: no primeiro, o peso e inércia do robô são adicionados ao
+modelo e são aplicados no ponto virtual da base, no segundo caso sumprime-se a
+inércia do robô. Isto permite verificar o comportamento da base para o caso de
+operação e de testes do ensaio experimentais. A
+Tabela~\ref{tab::freq_naturais_teste} apresenta o resultado das 10 primeiras
+frequências naturais calculadas, em cada caso.
+
+\begin{table}[h]
+\centering
+\caption{Frequências naturais pela AEF}
+\label{tab::freq_naturais_teste}
+\begin{tabular}{ccccccccccc}
+\hline
+\textbf{Modo}          & \textbf{}       & 1   & 2   & 3   & 4   & 5   & 6   & 7   & 8   & 9   \\ \hline
+\textbf{Freq. Natural} & \textbf{c/robô} & 101 & 138 & 264 & 293 & 326 & 415 & 714 & 715 & 757 \\
+\textbf{{[}Hz{]}}      & \textbf{s/robô} & 228 & 263 & 264 & 362 & 415 & 714 & 716 & 761 & 846 \\ \hline
+\end{tabular}
+\end{table}
+
 
 
 \subsection{Matriz de Rigidez}
@@ -2028,7 +2050,7 @@ SC-R e o sistema SC-R3 acoplado ao corpo sobre a base.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.5\textwidth]{figs/schem_scbase}
+ 	\includegraphics[width=0.40\textwidth]{figs/schem_scbase}
  	\caption{Desenho esquemático dos sistemas de referência da base e inercial}
  	\label{fig::schem_scbase}
 \end{figure}
@@ -2083,7 +2105,7 @@ e do amortecimento. Portanto:
 	\mathbf{Peso}_M = m_M \cdot \mathbf{g}
 \end{equation}
 %
-O termo $m_M$ representa o valor da massa ``suspensa'' pela base. O vetor
+O termo $m_M$ representa o valor da massa suspensa pela base. O vetor
 gravidade é descrito no referncial inercial SC-R.
 %
 \begin{equation}
@@ -2198,7 +2220,7 @@ base, dada a condição incial fora da sua configuração de equilíbrio.
 
 \begin{figure}[h]
     \centering
-    \begin{subfigure}[b]{0.85\textwidth}
+    \begin{subfigure}[b]{0.80\textwidth}
         \includegraphics[width=\textwidth]{figs/q123_base_exemplo}
         \caption{Resultado MBS da base: translações q1, q2, q3}
         \label{fig::q123_base_exemplo}
@@ -2206,7 +2228,7 @@ base, dada a condição incial fora da sua configuração de equilíbrio.
     \quad %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill
     % etc.
       %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.85\textwidth}
+    \begin{subfigure}[b]{0.80\textwidth}
         \includegraphics[width=\textwidth]{figs/q456_base_exemplo}
         \caption{Resultado MBS da base: rotações q4, q5, q6}
         \label{fig::q456_base_exemplo}
@@ -2353,9 +2375,9 @@ no tempo.
 Percebe-se que para uma mesma força de pico do impacto, uma ponta mais dura
 resulta em uma faixa mais larga de frequência.
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering 
- 	\includegraphics[width=0.95\textwidth]{figs/carta_badwidth}
+ 	\includegraphics[width=0.82\textwidth]{figs/carta_badwidth}
  	\caption[Espectro de frequência do impacto do martelo PCB-086D50]{Espectro de
  	frequência do impacto do martelo PCB-086D50. \\	Fonte: adaptado de~\cite{manualpcb} }
  	\label{fig::carta_badwidth}
@@ -2715,7 +2737,7 @@ indicado por SC-R.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.50\textwidth]{figs/esq_acoplado}
+ 	\includegraphics[width=0.45\textwidth]{figs/esq_acoplado}
  	\caption{Novas coordenadas generalizadas do modelo MBS acoplado}
  	\label{fig::esq_acoplado}
 \end{figure}

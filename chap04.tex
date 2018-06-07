@@ -980,13 +980,13 @@ ferramenta resultam nos erros de trajetória apresentados. Esta base telescópic
 demonstrou-se muito flexível e inviável para a aplicação.
 
 O controle do sistema acoplado atua apenas nas juntas do robô. No entanto, se
-temos o suficiente conhecimento da dinâmica do sistema, que inclui os movimentos
+temos conhecimento suficiente da dinâmica do sistema, que inclui os movimentos
 dinâmicos da base, pode-se desenvolver métodos de controle para compensar estes
 movimentos. \citet{lew2001simple} propõem um método de controle cujo objetivo é
 determinar o torque de entrada das juntas do manipulador, de forma que as
-oscilações da base $q1$ a $q6$ amortecem o mais rápido possível, enquanto os
-ângulos de juntas do robô $q7$ a $q11$ seguem o caminho desejado. O algoritmo de
-controle utiliza o \textit{feedback} dos sensores de oscilação da base para
+oscilações da base $q1$ a $q6$ amorteçam o mais rapidamente possível, enquanto
+os ângulos de juntas do robô $q7$ a $q11$ seguem o caminho desejado. O algoritmo
+de controle utiliza o \textit{feedback} dos sensores de oscilação da base para
 modular as entradas dos atuadores e induzir forças de inércia dissipativas.
 
 Lembra-se que a análise modal experimental da base foi possível graças à

@@ -131,15 +131,16 @@ As coordenadas generalizadas são usualmente simbolizadas pela letra
 $q$, e numeradas de $1$ a $n$. Podem ser denotadas pelo seguinte vetor:
 %
 \begin{equation}
-	\mathbf{q} = [q1, q2, q3,\ldots, qn]
+	\mathbf{q} = [q1, q2, q3,\ldots, q_n]
 \end{equation}
 %
 A variação das coordenadas generalizadas, ou seja, sua derivada no tempo, é
-usualmente representada pela letra $u$. Logo:
+usualmente representada pela letra $u$ ou por $\dot{q}$. Logo:
 %
 \begin{equation}
 	\frac{\mathrm{d} \mathbf{q}}{\mathrm{d} t} = \left[ \frac{\mathrm{d}
-q1}{\mathrm{d} t}, ..., \frac{\mathrm{d} qn}{\mathrm{d} t}\right] \rightarrow  \mathbf{u} = [u1,...,un]
+q1}{\mathrm{d} t}, ..., \frac{\mathrm{d} q_n}{\mathrm{d} t}\right] \rightarrow 
+\mathbf{\dot{q}} = [\dot{q}1,...,\dot{q}_n]
 \end{equation}
 %
 
@@ -243,7 +244,7 @@ na Figura~\ref{fig::sist_refs}, a representação de $p$ descrito em SC-R, poder
 ser escrita como:
 %
 \begin{equation} \label{eq::upemr}
-	^{R}\textrm{\textbf{u}}^{p} = {}^{R}\textrm{\textbf{u}}^{B} + R \cdot
+	^{R}\textrm{\textbf{u}}^{p} = {}^{R}\textrm{\textbf{u}}^{o} + R \cdot
 	{}^{B}\textrm{\textbf{u}}^{p}
 \end{equation}
 %
@@ -315,7 +316,7 @@ respeito ao referencial A. Portanto, do sistema genérico da
 Figura~\ref{fig::sist_refs}, pode-se escrever a velocidade do ponto $p$ como:
 %
 \begin{equation}
-	^{R}\mathbf{v}^{p} = {}^{B}\mathbf{v}^{p} + ^{R}\mathbf{v}^{B} +
+	^{R}\mathbf{v}^{p} = {}^{B}\mathbf{v}^{p} + ^{R}\mathbf{v}^{o} +
 	{}^{A}\boldsymbol{\omega}^{B} \times {}^{B}\textrm{\textbf{u}}^{p}
 \end{equation}
 %

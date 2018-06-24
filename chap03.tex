@@ -711,6 +711,8 @@ pelas forças \texttt{Peso}, avaliou-se os torques das juntas com respeito ao
 centro de massa de cada corpo. As equações~\ref{eq::tjuntasi} a
 \ref{eq::tjuntasf} descrevem os torques externos e de controle que atuam em cada
 junta.
+
+%
 \begin{align}
 	\mathbf{TjZS} &= (TZS - PID_{S})\cdot[1,~0,~0]^Z \label{eq::tjuntasi} \\
 	\mathbf{TjSL} &= (TSL - PID_{L})\cdot[0,~0,~1]^S \\
@@ -866,6 +868,7 @@ Além disso, é possível fazer uso da função \texttt{simplify} do Maple, que 
 poderoso conjunto de rotinas para simplificação algébrica de expressões. Fazendo
 uso desta função e da substituição dos parâmetros numéricos nas equações de
 movimento, obtemos o novo custo algébrico das equações:
+
 %
 	$$ 5676\,{\it somas}+6992\,{\it multiplica\c{c}\tilde{o}es}+1835\,{\it fun\c{c}\tilde{o}es} $$
 %
@@ -969,7 +972,7 @@ SC-B:
 A Figura~\ref{fig::pwpf} ilustra os vetores posição do pulso e posição da
 ferramenta do manipulador MH12.
 
-\begin{figure}[h]
+\begin{figure}[h!]
 	\centering 
  	\includegraphics[width=0.45\textwidth]{figs/pwpf}
  	\caption{Posições do pulso e da ferramenta}
@@ -986,6 +989,7 @@ referencial. Como o pulso tem origem no sistema de coordenadas SC-R, então:
 %
 Recorrendo às equações~\ref{eq::theta1} a \ref{eq::theta3}, desenvolvidas na
 seção~\ref{sec::ikin}, pelo método geométrico, tem-se:
+
 %
 \begin{align*}
 	q1 &= \atantwo (z_w,y_w) - \atantwo (d, \pm \sqrt{y_w^2 + z_w^2 - d^2}) \\
@@ -2818,7 +2822,7 @@ fornecida é classificada como erro de trajetória, onde os erros são apresenta
 em termos de posição, velocidade e orientação. Logo, é de se esperar que, se o robô
 é bem projetado e seu controle bem determinado, os erros apresentados estarão
 dentro de uma faixa de erro aceitável. Na seção~\ref{sec::insitu} foram
-apresentados os requisitos para o processo de revestimento por asperção
+apresentados os requisitos para o processo de revestimento por aspersão
 térmica. Este processo é utilizado para exemplificar a utilização do método
 para alguns casos de bases flexíveis, na seção~\ref{sec::casos}.
 

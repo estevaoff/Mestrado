@@ -250,13 +250,13 @@ seguinte relação:
 \begin{align}
 	^{Z}\mathbf{p}^{k} &= ~^{Z}\mathbf{p}^{k-1} + ~^{k-1}\mathbf{p}^{k}
 	\label{eq::posjnutas} \\
-	^{Z}\mathbf{pcm}^{k} &= ~^{Z}\mathbf{pcm}^{k-1} + ~^{k}\mathbf{pcm}
+	^{Z}\mathbf{pcm}^{k} &= ~^{Z}\mathbf{p}^{k-1} + ~^{k}\mathbf{pcm}
 	\label{eq::pcm}
 \end{align}
 %
 Onde $^{Z}\mathbf{p}^{k}$ é o vetor posição do referencial $k$ em relação ao
 referencial inercial $Z$ e analogamente $^{Z}\mathbf{pcm}^{k}$ é o vetor
-posição do centro de massa do corpo $k$, tal que $k$ varia em \{S,L,U,B,T\},
+posição do centro de massa do corpo $k$, tal que $k$ varia em \{S,L,U,R,B\},
 os sistemas de coordenadas do robô.
 No Sophia-Maple é utilizada a notação de Lesser, por meio dos \texttt{Evectors},
 para representar esses vetores, como descrito na seção~\ref{sec::lesser}. Logo,

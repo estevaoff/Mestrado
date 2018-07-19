@@ -74,8 +74,9 @@ análise dinâmica.
 \subsubsection{Sistemas de Coordenadas}
 
 Um corpo rígido é completamente descrito por sua posição e orientação com
-respeito a um sistema de coordenadas (SC). Um sistema de coordenadas é um
-conjunto de eixos ortogonais que se inteceptam em um ponto, denominado origem.
+respeito a um sistema de coordenadas (SC). O sistema de coordenadas utilizado é
+um conjunto de eixos ortogonais que se inteceptam em um ponto, denominado
+origem.
 
 Geralmente, em sistemas multicorpos, 2 tipos de SC são utilizados. O primeiro é
 fixo no tempo e representa uma referência para todos os corpos, denominado
@@ -118,9 +119,9 @@ e o vetor posição do ponto $p$ com respeito ao refencial local.
 
 \subsubsection{Coordenadas generalizadas}
 
-A configuração de um sistemas multicorpos é identificada por um conjunto de
-variáveis chamadas \emph{coordenadas generalizadas}, que definem completamente a
-posição e orientação de cada corpo no sistema.
+A configuração de um sistema multicorpos é identificada por um conjunto de
+\emph{coordenadas generalizadas} ou \emph{independentes}, que definem
+completamente a posição e orientação de cada corpo no sistema.
 
 Então, um corpo rígido no espaço pode ser descrito usando 6 coordenadas
 independentes, 3 para posição da origem do corpo e 3 para orientação do corpo
@@ -201,6 +202,7 @@ $\boldsymbol{\omega} \in \mathbb{R}^{3}$, e um ângulo, $\theta \in \mathbb{R}$.
 %
 \begin{equation}
 	R(\omega, \theta) = e^{\hat{\omega} \theta}
+\end{equation}
 %
 
 Realizando o devido desenvolvimento matemático~\cite{murray1994mathematical} é

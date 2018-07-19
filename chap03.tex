@@ -646,13 +646,26 @@ planejada.
 Os fabricantes de robôs comerciais infelizmente não fornecem detalhes sobre o
 método nem os parâmetros de controle utilizados.
 Com o propósito de simular o controle do manipulador decidiu-se pela
-simplicidade do método de controle PID.
+simplicidade do método de controle PID. 
+
+Para utilização deste método em manipuladores robóticos é necessário modelar os
+torques de compensação da gravidade em cada corpo, que varia de acordo com a
+configuração das juntas. Estes serão denominados torques de freio, já que para
+qualquer configuração estes torques anulam o efeito do peso dos elos, atuando
+nas juntas do robô.
+A equação geral para os torques de freio pode ser escrita como:
+%
+\begin{equation}
+	\mathbf{Tb}_k = \mathbf{pcm}_k \times (m_k \cdot \mathbf{g}) + \mathbf{p}^k
+	\times (\sum_{r=k+1}^{B} m_r \cdot \mathbf{g})
+\end{equation}
+%
 
 Logo, define-se as equações dos torques de controle para cada junta, em função
-da diferença entre os parâmetros instantâneos e os de referência em cada junta.
-O subíndice $k$ representa a lista de juntas, localizada na origem de cada
-sistema de coordenadas de mesmo nome, variando em \{S,L,U,R,B\} e o
-subíndice $i$ o número da coordenada generalizada associada.
+da diferença entre os parâmetros instantâneos e os de referência.
+O subíndice $k$ representa a lista de juntas, localizada na origem de cada SC,
+variando em \{S,L,U,R,B\} e o subíndice $i$ o número da coordenada generalizada
+associada.
 %
 \begin{equation}
 	PID_{k} = Kp(q_i-q_i{ref}) + Ti\int_{t1}^{t2} (q_i-q_i{ref})dt +
@@ -690,7 +703,7 @@ $t=0~s$, para todas as juntas.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.90\textwidth]{figs/pid_pi_sobre_2}
+ 	\includegraphics[width=0.85\textwidth]{figs/pid_pi_sobre_2}
  	\caption{Resposta a uma função degrau de $\pi/2$}
  	\label{fig::pid_pi_sobre_2}
 \end{figure}
@@ -698,9 +711,9 @@ $t=0~s$, para todas as juntas.
 No Sophia-Maple declara-se os torques de controle representados na
 equação~\ref{eq::pid} da seguinte forma:
 
-\bigskip \noindent {\tt > for k from 1 to 5 do \\
-		 \indent PID\_||{corpo[k]}:= Kp*(q||k - q||k||ref) + Ti*int(q||k - q||k||ref,
-		 t) + Td*(u||k - u||k||ref) \\
+\medskip \noindent {\tt > for k from 1 to 5 do \\
+		 \indent PID\_||{corpo[k]}:= Kp*(q||k - q||k||ref) + \\
+		 \indent + Ti*int(q||k - q||k||ref, t) + Td*(u||k - u||k||ref) \\
 		 end do:}
 
 \subsubsection{Momentos Externos}
@@ -728,12 +741,12 @@ vetores que representam o momentos externos resultante em cada
 corpo.
 %
 \begin{align}
-	\mathbf{Mex_{Z}} &= - \mathbf{TjZS } \label{eq::mexi}\\
-	\mathbf{Mex_{S}} &= \mathbf{TjZS} - \mathbf{TjSL }\\
-	\mathbf{Mex_{L}} &= \mathbf{TjLU }- \mathbf{TjSL }\\
-	\mathbf{Mex_{U}} &= \mathbf{TjUR }- \mathbf{TjLU }\\
-	\mathbf{Mex_{R}} &= \mathbf{TjRB }- \mathbf{TjUR }\\
-	\mathbf{Mex_{B}} &= - \mathbf{TjRB} \label{eq::mexf}
+	\mathbf{Mex_{Z}} &= - \mathbf{TjZS} \label{eq::mexi}				\\
+	\mathbf{Mex_{S}} &= \mathbf{TjZS} - \mathbf{TjSL} - \mathbf{TbS}	\\
+	\mathbf{Mex_{L}} &= \mathbf{TjLU} - \mathbf{TjSL} - \mathbf{TbL}	\\
+	\mathbf{Mex_{U}} &= \mathbf{TjUR} - \mathbf{TjLU} - \mathbf{TbU}	\\
+	\mathbf{Mex_{R}} &= \mathbf{TjRB} - \mathbf{TjUR} - \mathbf{TbR}	\\
+	\mathbf{Mex_{B}} &= - \mathbf{TjRB} - \mathbf{TbB}					\label{eq::mexf} 
 \end{align}
 %
 
@@ -787,7 +800,7 @@ momentos externos em cada elo do manipulador.
     \end{subfigure}
     \caption{Sistema de forças externas}\label{fig::sisfex}
 \end{figure}
-
+%
 		 
 \subsubsection{Forças de Inércia e  Forças Externas Generalizadas}
 
@@ -856,7 +869,7 @@ parâmetro para avaliar o tamanho das expressões e o custo computacional do
 modelo.
 Para se ter uma ideia, o custo do sistema de equações de movimento, representado
 na forma puramente simbólica em \ref{eq::eqdin}, tem  a seguinte estrutura:
-%
+
 	$$ 18171\,{\it somas}+59804\,{\it multiplica\c{c}\tilde{o}es}+39998\,{\it 
 fun\c{c}\tilde{o}es} $$
 %
@@ -1007,7 +1020,7 @@ Onde:
 Uma análise das expressões acima permite relacionar os termos geométricos do
 robô com os parâmetros do MOTOMAN MH12. Substiui-se portanto estes termos de
 acordo com as relações:
-%
+
 \begin{align}
 	r &= \sqrt{x_w^2 + y_w^2 - d^2} - pSLy \\
 	s &= x_w - (pZSx + pSLx) \\
@@ -1057,7 +1070,7 @@ cima em linha cheia e cotovelo para baixo em linha pontilhada.
 
 \begin{figure}[h]
 	\centering 
- 	\includegraphics[width=0.80\textwidth]{figs/elbowupdown}
+ 	\includegraphics[width=0.60\textwidth]{figs/elbowupdown}
  	\caption{Exemplo de duas soluções possíveis para o mesmo ponto}
  	\label{fig::elbowupdown}
 \end{figure}
@@ -1116,7 +1129,7 @@ Analisando o lado esquerdo da equação~\ref{eq::rut} pode-se determinar
 facilmente a solução para $\cos(q5)$, porque este será diretamente o resultado
 alocado no termo $[2,2]$ da matriz $3 \times 3$ resultante do lado direito da
 equação, ou seja:
-%
+
 \begin{multline}
 \cos(q5) = {\it c2}\,{\it c3}\,s\phi \,{\it s1}\,s\theta -s\phi \,{\it s1}\,{\it 
 		s2}\,{\it s3}\,s\theta +c\phi \,{\it c2}\,{\it s3}\,s\theta +
@@ -1188,7 +1201,7 @@ Como este ponto está alinhado ao eixo do efetuador, faz-se $dx = dz = 0$ e $dy
 = pBTy$.
 Reescrevendo a equação no referencial inercial, as componentes do vetor
 $^{Z}\mathbf{p}_{f}$ são:
-%
+
 \begin{multline}
 	x_f =  \left[  \left( -{\it c4}\,{\it s5}\,{\it pBTy}+{\it pURx} \right) {
 		\it c3}+ \left( -{\it c5}\,{\it pBTy}-{\it pURy} \right) {\it s3}+{
@@ -1229,15 +1242,13 @@ solução cinemática inversa do manipulador MOTOMAN MH12.
 
 \subsection{Tarefa e trajetória} \label{sec::tarefa_traj}
 
-As trajetórias para representar este processo serão simplificadas neste
-trabalho, pela consideração de que as superfícies são planas e que pode-se
-representar a trajetória totalmente naquele plano.
+As trajetórias para representar este processo serão simplificadas, pela
+consideração de que as superfícies são planas e que pode-se representar a
+trajetória totalmente naquele plano.
 
 A trajetória será modelada por um conjunto de funções de referência no tempo,
-para cada coordenada generalizada. Como o planejamento é feito pela função da
-posição da ferramenta no tempo, são utilizadas as soluções da cinemática
-inversa, desenvolvidadas na seção anterior.
-
+para cada coordenada generalizada. Portanto, são utilizadas as soluções da
+cinemática inversa, desenvolvidadas na seção anterior. 
 É claro que dependendo da posição e orientação da superfície a ser coberta pelo
 robô, este assumirá diferentes configurações, que causam excitações diferentes
 em sua base. Na seção~\ref{sec::casos}, dois casos de trajetória para
@@ -1247,7 +1258,6 @@ trajetória nos erros devido a dinâmica do sistema robô-base.
 Para exemplificar os conceitos abordados nesta seção, considere-se a seguinte
 tarefa para cálculo da trajetória:
 %
-\newline
 \begin{tcolorbox}
 [colframe=black!75!white, colback=white, title = Trajetória -- Exemplo] 
   \textbf{Tarefa:} Revestimento por HVOF \\
@@ -1276,7 +1286,7 @@ de simulação, com o robô no início da trajetória.
 
 \begin{figure}[h!]
 	\centering 
- 	\includegraphics[width=0.50\textwidth]{figs/trajec3D_600x500x10}
+ 	\includegraphics[width=0.45\textwidth]{figs/trajec3D_600x500x10}
  	\caption{Trajetória no ambiente 3D}
  	\label{fig::trajec3D_600x500x10}
 \end{figure}
@@ -1326,8 +1336,9 @@ Portanto, o tempo associado a cada ponto do caminho é determinado por:
 %
 Com as equações~\ref{eq::pi} e \ref{eq::ti}, define-se a função da trajetória
 para cada paralelo.
+
 %
-\begin{table}[h]
+\begin{table}[h!]
 \centering
 \caption{Resumo dos pontos e funções trajetória do exemplo}
 \label{tab::func_paralelos}
@@ -1347,13 +1358,13 @@ $pz_i(t)$
 \end{tabular}
 \end{table}
 %
-
 A Tabela~\ref{tab::func_paralelos} apresenta os termos do vetor posição da
 equação~\ref{eq::posi} e as funções trajetória para os primeiros 4 paralelos do
 exemplo. A Figura~\ref{fig::pontos_exemplo} ilustra os pontos indicados na
 tabela no gráfico da trajetória.
 
-\begin{figure}
+
+\begin{figure}[h!]
 	\centering 
  	\includegraphics[width=0.90\textwidth]{figs/pontos_exemplo}
  	\caption{Os pontos do caminho dos 8 primeiros paralelos}

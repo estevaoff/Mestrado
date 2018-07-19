@@ -951,11 +951,11 @@ sistemático apresentado nas duas versões de base. Interessanetemente, este err
 não é tão acentuado para a Tarefa 2, como pode ser verificado na
 Figura~\ref{fig::res_traj2}.
 
-A solução mais direta para este erro estático seria o reforço estrutural da base
-contra as deformações que resultam o erro nesta direção. Uma opção com o mínimo
-de impacto no projeto original seria o acréscimo de contraventamentos, ou braços
-de apoio, a partir da estrura até a superfície do ambiente, como pode ser
-verificado na Figura~\ref{fig::contraventamentos}
+Uma solução para este erro estático seria o reforço estrutural da base contra as
+deformações que resultam o erro nesta direção. Uma opção com o mínimo de impacto
+no projeto original seria o acréscimo de contraventamentos, ou braços de apoio,
+a partir da estrura até a superfície do ambiente, como pode ser verificado na
+Figura~\ref{fig::contraventamentos}
 
 \begin{figure}[h!]
 	\centering 
@@ -969,7 +969,34 @@ realizar uma iteração do método. Para esta solução, deve-se incluir os refo
 estruturais no modelo AEF da base, obter-se daí uma nova matriz de rigidez, e
 então simular o novo sistema.
 
-Para o resultado da base telescópica PRPP, pelas Figuras~\ref{fig::res_traj1} e
+Outra solução contra os erros sistemáticos devido à deformação estática da base
+é a calibração da posição resultante do robô após instalação. No projeto EMMA,
+esta calibração é realizada por meio de escaneamento 3D, que gera uma nuvem de
+pontos que permite a identificação e localização do robô e do ambiente.
+Identificando-se a pose inicial do robô, em relação a um referencial, pode-se
+calibrar a nova pose e eliminar tais erros sistemáticos. Porém, esta solução não
+elimina erros dinâmicos porque a calibração é realizada antes da operação,
+estaticamente.
+
+Verifica-se em todos os resultados que quando há variação da direção da
+trajetória os erros de posição, velocidade e orientação aumentam abruptamente.
+Logo, nas regiões próximas às extermidades dos paralelos, os requisitos do
+processo de revestimento não são atendidos. Uma solução neste caso é a
+utilização de placas de sacrifício, que se sobrepõem ao material base a ser
+revestido e garantem que a faixa exposta ao revestimento esteja com os
+requisitos dentro de uma tolerância aceitável. Logo, estas placas devem ser
+posicionadas a cobrir a região onde ocorrem os erros mais acentuados, nas
+extremidades dos paralelos, conforme demonstrado na
+Figura~\ref{fig::sacrificio}.
+
+\begin{figure}[h!]
+	\centering 
+ 	\includegraphics[width=0.75\textwidth]{figs/sacrificio}
+ 	\caption{Placas de sacrifício para delimitar faixa aceitável}
+ 	\label{fig::sacrificio}
+\end{figure}
+
+Pelo o resultado da base telescópica PRPP, Figuras~\ref{fig::res_traj1} e
 \ref{fig::res_traj2}, percebe-se claramente que o sistema acoplado falhou em
 realizar as tarefas, dados os grandes erros de trajetória. Os resultados de
 posição e orientação do referencial localizado no ponto virtual da base, dados
@@ -977,7 +1004,8 @@ pelas Figuras~\ref{fig::t1_pvirtural_base_prpp} e
 \ref{fig::t2_pvirtural_base_prpp} demonstram grandes oscilações, da ordem de
 $20~mm$ e $0,04~rad$ de amplitude. Estas oscilações propagadas até a ponta da
 ferramenta resultam nos erros de trajetória apresentados. Esta base telescópica
-demonstrou-se muito flexível e inviável para a aplicação.
+utilizada com o robô MH12 demonstrou-se muito flexível e inviável para a
+aplicação.
 
 O controle do sistema acoplado atua apenas nas juntas do robô. No entanto, se
 temos conhecimento suficiente da dinâmica do sistema, que inclui os movimentos

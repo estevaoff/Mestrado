@@ -285,7 +285,7 @@ extremidade.
 Neste ambiente 3D é possível fornecer qualquer configuração de juntas e obter-se
 um resultado visual de posicionamento e orientação dos elos. A
 Figura~\ref{fig::amb3D_posA} ilustra o resultado para a configuração inicial do
-do robô, $q1 = \ldots = q6 = 0$; e a Figura~\ref{fig::amb3D_posB} para a
+robô, $q1 = \ldots = q6 = 0$; e a Figura~\ref{fig::amb3D_posB} para a
 configuração $q1 = \ldots = q6 = {-}^{\pi}/_2$.
 
 \begin{figure}[h]
@@ -353,10 +353,10 @@ No Sophia-Maple o tensor $S$ é calculado através da função
 \&\texttt{VtoD}. Por exemplo, o tensor entre os referenciais SC-L e SC-S seria:
 %
 $$
-S_{L}^{Z} = \left( \begin {array}{ccc} 0&-{\it q2t}&-\sin \left( {\it q2}
- \right) {\it q1t}\\ \noalign{\medskip}{\it q2t}&0&-\cos \left( {\it 
-q2} \right) {\it q1t}\\ \noalign{\medskip}\sin \left( {\it q2}
- \right) {\it q1t}&\cos \left( {\it q2} \right) {\it q1t}&0
+S_{L}^{Z} = \left( \begin {array}{ccc} 0&-{\it \dot{q}2}&-\sin \left( {\it q2}
+ \right) {\it \dot{q}1}\\ \noalign{\medskip}{\it \dot{q}2}&0&-\cos \left( {\it 
+q2} \right) {\it \dot{q}1}\\ \noalign{\medskip}\sin \left( {\it q2}
+ \right) {\it \dot{q}1}&\cos \left( {\it q2} \right) {\it \dot{q}1}&0
 \end {array} \right)
 $$
 %
@@ -365,8 +365,8 @@ calcula diretamente o vetor velocidade angular $^{A}\omega^{B}$ entre dois
 referenciais. O que retornaria, para o exemplo proposto, o seguinte vetor:
 %
 $$
-^{Z}\boldsymbol{\omega}^{L} = [-{\it q1t},\sin \left( {\it q1} \right) {\it q2t},-\cos
-\left( {\it q1} \right) {\it q2t}]
+^{Z}\boldsymbol{\omega}^{L} = [-{\it \dot{q}1},\sin \left( {\it q1} \right) {\it \dot{q}2},-\cos
+\left( {\it q1} \right) {\it \dot{q}2}]
 $$
 %
 No caso do manipulador, são calculadas as velocidades de cada corpo em relação
@@ -634,7 +634,7 @@ Os momentos externos são formados pelos torques dos atuadores em cada junta e
 também os torques de controle PID. Neste momento é válido acrescentar uma
 explicação rápida sobre a modelagem do controlador PID.
 
-\subsubsection{Parâmetros de controle PID}
+\subsubsection{Parâmetros de controle PID com compensação da gravidade}
 
 Para que o robô realize a tarefa, é necessário seguir a trajetória previamente
 planejada. Uma trajetória pode ser simplesmente um conjunto de posições e
@@ -1378,7 +1378,7 @@ função, através do uso do comando \texttt{piecewise}, no Maple. Os argumentos
 deste comando são simplesmente as funções contidas em cada intervalo de tempo,
 resultando em uma função única, dividida por partes, sem necessidade de serem
 contínuas. A vantagem é que essas funções podem ser derivadas, sendo reconhecido
-que na discontiuidade a função é indefinida.
+que na descontiuidade a função é indefinida.
 Outra vantagem é que pode ser utilizada diretamente para calcular, por meio da
 cinemática inversa, as funções das coordenadas generalizadas que descrevem o
 conjunto de posições, para todo o intervalo de tempo.
@@ -1635,7 +1635,7 @@ apresentado no gráfico da Figura~\ref{fig::orierro_exemplo_z}.
 
 Note-se que não interessa o erro antes do manipulador iniciar a trajetória dos
 paralelos do revestimento, ou seja, entre a posição inicial e o ponto p1
-($t<1~s$), porque neste trecho manipulador não estaria realizando o
+($t<1~s$), porque neste trecho o manipulador não estaria realizando o
 revestimento.
 Analisando, portanto, o gráfico a partir de $1~s$ percebe-se um erro periódico,
 devido às variações de direção, com amplitude máxima de aproximadamente
@@ -1726,7 +1726,7 @@ O modelo CAD completo poderia ser diretamente utilizado nas
 simulações para obtenção da matriz de rigidez desta estrutura. No entanto, o
 alto nível de detalhamento dos componentes, além dos diversos contatos e
 restrições entre as peças, requer um modelo de malha muito densa, não linear e
-maior poder computacional. E o resultado teria muito informações irrelevantes
+maior poder computacional. E o resultado teria muitas informações irrelevantes
 para esta análise, como por exemplo, tensões em elementos de fixação ou
 deformação do rolamento do trilho.
 
@@ -1782,7 +1782,7 @@ uniformes ao longo de apenas uma dimensão em todo o elemento, bastando fornecer
 apenas suas propriedades de seção transversal. A
 Figura~\ref{fig::sectrans_bosch} mostra o corte de seção de um elemento da
 estrutura e suas propriedades. O material do perfil da estrutura é o Alumínio
-EN-AW-6060. e as propriedades são incluidas no modelo, de acordo com a
+EN-AW-6060 e as propriedades são incluidas no modelo, de acordo com a
 Tabela~\ref{tab::prop_mat}.
 
 \begin{figure}[h]
@@ -1943,7 +1943,7 @@ apresentado na Tabela~\ref{tab::res_FEA_forcas}.
 O modelo AEF permite ainda obter as frequências naturais da base. O Autodesk
 Simulation Mechanical efetua esta análise como uma simulação linear. São
 analisados 2 casos: no primeiro, o peso e inércia do robô são adicionados ao
-modelo e são aplicados no ponto virtual da base, no segundo caso sumprime-se a
+modelo e são aplicados no ponto virtual da base, no segundo caso suprime-se a
 inércia do robô. Isto permite verificar o comportamento da base para o caso de
 operação e de testes do ensaio experimentais. A
 Tabela~\ref{tab::freq_naturais_teste} apresenta o resultado das 10 primeiras
@@ -2051,8 +2051,8 @@ realizado o modelo do robô. Por isso, os comandos e sintaxe do Sophia,
 apresentados na seção~\ref{sec::dkin}, não serão repetidos nesta seção, ciente
 da equivalência do procedimento.
 
-Para se chegar às equações de movimento, primeiramente, define-se os sistemas de
-coordenadas e as coordenadas generalizadas do sistema.
+Para se chegar às equações de movimento, primeiramente, são definidos os
+sistemas de coordenadas e as coordenadas generalizadas do sistema.
 As variáveis $q1, q2$ e $q3$ representam as 3 translações do ponto virtual de
 fixação do manipulador, em $x,y$ e $z$, respectivamente, em relação ao sistema de
 coordenadas inercial, SC-R. As 3 rotações são representadas pelas variáveis
@@ -2121,7 +2121,7 @@ e do amortecimento. Portanto:
 \end{equation}
 %
 O termo $m_M$ representa o valor da massa suspensa pela base. O vetor
-gravidade é descrito no referncial inercial SC-R.
+gravidade é descrito no referencial inercial SC-R.
 %
 \begin{equation}
 	\mathbf{g} = [-9,81,~0,~0]^{R}
@@ -2509,7 +2509,7 @@ Em compensação, o ensaio conta com aquisição simultânea de 6 sinais de saí
 SIMO (\textit{Single Input Multiple Outputs}). A vantagem deste tipo de ensaio é
 que para o caso em que o número de sinais é igual ao número de graus de
 liberdade, obtem-se exatamente uma coluna inteira da matriz de Transferência. De
-uma linha ou uma coluna completa, fornecendo informação suficiente para se
+uma linha ou uma coluna completa obtém-se informação suficiente para se
 determinar os parâmetros modais.
 
 \subsubsection{Resultados da aquisição}
@@ -2733,9 +2733,9 @@ O resultado da equação~\ref{eq::resmatrix_alpha_beta} fornece:
 % -.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-.~.-
 \section{Modelo acoplado robô e base} \label{sec::acoplado}
 
-Demonstrou-se nas seções~\ref{sec::robo} e \ref{sec::base} como forma
-construídos modelos dinâmicos do robô e da base em separado. Esta seção consiste
-em unir os dois sistemas MBS em um modelo acoplado.
+Demonstrou-se nas seções~\ref{sec::robo} e \ref{sec::base} como foram
+construídos os modelos dinâmicos do robô e da base em separado. Esta seção
+consiste em unir os dois sistemas MBS em um modelo acoplado.
 Isto é feito considerando que o sistema de coordenadas SC-Z, inercial no modelo
 do robô, agora coincide com o sistema de coordenadas final do modelo da base,
 SC-R3.
@@ -3058,7 +3058,7 @@ plataforma de rotação.
 \end{figure}
 
 Para determinação da matriz de rigidez, esta base é modelada para análise AEF. O
-modelo é apresentado na Figura~\ref{fig::prp_fea}, onde os prinicipais
+modelo é apresentado na Figura~\ref{fig::prp_fea}, onde os principais
 componentes são indicados.
 
 \begin{figure}[h]
@@ -3082,7 +3082,7 @@ Tabela~\ref{tab::prop_mat}.
 \begin{figure}[h]
 	\centering 
  	\includegraphics[width=0.80\textwidth]{figs/sectrans_pes}
- 	\caption{Propriedades de seção trasnversal dos pés da estrutura}
+ 	\caption{Propriedades de seção transversal dos pés da estrutura}
  	\label{fig::sectrans_pes}
 \end{figure}
 
@@ -3094,8 +3094,8 @@ momentos, mas não se deforma. Da mesma forma a placa de fixação é considerad
 rígida e possui um ponto onde virtualmente está acoplado o robô e por onde as
 cargas são aplicadas.
 
-As restrições são do tipo engaste e aplicadas às extremidades do pés de apoio da
-estrutura. Os deslocamentos prescritos são então aplicados em 6 casos,
+As restrições são do tipo engaste e aplicadas às extremidades dos pés de apoio
+da estrutura. Os deslocamentos prescritos são então aplicados em 6 casos,
 exatamente como foi realizado no exemplo da seção~\ref{sec::base}, de acordo com a
 Tabela~\ref{tab::casoscarreg}. A matriz de rigidez desta versão da base é então
 obtida dos resultados da análise AEF:

@@ -79,13 +79,13 @@ um conjunto de eixos ortogonais que se inteceptam em um ponto, denominado
 origem.
 
 Geralmente, em sistemas multicorpos, 2 tipos de SC são utilizados. O primeiro é
-fixo no tempo e representa uma referência para todos os corpos, denominado
+fixo ou inercial e representa uma referência para todos os corpos, denominado
 sistema de referência \emph{global} ou \emph{inercial}. O segundo tipo é
 solidário a cada componente do sistema, representando um SC \emph{local}, que
 translada e gira com o corpo.
 
 A Figura~\ref{fig::sist_refs} apresenta um corpo B, seu referencial local SC-B,
-cuja origem está no ponto $o$, fixo em B, e um referncial inercial SC-R, que
+cuja origem está no ponto $o$, fixo em B, e um referencial inercial SC-R, que
 descrevem o mesmo ponto $p$ em B, por 2 vetores diferentes.
 
 \begin{figure}[h]
@@ -130,7 +130,7 @@ coordenadas generalizadas.
 
 As coordenadas generalizadas são usualmente simbolizadas pela letra
 $q$, e numeradas de $1$ a $n$. Podem ser denotadas pelo seguinte vetor:
-%
+
 \begin{equation}
 	\mathbf{q} = [q1, q2, q3,\ldots, q_n]
 \end{equation}
@@ -188,8 +188,8 @@ quaisquer rotações básicas. Por exemplo:
 \end{equation}
 %
 Esta em especial representa um método comum para para especificar a matriz de
-rotação que orienta um corpo em função 3 quantidades independentes $\phi,
-\theta, \psi$, denominado \emph{Ângulos de Euler}, tal que de 3 rotações, não
+rotação que orienta um corpo em função de 3 variáveis independentes $\phi,
+\theta, \psi$, denominados \emph{Ângulos de Euler}, tal que de 3 rotações, não
 ocorram 2 rotações sucessivas em torno do mesmo eixo.
 Outros métodos comuns para especificar uma matriz de rotação são ângulos
 \textit{Roll-Pitch-Yaw}, Quaternions~\cite{sciavicco2012modelling} e ângulos de
@@ -204,6 +204,13 @@ $\boldsymbol{\omega} \in \mathbb{R}^{3}$, e um ângulo, $\theta \in \mathbb{R}$.
 	R(\omega, \theta) = e^{\hat{\omega} \theta}
 \end{equation}
 %
+Onde $\hat{\omega} \in \mathbb{R}^{3 \times 3}$ é tal que: 
+%
+\begin{equation}
+	\dot{q}(t) = \boldsymbol{\omega} \times \mathbf{q}(t) = \hat{\omega}
+	\mathbf{q}(t)
+\end{equation}
+%
 
 Realizando o devido desenvolvimento matemático~\cite{murray1994mathematical} é
 possível chegar-se a uma solução fechada para o ângulo e eixo correspondentes a
@@ -213,7 +220,7 @@ uma matriz de rotação, de acordo com as equações:
 %eq1
 	\theta =  \cos^{-1}\left(\frac{tr(R) - 1}{2}\right) \label{eq::ang_erro} \\
 %eq2	
-	\omega = \frac{1}{2 \sin{\theta}} \begin{bmatrix}
+	\boldsymbol{\omega} = \frac{1}{2 \sin{\theta}} \begin{bmatrix}
 r_{32}-r_{23}\\ 
 r_{13}-r_{31}\\ 
 r_{21}-r_{12}
@@ -313,8 +320,8 @@ referenciais, movendo-se arbitrariamente em relação um ao outro é expresso co
 	\mathbf{u}}{\mathrm{d} t} + {}^{A}\boldsymbol{\omega}^{B} \times \mathbf{u}
 \end{equation}
 %
-A equação~\ref{eq::velgeral} define a velocidade do vetor $\mathbf{u}$ com
-respeito ao referencial A. Portanto, do sistema genérico da
+A equação~\ref{eq::velgeral} define a derivada temporal do vetor $\mathbf{u}$
+com respeito ao referencial A. Portanto, do sistema genérico da
 Figura~\ref{fig::sist_refs}, pode-se escrever a velocidade do ponto $p$ como:
 %
 \begin{equation}
@@ -327,7 +334,7 @@ A aceleração do ponto $p$ com respeito ao referencial R será a derivada tempo
 da velocidade com respeito a R. Logo:
 %
 \begin{equation}
-	^{R}\mathbf{a}^{p} = \frac{^{A}\mathrm{d} }{\mathrm{d} x} {^{R}\mathbf{v}^{p}}
+	^{R}\mathbf{a}^{p} = \frac{^{R}\mathrm{d} }{\mathrm{d} x} {^{R}\mathbf{v}^{p}}
 \end{equation}
 %
 Fazendo-se a derivada temporal, obtém-se a expressão:
@@ -375,7 +382,7 @@ transformação homogênea de cada sistema de coordenadas a partir de apenas 4
 parâmetros:
 $a_i, \alpha_i, d_i, \vartheta_i$, que são, respectivamente para cada elo $i$:
 comprimento, torção, \textit{offset} e o ângulo da junta.
-Uma exemplo da utilização do método é apresentado pelo manipulador do tipo pulso
+Um exemplo da utilização do método é apresentado pelo manipulador do tipo pulso
 esférico de 3 gdl da Figura~\ref{fig::tipica_dh}. Na Tabela~\ref{tab::param_dh}
 apresenta-se a estrutura típica de representação dos parâmetros DH para este
 manipulador.
@@ -397,9 +404,9 @@ manipulador.
 \begin{tabular}{@{}ccccc@{}}
 \toprule
 Elo & $a_i$ & $\alpha_i$ & $d_i$ & $\vartheta_i$ \\ \midrule
-1   & 0     & $-\pi/2$   & 0     & $\vartheta_1$ \\
-2   & 0     & $\pi/2$    & 0     & $\vartheta_2$ \\
-3   & 0     & 0          & $d_6$ & $\vartheta_3$ \\ \bottomrule
+1   & 0     & $-\pi/2$   & 0     & $\vartheta_5$ \\
+2   & 0     & $\pi/2$    & 0     & $\vartheta_6$ \\
+3   & 0     & 0          & $d_6$ & $\vartheta_7$ \\ \bottomrule
 \end{tabular}
 \end{table}
 %
@@ -423,7 +430,7 @@ problema da cinemática inversa é muito mais complexo:
 \begin{itemize}
   \item As equações a serem resolvidas são geralmente não lineares, então nem
   sempre é possível obter uma solução de forma fechada;
-  \item Múltiplas ou infitas soluções podem existir;
+  \item Múltiplas ou infinitas soluções podem existir;
   \item Dependendo da estrutura cinemática do manipulador, pode não existir
   solução admissível.
 \end{itemize}
@@ -455,8 +462,8 @@ geométrica.
 \subsubsection{Desacoplamento cinemático}
 
 Para manipuladores que possuem 6 juntas, tais que as 3 últimas se interceptam no
-mesmo ponto, é posível desacoplar a cinemática inversa em dois subproblemas mais
-simples: cinemática inversa de posição e cinemática inversa de orientação. Ou
+mesmo ponto, é possível desacoplar a cinemática inversa em dois subproblemas
+mais simples: cinemática inversa de posição e cinemática inversa de orientação. Ou
 seja, para manipuladores de 6 gdl com pulso esférico, o problema torna-se
 simplesmente encontrar a posição da interseção das 3 últimas juntas e a
 orientação do pulso. Este conceito será utilizado para modelagem da cinemática
@@ -583,6 +590,10 @@ s_\phi c_\theta c_\psi + c_\phi s_\psi & -s_\phi c_\theta s_\psi + c_\phi c_\psi
 \end{equation}
 %
 
+Para facilitar a apresentação das funções trigonométricas, os senos e cossenos
+de um ângulo qualquer $\vartheta$, estas serão representadas na forma
+$c_{\vartheta}$ e $s_{\vartheta}$, em todo o texto deste trabalho.
+
 A matriz transposta da rotação que leva do referencial inercial ao referencial
 do pulso é:
 %
@@ -594,7 +605,7 @@ s_1 c{23} & -s_1 s_{23}  & -c_1 \\
 s_{23} & c_{23}  & 0 
 \end{pmatrix}
 \end{equation}
-%
+
 E do pulso para o efetuador:
 %
 \begin{equation}
@@ -626,7 +637,7 @@ Resolvendo-se o sistema, obtém-se:
 	\label{eq::theta6}
 \end{align}
 %
-Onde $r_{ij}$ correspondem aos termos da matriz de orientação desejada, da
+Onde $r_{ij}$ são os termos da a matriz de orientação desejada, da
 equação~\ref{eq::rzyz}.
 
 Logo, o conjunto das equações~\ref{eq::theta1} a \ref{eq::theta3} e
@@ -732,7 +743,7 @@ A formulação de Newton-Euler são uma combinação das Leis de Newton para sis
 de partículas, e das Leis de Euler, que introduziram os princípios da dinâmica
 para corpos rígidos. 
 
-Considerande-se novamente o sistema da Figura~\ref{fig::sist_refs}. Pela segunda
+Considerando-se novamente o sistema da Figura~\ref{fig::sist_refs}. Pela segunda
 lei de Newton, tem-se que o somatório das forças $F$ que agem sobre o corpo B de
 massa $m$ é igual a variação da quantidade de movimento $G$, ou seja:
 %
@@ -865,7 +876,7 @@ as principais características da metodologia:
 \begin{enumerate*}[label=\emph{\alph*})]
 	\item automaticamente elimina as forças que não realizam trabalho;
 	\item aplicável a sistemas holonômicos e não-holonômicos;
-	\item conduz diretamente a equações de diferenciais de primeira ordem.
+	\item conduz diretamente a equações de diferenciais primeira ordem.
 \end{enumerate*}
 
 O tempo computacional necessário para resolver um sistema de equações cresce
@@ -962,7 +973,7 @@ partes:
 seu conjunto de componentes e a identificação do sistema de coordenadas a que se
 refere. Este objeto é chamado de \texttt{Evector}, tal que 'E' indica que este
 pertence ao espaço tridimensional Euclidiano. Como exemplo, o vetor posição de
-um ponto paralelo ao vetor unitário $\mathbf{a}_1$ a uma distância $L1$ é
+um ponto, paralelo ao vetor unitário $\mathbf{a}_1$, a uma distância $L1$ é
 definido como um \texttt{Evector} da seguinte forma:
 
 \medskip \texttt{> Evector(L1,0,0, A);	} \medskip
@@ -1220,7 +1231,7 @@ amortecimento e modo -- suas propriedades
 dinâmicas~\cite{avitabile2001experimental}.
 
 Os modos de vibração, ou ressonâncias, são propriedades inerentes da estrutura,
-determinadaos pela massa, rigidez, amortecimento e condições de contorno. Cada
+determinados pela massa, rigidez, amortecimento e condições de contorno. Cada
 modo é definido por uma frequência natural, amortecimento modal e forma.
 Especificando-se o movimento de dois ou mais pontos na estrutura, define-se a a
 Forma de Deflexão Operacional (ou ODS, de \textit{Operational Deflection
@@ -1248,8 +1259,8 @@ Logo, a resposta será sempre proporcional à excitação. Esta consideração i
 também nas seguintes propriedades:
 %
 \begin{itemize}	
-  \item \emph{Superposição}. Uma FRF medida não depende do tipo de excitação, desde que
-  seja conhecida;
+  \item \emph{Superposição}. Uma Função de Resposta em Frequência (FRF) medida
+  não depende do tipo de excitação, desde que seja conhecida;
   \item \emph{Homogeneidade}. A FRF independe do nível de excitação.
   \item \emph{Reciprocidade}. A FRF medida entre quaisquer 2 gdl's independe
   de quem é a excitação e quem é a resposta. Isto implica que a matriz Função de
@@ -1346,11 +1357,11 @@ $j$ o gdl da saída.
 
 Logo, a função de resposta em frequência pode ser representada por uma matriz $n
 \times n$, onde $n$ é o número de graus de liberdade medidos da estrutura.
-Estruturas reais têm infitos graus de liberdade, mas devido a restrições de
+Estruturas reais têm infinitos graus de liberdade, mas devido a restrições de
 tempo e custo, apenas um número finito e relativamente pequeno é medido.
 
 Devido às propriedades de linearidade citadas anteriormente, apenas uma linha ou
-uma coluna da matriz de resposta em frequência bastam para fornecer toda a
+uma coluna da matriz de resposta em frequência basta para fornecer toda a
 informação necessária para a análise dos parâmetros modais de uma estrutura.
 
 
@@ -1462,8 +1473,7 @@ publicados~\cite{sunada1983dynamic}, \cite{bayo1987finite} e
 manipuladores. Mas, devido a complexidade da análise, a maioria dos casos
 restringiu-se ao braço robótico flexível de apenas um ou dois elos. Técnicas de
 controle destes manipuladores foram desenvolvidas a partir de então, a fim de
-evitar evitar falhas de posicionamento do efetuador e de perseguição da
-trajetória.
+evitar evitar falhas de posicionamento do efetuador e de trajetória.
 Em 2004, ~\citet{benosman2004control} fazem um levantamento de 119 textos
 relacionados ao controle de manipuladores flexíveis, apresentando as diferentes
 técnicas de modelamento e controle destes casos.
@@ -1609,7 +1619,7 @@ experimentalmente métodos de controle por controle de ponto final inferido.
 \end{figure}
 
 Outra solução para evitar vibrações e grandes amplitudes de deformação é o
-de escoramento ou contravetamento dos elementos flexíveis no
+de escoramento ou contraventamento dos elementos flexíveis no
 ambiente~\cite{lew1994bracing}. O escoramento em estruturas estacionárias
 ajudaria a enrijecer e amortecer a estrutura flexível e evitar grandes erros de
 posicionamento do efetuador. Esta estratégia é explorada nesta pesquisa no
@@ -1618,8 +1628,8 @@ processo.
 
 Seja o vetor de coordenadas generalizadas representado por $\boldsymbol{\xi} =
 [\phi, q]$, onde $\boldsymbol{\phi} = [x, y, z, \theta_x, \theta_y, \theta_z]$
-são as coordenadas generalaizadas da base, o sistema dinâmico do manipulador sobre base móvel pode
-ser expresso por:
+são as coordenadas da base, o sistema dinâmico do manipulador sobre base móvel
+pode ser expresso por:
 %
 \begin{equation}
 	H(\xi) \ddot{\boldsymbol{\xi}} + C(\xi , \dot{\xi}) \dot{\boldsymbol{\xi}} + K
@@ -1753,7 +1763,7 @@ Outro desafio é atender aos requisitos do processo de revestimento. A técnica
 utilizada de revestimento por aspersão térmica chamada HVOF (de \textit{high
 velocity oxy-fuel}) requer o aparato apresentado na
 Figura~\ref{fig::hvof_aparato}. Neste processo, uma mistura de combustível e
-oxigênio é alimentadando continuamente a uma câmara de combustão. O gás
+oxigênio alimenta continuamente uma câmara de combustão. O gás
 resultante emana do bocal em um jato, a uma velocidade normalmente acima de
 $1000~m/s$, onde as partículas de carbeto de tungstênio se misturam, se
 aquecendo, acelerando e colidindo contra o material base, formando a camada de
@@ -1840,7 +1850,7 @@ de revestimento.
 O conceito PRP utiliza o acesso da escotilha inferior para transportar uma base
 modular para o interior da unidade geradora. Esta base é composta por uma
 estrutura de alumínio equipada com trilhos paralelos, que concedem ao sistema o
-movimento linear ao longo da esturutra. Uma plataforma de rotação funciona como
+movimento linear ao longo da estrutura. Uma plataforma de rotação funciona como
 uma junta entre os trilhos, o que permite que estes formem qualquer ângulo entre
 si e fornecendo 3 graus de liberdade à base. Pela limitação do acesso, a
 estrutura da base deve ser modular e leve, porque sofrerá diversas montagens,
